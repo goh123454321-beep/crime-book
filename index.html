@@ -1,958 +1,911 @@
 <!DOCTYPE html>
 <html lang="ko">
 <head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>CRIME BOOK - PROFILE SCANNER</title>
-    <link href="https://fonts.googleapis.com/css2?family=Cinzel:wght@600;800&family=Gowun+Batang:wght@400;700&family=Courier+Prime:wght@400;700&display=swap" rel="stylesheet">
-    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
-    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
-    
-    <style>
-        @import url('https://cdn.jsdelivr.net/gh/orioncactus/pretendard/dist/web/static/pretendard.css');
-        
-        :root { 
-            --brand-black: #111111; 
-            --brand-brown: #5c3a21; 
-            --brand-gold: #c2a373; 
-            --paper-bg: #f5f0e6; 
-            --paper-texture: #e8dfd5;
-            --text-main: #2b2b2b; 
-            --danger-red: #d9381e;
-        }
-        
-        * { box-sizing: border-box; }
-        body { 
-            font-family: 'Gowun Batang', serif; 
-            background-color: #1a1a1a; 
-            background-image: radial-gradient(#333 1px, transparent 1px);
-            background-size: 20px 20px;
-            margin: 0; padding: 20px 10px; color: var(--text-main);
-        }
-        
-        /* 공통 컨테이너 */
-        .receipt-container { 
-            width: 100%; max-width: 550px; background: var(--paper-bg); 
-            box-shadow: 0 15px 35px rgba(0,0,0,0.6); position: relative; 
-            margin: 0 auto 50px auto; overflow: visible !important; 
-            transition: opacity 0.5s; min-height: 600px;
-        }
-        
-        .receipt-container::after { 
-            content: ""; display: block; position: absolute; bottom: -15px; left: 0; width: 100%; height: 15px; 
-            background: linear-gradient(45deg, transparent 33.333%, var(--paper-bg) 33.333%, var(--paper-bg) 66.667%, transparent 66.667%), 
-                        linear-gradient(-45deg, transparent 33.333%, var(--paper-bg) 33.333%, var(--paper-bg) 66.667%, transparent 66.667%); 
-            background-size: 20px 40px; background-position: 0 -20px; z-index: 1; 
-        }
-        
-        .dark-header { background: var(--brand-black); color: var(--paper-bg); padding: 35px 20px; text-align: center; border-bottom: 5px solid var(--brand-brown); }
-        .brand-title { font-family: 'Cinzel', serif; font-size: 2.8rem; letter-spacing: 2px; text-shadow: 2px 2px 0px var(--brand-brown); margin: 0; }
-        .receipt-info { padding: 12px 15px; border-bottom: 2px dashed #ccc; text-align: right; font-family: 'Courier Prime'; font-size: 0.8rem; color: #555; background: var(--paper-texture); }
-        
-        .content-area { padding: 30px 20px 60px 20px; }
-        .page { display: none; animation: fadeIn 0.4s ease-out; }
-        .page.active { display: block; }
-        @keyframes fadeIn { from { opacity: 0; transform: translateY(10px); } to { opacity: 1; transform: translateY(0); } }
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>CRIME BOOK - PROFILE SCANNER</title>
+    <link href="https://fonts.googleapis.com/css2?family=Cinzel:wght@600;800&family=Gowun+Batang:wght@400;700&family=Courier+Prime:wght@400;700&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+    
+    <style>
+        @import url('https://cdn.jsdelivr.net/gh/orioncactus/pretendard/dist/web/static/pretendard.css');
+        
+        :root { 
+            --brand-black: #111111; 
+            --brand-brown: #5c3a21; 
+            --brand-gold: #c2a373; 
+            --paper-bg: #f5f0e6; 
+            --paper-texture: #e8dfd5;
+            --text-main: #2b2b2b; 
+            --danger-red: #d9381e;
+        }
+        
+        * { box-sizing: border-box; }
+        body { 
+            font-family: 'Gowun Batang', serif; 
+            background-color: #1a1a1a; 
+            background-image: radial-gradient(#333 1px, transparent 1px);
+            background-size: 20px 20px;
+            margin: 0; padding: 20px 10px; color: var(--text-main);
+        }
+        
+        .receipt-container { 
+            width: 100%; max-width: 550px; background: var(--paper-bg); 
+            box-shadow: 0 15px 35px rgba(0,0,0,0.6); position: relative; 
+            margin: 0 auto 50px auto; overflow: visible !important; 
+            transition: opacity 0.5s; min-height: 600px;
+        }
+        
+        .receipt-container::after { 
+            content: ""; display: block; position: absolute; bottom: -15px; left: 0; width: 100%; height: 15px; 
+            background: linear-gradient(45deg, transparent 33.333%, var(--paper-bg) 33.333%, var(--paper-bg) 66.667%, transparent 66.667%), 
+                        linear-gradient(-45deg, transparent 33.333%, var(--paper-bg) 33.333%, var(--paper-bg) 66.667%, transparent 66.667%); 
+            background-size: 20px 40px; background-position: 0 -20px; z-index: 1; 
+        }
+        
+        .dark-header { background: var(--brand-black); color: var(--paper-bg); padding: 35px 20px; text-align: center; border-bottom: 5px solid var(--brand-brown); }
+        .brand-title { font-family: 'Cinzel', serif; font-size: 2.8rem; letter-spacing: 2px; text-shadow: 2px 2px 0px var(--brand-brown); margin: 0; }
+        .receipt-info { padding: 12px 15px; border-bottom: 2px dashed #ccc; text-align: right; font-family: 'Courier Prime'; font-size: 0.8rem; color: #555; background: var(--paper-texture); }
+        
+        .content-area { padding: 30px 20px 60px 20px; }
+        .page { display: none; animation: fadeIn 0.4s ease-out; }
+        .page.active { display: block; }
+        @keyframes fadeIn { from { opacity: 0; transform: translateY(10px); } to { opacity: 1; transform: translateY(0); } }
 
-        /* 입력 폼 스타일 */
-        .info-grid { display: grid; grid-template-columns: 1fr 1fr 2fr; gap: 10px; margin-bottom: 10px; }
-        .input-base { padding: 12px; border: 1px solid #ccc; border-radius: 4px; background: #fff; font-family: 'Pretendard', sans-serif; font-size: 0.95rem; width: 100%; transition: border-color 0.2s;}
-        .input-base:focus { border-color: var(--brand-brown); outline: none; }
-        @media (max-width: 480px) { .info-grid { grid-template-columns: 1fr 1fr; } .info-grid select#mbti { grid-column: span 2; } }
+        .info-grid { display: grid; grid-template-columns: 1fr 1fr 2fr; gap: 10px; margin-bottom: 10px; }
+        .input-base { padding: 12px; border: 1px solid #ccc; border-radius: 4px; background: #fff; font-family: 'Pretendard', sans-serif; font-size: 0.95rem; width: 100%; transition: border-color 0.2s;}
+        .input-base:focus { border-color: var(--brand-brown); outline: none; }
+        @media (max-width: 480px) { .info-grid { grid-template-columns: 1fr 1fr; } .info-grid select#mbti { grid-column: span 2; } }
 
-        .item-tag { background: var(--brand-brown); color: var(--paper-bg); font-family: 'Cinzel', 'Gowun Batang', serif; font-weight: bold; font-size: 1rem; padding: 6px 14px; display: inline-block; margin: 25px 0 15px 0; letter-spacing: 1px; }
-        
-        .btn { width: 100%; padding: 18px; border: none; font-family: 'Pretendard', sans-serif; font-weight: bold; font-size: 1.1rem; cursor: pointer; transition: 0.3s; margin-top: 20px; border-radius: 4px; letter-spacing: 1px;}
-        .btn-next { background: var(--brand-black); color: var(--paper-bg); border: 1px solid var(--brand-black); }
-        .btn-next:hover { background: var(--brand-brown); border-color: var(--brand-brown); }
-        .btn-prev { background: var(--paper-texture); color: #555; margin-bottom: 10px; border: 1px solid #ccc; }
-        
-        .interview-box { margin-bottom: 25px; border-bottom: 1px dashed #ccc; padding-bottom: 20px; }
-        .q-label { font-weight: bold; font-size: 1.05rem; color: var(--brand-black); display: block; margin-bottom: 12px; line-height: 1.4; word-break: keep-all; }
-        .radio-group label { display: block; padding: 8px 5px; cursor: pointer; font-size: 0.95rem; }
-        .radio-group input { margin-right: 10px; accent-color: var(--brand-brown); transform: scale(1.2); }
-        
-        /* 단서 수집 폼 (Page 2) */
-        .clue-box { background: #fff; border: 1px solid #ccc; padding: 18px; border-radius: 6px; margin-bottom: 15px; position: relative; }
-        .clue-title { font-family: 'Pretendard', sans-serif; font-weight: bold; font-size: 0.95rem; margin-bottom: 5px; color: var(--brand-black); }
-        .clue-desc { font-size: 0.8rem; color: #777; margin-bottom: 12px; line-height: 1.4; font-family: 'Pretendard', sans-serif;}
-        .clue-input-group { display: flex; align-items: center; gap: 10px; }
-        .number-input { width: 80px; text-align: center; font-family: 'Courier Prime'; font-weight: bold; font-size: 1.2rem; color: var(--brand-brown); padding: 8px; border: 2px solid var(--paper-texture); border-radius: 4px; }
-        .number-input:focus { border-color: var(--brand-brown); outline: none; }
-        .tooltip-btn { background: none; border: none; color: #888; text-decoration: underline; font-size: 0.75rem; cursor: pointer; padding: 0; margin-top: 5px; }
+        .item-tag { background: var(--brand-brown); color: var(--paper-bg); font-family: 'Cinzel', 'Gowun Batang', serif; font-weight: bold; font-size: 1rem; padding: 6px 14px; display: inline-block; margin: 25px 0 15px 0; letter-spacing: 1px; }
+        
+        .btn { width: 100%; padding: 18px; border: none; font-family: 'Pretendard', sans-serif; font-weight: bold; font-size: 1.1rem; cursor: pointer; transition: 0.3s; margin-top: 20px; border-radius: 4px; letter-spacing: 1px;}
+        .btn-next { background: var(--brand-black); color: var(--paper-bg); border: 1px solid var(--brand-black); }
+        .btn-next:hover { background: var(--brand-brown); border-color: var(--brand-brown); }
+        .btn-prev { background: var(--paper-texture); color: #555; margin-bottom: 10px; border: 1px solid #ccc; }
+        
+        .interview-box { margin-bottom: 25px; border-bottom: 1px dashed #ccc; padding-bottom: 20px; }
+        .q-label { font-weight: bold; font-size: 1.05rem; color: var(--brand-black); display: block; margin-bottom: 12px; line-height: 1.4; word-break: keep-all; }
+        .radio-group label { display: block; padding: 8px 5px; cursor: pointer; font-size: 0.95rem; }
+        .radio-group input { margin-right: 10px; accent-color: var(--brand-brown); transform: scale(1.2); }
+        
+        .clue-box { background: #fff; border: 1px solid #ccc; padding: 18px; border-radius: 6px; margin-bottom: 15px; position: relative; }
+        .clue-title { font-family: 'Pretendard', sans-serif; font-weight: bold; font-size: 0.95rem; margin-bottom: 5px; color: var(--brand-black); }
+        .clue-desc { font-size: 0.8rem; color: #777; margin-bottom: 12px; line-height: 1.4; font-family: 'Pretendard', sans-serif;}
+        .clue-input-group { display: flex; align-items: center; gap: 10px; }
+        .number-input { width: 80px; text-align: center; font-family: 'Courier Prime'; font-weight: bold; font-size: 1.2rem; color: var(--brand-brown); padding: 8px; border: 2px solid var(--paper-texture); border-radius: 4px; }
+        .number-input:focus { border-color: var(--brand-brown); outline: none; }
+        .tooltip-btn { background: none; border: none; color: #888; text-decoration: underline; font-size: 0.75rem; cursor: pointer; padding: 0; margin-top: 5px; }
 
-        /* DNA 스캔 (Page 3) */
-        .dna-btn { width: 100%; padding: 16px; margin-bottom: 10px; background: #fff; border: 1px solid var(--brand-brown); color: var(--brand-black); font-family: 'Gowun Batang', serif; font-size: 1.05rem; font-weight: bold; text-align: left; cursor: pointer; transition: 0.2s; border-radius: 4px; line-height: 1.4;}
-        .dna-btn:active, .dna-btn:hover { background: var(--paper-texture); }
+        .dna-btn { width: 100%; padding: 16px; margin-bottom: 10px; background: #fff; border: 1px solid var(--brand-brown); color: var(--brand-black); font-family: 'Gowun Batang', serif; font-size: 1.05rem; font-weight: bold; text-align: left; cursor: pointer; transition: 0.2s; border-radius: 4px; line-height: 1.4;}
+        .dna-btn:active, .dna-btn:hover { background: var(--paper-texture); }
 
-        /* ========= 리포트 전용 스타일 (전문가 뎁스) ========= */
-        .report-page-content { display: flex; flex-direction: column; font-family: 'Pretendard', sans-serif; color: var(--brand-black); }
-        
-        .report-header { display: flex; justify-content: space-between; align-items: flex-start; border-bottom: 3px solid var(--brand-black); padding-bottom: 15px; margin-bottom: 20px; }
-        .report-title-main { font-size: 1.3rem; font-weight: 800; margin: 0 0 5px 0; color: var(--brand-black); letter-spacing: -0.5px; }
-        .report-tags { font-size: 0.75rem; font-weight: 600; color: var(--brand-brown); }
-        .report-meta { text-align: right; font-size: 0.7rem; font-family: 'Courier Prime', monospace; color: #666; line-height: 1.4; white-space: nowrap; }
+        .report-page-content { display: flex; flex-direction: column; font-family: 'Pretendard', sans-serif; color: var(--brand-black); }
+        
+        .report-header { display: flex; justify-content: space-between; align-items: flex-start; border-bottom: 3px solid var(--brand-black); padding-bottom: 15px; margin-bottom: 20px; }
+        .report-title-main { font-size: 1.3rem; font-weight: 800; margin: 0 0 5px 0; color: var(--brand-black); letter-spacing: -0.5px; }
+        .report-tags { font-size: 0.75rem; font-weight: 600; color: var(--brand-brown); }
+        .report-meta { text-align: right; font-size: 0.7rem; font-family: 'Courier Prime', monospace; color: #666; line-height: 1.4; white-space: nowrap; }
 
-        .report-grid { display: grid; grid-template-columns: 1fr; gap: 15px; margin-bottom: 20px; }
-        @media (min-width: 500px) { .report-grid { grid-template-columns: 1fr 1fr; } }
-        .chart-card { background: #fff; border: 1px solid #ccc; border-radius: 6px; padding: 15px; display: flex; flex-direction: column; min-width: 0; }
-        .card-title { font-size: 0.9rem; font-weight: 800; margin-bottom: 10px; border-left: 3px solid var(--brand-brown); padding-left: 8px; }
-        .chart-wrapper { width: 100%; height: 160px; position: relative; margin-bottom: 12px; }
-        
-        /* 공통 설명 박스 */
-        .desc-box { background: #f1f5f9; padding: 10px; border-radius: 4px; font-size: 0.75rem; line-height: 1.5; margin-bottom: 8px; color: #334155; word-break: keep-all; border: 1px solid #e2e8f0; }
-        .example-box { background: #fdf8f3; border-left: 3px solid var(--brand-brown); padding: 12px; border-radius: 0 4px 4px 0; font-size: 0.75rem; line-height: 1.5; color: #431407; word-break: keep-all; }
+        .report-grid { display: grid; grid-template-columns: 1fr; gap: 15px; margin-bottom: 20px; }
+        @media (min-width: 500px) { .report-grid { grid-template-columns: 1fr 1fr; } }
+        .chart-card { background: #fff; border: 1px solid #ccc; border-radius: 6px; padding: 15px; display: flex; flex-direction: column; min-width: 0; }
+        .card-title { font-size: 0.9rem; font-weight: 800; margin-bottom: 10px; border-left: 3px solid var(--brand-brown); padding-left: 8px; }
+        .chart-wrapper { width: 100%; height: 160px; position: relative; margin-bottom: 12px; }
+        
+        .desc-box { background: #f1f5f9; padding: 10px; border-radius: 4px; font-size: 0.75rem; line-height: 1.5; margin-bottom: 8px; color: #334155; word-break: keep-all; border: 1px solid #e2e8f0; }
+        .example-box { background: #fdf8f3; border-left: 3px solid var(--brand-brown); padding: 12px; border-radius: 0 4px 4px 0; font-size: 0.75rem; line-height: 1.5; color: #431407; word-break: keep-all; }
 
-        /* 연구자 소견 마스터 박스 */
-        .master-box { background: #e8dfd5; padding: 20px 15px; border-radius: 6px; display: flex; flex-direction: column; gap: 15px; border: 1px solid #ccc; margin-bottom: 20px; }
-        .master-box-title { text-align: center; font-family: 'Cinzel', 'Gowun Batang', serif; font-size: 1.2rem; font-weight: bold; color: var(--brand-black); margin-bottom: 5px; border-bottom: 1px dashed #aaa; padding-bottom: 10px; }
-        .white-card { background: #ffffff; padding: 18px; border-radius: 6px; box-shadow: 0 2px 5px rgba(0,0,0,0.05); flex-shrink: 0; margin-bottom: 0; }
-        .card-heading { font-size: 0.95rem; font-weight: 800; color: var(--brand-black); margin-bottom: 10px; display: flex; align-items: center; gap: 5px; border-bottom: 1px dashed #eee; padding-bottom: 8px; }
-        .card-content { font-size: 0.85rem; line-height: 1.6; color: #333; word-break: keep-all; }
-        
-        /* 수사 파일 형광펜 강조 효과 */
-        .card-content b, .desc-box b { background: linear-gradient(180deg, transparent 60%, rgba(194, 163, 115, 0.4) 60%); padding: 0 2px; }
-        
-        /* 기밀문서 도장 스타일 */
-        .stamp-confidential { position: absolute; top: 20px; right: 15px; font-family: 'Courier Prime', monospace; font-size: 1.4rem; font-weight: 800; color: var(--danger-red); border: 3px solid var(--danger-red); padding: 5px 10px; transform: rotate(15deg); opacity: 0.7; letter-spacing: 2px; pointer-events: none; z-index: 10; }
+        .master-box { background: #e8dfd5; padding: 20px 15px; border-radius: 6px; display: flex; flex-direction: column; gap: 15px; border: 1px solid #ccc; margin-bottom: 20px; }
+        .master-box-title { text-align: center; font-family: 'Cinzel', 'Gowun Batang', serif; font-size: 1.2rem; font-weight: bold; color: var(--brand-black); margin-bottom: 5px; border-bottom: 1px dashed #aaa; padding-bottom: 10px; }
+        .white-card { background: #ffffff; padding: 18px; border-radius: 6px; box-shadow: 0 2px 5px rgba(0,0,0,0.05); flex-shrink: 0; margin-bottom: 0; }
+        .card-heading { font-size: 0.95rem; font-weight: 800; color: var(--brand-black); margin-bottom: 10px; display: flex; align-items: center; gap: 5px; border-bottom: 1px dashed #eee; padding-bottom: 8px; }
+        .card-content { font-size: 0.85rem; line-height: 1.6; color: #333; word-break: keep-all; }
+        
+        .card-content b, .desc-box b { background: linear-gradient(180deg, transparent 60%, rgba(194, 163, 115, 0.4) 60%); padding: 0 2px; }
+        
+        .stamp-confidential { position: absolute; top: 20px; right: 15px; font-family: 'Courier Prime', monospace; font-size: 1.4rem; font-weight: 800; color: var(--danger-red); border: 3px solid var(--danger-red); padding: 5px 10px; transform: rotate(15deg); opacity: 0.7; letter-spacing: 2px; pointer-events: none; z-index: 10; }
 
-        .barcode { height: 45px; margin-top: 30px; opacity: 0.8; background: repeating-linear-gradient(90deg, #111, #111 2px, transparent 2px, transparent 5px, #111 5px, #111 6px, transparent 6px, transparent 8px); }
-        
-        .loading-overlay { position: fixed; top:0; left:0; width:100%; height:100%; background:rgba(17,17,17,0.95); z-index:999; display:none; justify-content:center; align-items:center; flex-direction:column; color: var(--paper-bg); }
-        .spinner { width: 50px; height: 50px; border: 3px solid rgba(194, 163, 115, 0.2); border-top: 3px solid var(--brand-gold); border-radius: 50%; animation: spin 1s linear infinite; margin-bottom: 20px; }
-        @keyframes spin { 0% { transform: rotate(0deg); } 100% { transform: rotate(360deg); } }
-        
-        .modal { display: none; position: fixed; top: 0; left: 0; width: 100%; height: 100%; background: rgba(0,0,0,0.7); z-index: 1000; justify-content: center; align-items: center; padding: 20px; }
-        .modal-content { background: var(--paper-bg); padding: 25px; border-radius: 6px; max-width: 400px; width: 100%; font-family: 'Pretendard'; font-size: 0.9rem; line-height: 1.6; position: relative; }
-        .close-btn { position: absolute; top: 15px; right: 20px; font-size: 1.5rem; cursor: pointer; color: #555; }
-        
-        .section-title { font-size: 1.15rem; font-weight: 800; color: var(--brand-black); margin: 30px 0 15px 0; border-bottom: 2px solid var(--brand-brown); padding-bottom: 8px; letter-spacing: -0.5px; }
-        .grid-2-col { display: grid; grid-template-columns: 1fr 1fr; gap: 15px; margin-bottom: 20px; }
-        @media (max-width: 600px) { .grid-2-col { grid-template-columns: 1fr; } }
-    </style>
+        .barcode { height: 45px; margin-top: 30px; opacity: 0.8; background: repeating-linear-gradient(90deg, #111, #111 2px, transparent 2px, transparent 5px, #111 5px, #111 6px, transparent 6px, transparent 8px); }
+        
+        .loading-overlay { position: fixed; top:0; left:0; width:100%; height:100%; background:rgba(17,17,17,0.95); z-index:999; display:none; justify-content:center; align-items:center; flex-direction:column; color: var(--paper-bg); }
+        .spinner { width: 50px; height: 50px; border: 3px solid rgba(194, 163, 115, 0.2); border-top: 3px solid var(--brand-gold); border-radius: 50%; animation: spin 1s linear infinite; margin-bottom: 20px; }
+        @keyframes spin { 0% { transform: rotate(0deg); } 100% { transform: rotate(360deg); } }
+        
+        .modal { display: none; position: fixed; top: 0; left: 0; width: 100%; height: 100%; background: rgba(0,0,0,0.7); z-index: 1000; justify-content: center; align-items: center; padding: 20px; }
+        .modal-content { background: var(--paper-bg); padding: 25px; border-radius: 6px; max-width: 400px; width: 100%; font-family: 'Pretendard'; font-size: 0.9rem; line-height: 1.6; position: relative; }
+        .close-btn { position: absolute; top: 15px; right: 20px; font-size: 1.5rem; cursor: pointer; color: #555; }
+        
+        .section-title { font-size: 1.15rem; font-weight: 800; color: var(--brand-black); margin: 30px 0 15px 0; border-bottom: 2px solid var(--brand-brown); padding-bottom: 8px; letter-spacing: -0.5px; }
+        .grid-2-col { display: grid; grid-template-columns: 1fr 1fr; gap: 15px; margin-bottom: 20px; }
+        @media (max-width: 600px) { .grid-2-col { grid-template-columns: 1fr; } }
+    </style>
 </head>
 <body>
 
 <div id="loading" class="loading-overlay">
-    <div class="spinner"></div>
-    <div style="font-family:'Cinzel', serif; font-size:1.5rem; letter-spacing: 2px;">FORENSIC ANALYSIS...</div>
-    <div style="font-family:'Courier Prime'; font-size:0.9rem; margin-top:10px; color:#999;">Extracting Behavioral Data</div>
+    <div class="spinner"></div>
+    <div style="font-family:'Cinzel', serif; font-size:1.5rem; letter-spacing: 2px;">FORENSIC ANALYSIS...</div>
+    <div style="font-family:'Courier Prime'; font-size:0.9rem; margin-top:10px; color:#999;">Extracting Behavioral Data</div>
 </div>
 
 <div id="receipt-input" class="receipt-container">
-    <div class="dark-header">
-        <h1 class="brand-title">CRIME BOOK</h1>
-        <p style="font-family: 'Courier Prime'; opacity: 0.8; font-size: 0.85rem; margin-top: 8px; letter-spacing: 1px;">:: SUBJECT PROFILING ::</p>
-    </div>
-    <div class="receipt-info" id="receipt-info-box"></div>
+    <div class="dark-header">
+        <h1 class="brand-title">CRIME BOOK</h1>
+        <p style="font-family: 'Courier Prime'; opacity: 0.8; font-size: 0.85rem; margin-top: 8px; letter-spacing: 1px;">:: SUBJECT PROFILING ::</p>
+    </div>
+    <div class="receipt-info" id="receipt-info-box"></div>
 
-    <div class="content-area">
-        <div id="page1" class="page active">
-            <span class="item-tag" style="margin-top:0;">CHAPTER 01. BASIC INFO</span>
-            <input type="text" id="userName" placeholder="이름 (또는 닉네임)" class="input-base" style="margin-bottom: 10px;">            
-            <div class="info-grid">
-                <select id="gender" class="input-base"><option value="남성">남성</option><option value="여성">여성</option></select>
-                <input type="number" id="age" placeholder="나이" class="input-base">
-                <select id="mbti" class="input-base">
-                    <option value="" disabled selected>MBTI 선택</option>
-                    <optgroup label="분석가형 (NT)">
-                        <option value="INTJ">INTJ</option><option value="INTP">INTP</option><option value="ENTJ">ENTJ</option><option value="ENTP">ENTP</option>
-                    </optgroup>
-                    <optgroup label="외교관형 (NF)">
-                        <option value="INFJ">INFJ</option><option value="INFP">INFP</option><option value="ENFJ">ENFJ</option><option value="ENFP">ENFP</option>
-                    </optgroup>
-                    <optgroup label="관리자형 (SJ)">
-                        <option value="ISTJ">ISTJ</option><option value="ISFJ">ISFJ</option><option value="ESTJ">ESTJ</option><option value="ESFJ">ESFJ</option>
-                    </optgroup>
-                    <optgroup label="탐험가형 (SP)">
-                        <option value="ISTP">ISTP</option><option value="ISFP">ISFP</option><option value="ESTP">ESTP</option><option value="ESFP">ESFP</option>
-                    </optgroup>
-                </select>
-            </div>
+    <div class="content-area">
+        <div id="page1" class="page active">
+            <span class="item-tag" style="margin-top:0;">CHAPTER 01. BASIC INFO</span>
+            <input type="text" id="userName" placeholder="이름 (또는 닉네임)" class="input-base" style="margin-bottom: 10px;">            
+            <div class="info-grid">
+                <select id="gender" class="input-base"><option value="남성">남성</option><option value="여성">여성</option></select>
+                <input type="number" id="age" placeholder="나이" class="input-base">
+                <select id="mbti" class="input-base">
+                    <option value="" disabled selected>MBTI 선택</option>
+                    <optgroup label="분석가형 (NT)">
+                        <option value="INTJ">INTJ</option><option value="INTP">INTP</option><option value="ENTJ">ENTJ</option><option value="ENTP">ENTP</option>
+                    </optgroup>
+                    <optgroup label="외교관형 (NF)">
+                        <option value="INFJ">INFJ</option><option value="INFP">INFP</option><option value="ENFJ">ENFJ</option><option value="ENFP">ENFP</option>
+                    </optgroup>
+                    <optgroup label="관리자형 (SJ)">
+                        <option value="ISTJ">ISTJ</option><option value="ISFJ">ISFJ</option><option value="ESTJ">ESTJ</option><option value="ESFJ">ESFJ</option>
+                    </optgroup>
+                    <optgroup label="탐험가형 (SP)">
+                        <option value="ISTP">ISTP</option><option value="ISFP">ISFP</option><option value="ESTP">ESTP</option><option value="ESFP">ESFP</option>
+                    </optgroup>
+                </select>
+            </div>
 
-            <span class="item-tag">CHAPTER 02. PROLOGUE</span>
-            <div class="interview-box">
-                <span class="q-label">Q1. '크라임 북' 방탈출에 참여하게 된 주된 이유는?</span>
-                <div class="radio-group">
-                    <label><input type="radio" name="q1" value="curious">독특한 컨셉에 이끌린 단순한 호기심</label>
-                    <label><input type="radio" name="q1" value="reader">깊게 생각하는 독서의 즐거움을 찾기 위해</label>
-                    <label><input type="radio" name="q1" value="mania">나는야 방탈출 매니아, 새로운 자극이 필요해</label>
-                </div>
-            </div>
-            <div class="interview-box">
-                <span class="q-label">Q2. 평소 '텍스트(활자)'와 얼마나 친하신가요?</span>
-                <div class="radio-group">
-                    <label><input type="radio" name="q2" value="good">활자 중독, 책 냄새만 맡아도 설렌다</label>
-                    <label><input type="radio" name="q2" value="soso">가끔 필요할 때 베스트셀러 위주로 읽는다</label>
-                    <label><input type="radio" name="q2" value="bad">텍스트 울렁증, 영상 매체가 훨씬 편하다</label>
-                </div>
-            </div>
-            <div class="interview-box" style="border:none; padding-bottom:0;">
-                <span class="q-label">Q3. 무사히 방탈출을 마친 후, 보상으로 읽고 싶은 책 장르는?</span>
-                <div class="radio-group">
-                    <label><input type="radio" name="q3" value="thriller">아드레날린 폭발! 스릴러 / 추리 소설</label>
-                    <label><input type="radio" name="q3" value="philosophy">나를 돌아보게 하는 인문 / 철학 / 에세이</label>
-                    <label><input type="radio" name="q3" value="novel">새로운 세계로의 초대, 판타지 / SF 소설</label>
-                </div>
-            </div>
-            <button class="btn btn-next" onclick="goToPage(2)">NEXT: 증거 수집 (디지털 데이터) →</button>
-        </div>
+            <span class="item-tag">CHAPTER 02. PROLOGUE</span>
+            <div class="interview-box">
+                <span class="q-label">Q1. '크라임 북' 방탈출에 참여하게 된 주된 이유는?</span>
+                <div class="radio-group">
+                    <label><input type="radio" name="q1" value="curious">독특한 컨셉에 이끌린 단순한 호기심</label>
+                    <label><input type="radio" name="q1" value="reader">깊게 생각하는 독서의 즐거움을 찾기 위해</label>
+                    <label><input type="radio" name="q1" value="mania">나는야 방탈출 매니아, 새로운 자극이 필요해</label>
+                </div>
+            </div>
+            <div class="interview-box">
+                <span class="q-label">Q2. 평소 '텍스트(활자)'와 얼마나 친하신가요?</span>
+                <div class="radio-group">
+                    <label><input type="radio" name="q2" value="good">활자 중독, 책 냄새만 맡아도 설렌다</label>
+                    <label><input type="radio" name="q2" value="soso">가끔 필요할 때 베스트셀러 위주로 읽는다</label>
+                    <label><input type="radio" name="q2" value="bad">텍스트 울렁증, 영상 매체가 훨씬 편하다</label>
+                </div>
+            </div>
+            <div class="interview-box" style="border:none; padding-bottom:0;">
+                <span class="q-label">Q3. 무사히 방탈출을 마친 후, 보상으로 읽고 싶은 책 장르는?</span>
+                <div class="radio-group">
+                    <label><input type="radio" name="q3" value="thriller">아드레날린 폭발! 스릴러 / 추리 소설</label>
+                    <label><input type="radio" name="q3" value="philosophy">나를 돌아보게 하는 인문 / 철학 / 에세이</label>
+                    <label><input type="radio" name="q3" value="novel">새로운 세계로의 초대, 판타지 / SF 소설</label>
+                </div>
+            </div>
+            <button class="btn btn-next" onclick="goToPage(2)">NEXT: 증거 수집 (디지털 데이터) →</button>
+        </div>
 
-        <div id="page2" class="page">
-            <div style="text-align:center; margin-bottom:25px;">
-                <h2 style="font-family:'Cinzel', serif; color:var(--brand-black); margin-bottom:5px; letter-spacing:1px;">DIGITAL FORENSICS</h2>
-                <p style="margin:0; font-size:0.85rem; color:#666; font-family:'Pretendard'; word-break: keep-all;">텍스트의 바다에서 길을 잃게 만든 원인을 찾기 위해,<br>당신의 스마트폰 속 <b>'객관적인 단서'</b>를 수집합니다.</p>
-            </div>
+        <div id="page2" class="page">
+            <div style="text-align:center; margin-bottom:25px;">
+                <h2 style="font-family:'Cinzel', serif; color:var(--brand-black); margin-bottom:5px; letter-spacing:1px;">DIGITAL FORENSICS</h2>
+                <p style="margin:0; font-size:0.85rem; color:#666; font-family:'Pretendard'; word-break: keep-all;">텍스트의 바다에서 길을 잃게 만든 원인을 찾기 위해,<br>당신의 스마트폰 속 <b>'객관적인 단서'</b>를 수집합니다.</p>
+            </div>
 
-            <div class="clue-box">
-                <div class="clue-title"><i class="fa-regular fa-clock"></i> 단서 1. 일일 평균 스크린타임</div>
-                <div class="clue-desc">하루 평균 스마트폰 화면을 켜두는 시간은?</div>
-                <div class="clue-input-group">
-                    <input type="number" id="screenHours" class="number-input" placeholder="0" min="0" max="24"> 시간
-                    <input type="number" id="screenMins" class="number-input" placeholder="0" min="0" max="59"> 분
-                </div>
-                <button class="tooltip-btn" onclick="openModal('screen-guide')">어디서 확인하나요? (3초 컷)</button>
-            </div>
+            <div class="clue-box">
+                <div class="clue-title"><i class="fa-regular fa-clock"></i> 단서 1. 일일 평균 스크린타임</div>
+                <div class="clue-desc">하루 평균 스마트폰 화면을 켜두는 시간은?</div>
+                <div class="clue-input-group">
+                    <input type="number" id="screenHours" class="number-input" placeholder="0" min="0" max="24"> 시간
+                    <input type="number" id="screenMins" class="number-input" placeholder="0" min="0" max="59"> 분
+                </div>
+                <button class="tooltip-btn" onclick="openModal('screen-guide')">어디서 확인하나요? (3초 컷)</button>
+            </div>
 
-            <div class="clue-box">
-                <div class="clue-title"><i class="fa-solid fa-mobile-screen-button"></i> 단서 2. 하루 평균 '화면 깨우기' 횟수</div>
-                <div class="clue-desc">알림이 오지 않아도 습관적으로 폰을 켠 횟수 (Pick-ups)</div>
-                <div class="clue-input-group">
-                    <input type="number" id="pickups" class="number-input" placeholder="0" style="width:100px;"> 회
-                </div>
-                <button class="tooltip-btn" onclick="openModal('pickup-guide')">어디서 확인하나요? (3초 컷)</button>
-            </div>
+            <div class="clue-box">
+                <div class="clue-title"><i class="fa-solid fa-mobile-screen-button"></i> 단서 2. 하루 평균 '화면 깨우기' 횟수</div>
+                <div class="clue-desc">알림이 오지 않아도 습관적으로 폰을 켠 횟수 (Pick-ups)</div>
+                <div class="clue-input-group">
+                    <input type="number" id="pickups" class="number-input" placeholder="0" style="width:100px;"> 회
+                </div>
+                <button class="tooltip-btn" onclick="openModal('pickup-guide')">어디서 확인하나요? (3초 컷)</button>
+            </div>
 
-            <div class="clue-box">
-                <div class="clue-title"><i class="fa-solid fa-shoe-prints"></i> 단서 3. 일일 평균 걸음 수</div>
-                <div class="clue-desc">건강 앱 기준, 최근 일주일 평균 걸음 수는?</div>
-                <div class="clue-input-group">
-                    <input type="number" id="steps" class="number-input" placeholder="0" style="width:120px;"> 보
-                </div>
-                <button class="tooltip-btn" onclick="openModal('step-guide')">어디서 확인하나요? (3초 컷)</button>
-            </div>
+            <div class="clue-box">
+                <div class="clue-title"><i class="fa-solid fa-shoe-prints"></i> 단서 3. 일일 평균 걸음 수</div>
+                <div class="clue-desc">건강 앱 기준, 최근 일주일 평균 걸음 수는?</div>
+                <div class="clue-input-group">
+                    <input type="number" id="steps" class="number-input" placeholder="0" style="width:120px;"> 보
+                </div>
+                <button class="tooltip-btn" onclick="openModal('step-guide')">어디서 확인하나요? (3초 컷)</button>
+            </div>
 
+            <div class="clue-box">
+                <div class="clue-title"><i class="fa-regular fa-bell"></i> 단서 4. 아침 기상 알람 세팅</div>
+                <div class="clue-desc">내일 아침을 위해 맞춰둔 알람은 총 몇 개인가요?</div>
+                <div class="clue-input-group">
+                    <input type="number" id="alarms" class="number-input" placeholder="0" min="0" max="50"> 개
+                </div>
+            </div>
 
-            <div class="clue-box">
-                <div class="clue-title"><i class="fa-regular fa-bell"></i> 단서 4. 아침 기상 알람 세팅</div>
-                <div class="clue-desc">내일 아침을 위해 맞춰둔 알람은 총 몇 개인가요?</div>
-                <div class="clue-input-group">
-                    <input type="number" id="alarms" class="number-input" placeholder="0" min="0" max="50"> 개
-                </div>
-            </div>
+            <div style="display:flex; gap:10px;">
+                <button class="btn btn-prev" onclick="goToPage(1)">← PREV</button>
+                <button class="btn btn-next" onclick="goToPage(3)">DEEP SCAN →</button>
+            </div>
+        </div>
 
-            <div style="display:flex; gap:10px;">
-                <button class="btn btn-prev" onclick="goToPage(1)">← PREV</button>
-                <button class="btn btn-next" onclick="goToPage(3)">DEEP SCAN →</button>
-            </div>
-        </div>
-
-        <div id="page3" class="page">
-            <h2 style="font-family: 'Cinzel', serif; color: var(--brand-black); text-align:center; margin-bottom:20px; letter-spacing: 2px;">MIND SCANNING...</h2>
-            <p style="text-align:center; font-size:0.85rem; color:#666; margin-bottom:30px; font-family:'Pretendard';">마지막으로 마인드 클루를 분석합니다.</p>
-            <div id="dnaQuestions"></div>
-            <div style="margin-top:20px; text-align:center;">
-                 <button class="btn btn-prev" onclick="goToPage(2)" style="background:transparent; color:#999; border:none; box-shadow:none; width:auto; padding:10px;">뒤로 가기</button>
-            </div>
-        </div>
-    </div>
+        <div id="page3" class="page">
+            <h2 style="font-family: 'Cinzel', serif; color: var(--brand-black); text-align:center; margin-bottom:20px; letter-spacing: 2px;">MIND SCANNING...</h2>
+            <p style="text-align:center; font-size:0.85rem; color:#666; margin-bottom:30px; font-family:'Pretendard';">마지막으로 마인드 클루를 분석합니다.</p>
+            <div id="dnaQuestions"></div>
+            <div style="margin-top:20px; text-align:center;">
+                 <button class="btn btn-prev" onclick="goToPage(2)" style="background:transparent; color:#999; border:none; box-shadow:none; width:auto; padding:10px;">뒤로 가기</button>
+            </div>
+        </div>
+    </div>
 </div>
 
 <div id="report-view" class="receipt-container" style="display:none;">
-    <div class="dark-header">
-        <h1 class="brand-title" style="font-size: 2.2rem;">CRIME BOOK</h1>
-        <p style="font-family: 'Courier Prime'; opacity: 0.8; font-size: 0.8rem; margin-top: 5px;">:: BEHAVIORAL PROFILING REPORT ::</p>
-    </div>
+    <div class="dark-header">
+        <h1 class="brand-title" style="font-size: 2.2rem;">CRIME BOOK</h1>
+        <p style="font-family: 'Courier Prime'; opacity: 0.8; font-size: 0.8rem; margin-top: 5px;">:: BEHAVIORAL PROFILING REPORT ::</p>
+    </div>
 
-    <div class="content-area report-page-content" style="position:relative;">
-        <div class="stamp-confidential">CONFIDENTIAL</div> 
-        <div class="report-header">
-            <div class="header-left">
-                <h1 class="report-title-main">통합 분석 리포트</h1>
-                <div class="report-tags">
-                    <span>[성향분석]</span> <span>[데이터 마이닝]</span> <span style="color:var(--brand-brown);">[맞춤형 제언]</span>
-                </div>
-            </div>
-            <div class="report-meta" id="report-meta-box"></div>
-        </div>
+    <div class="content-area report-page-content" style="position:relative;">
+        <div class="stamp-confidential">CONFIDENTIAL</div> 
+        <div class="report-header">
+            <div class="header-left">
+                <h1 class="report-title-main">통합 분석 리포트</h1>
+                <div class="report-tags">
+                    <span>[성향분석]</span> <span>[데이터 마이닝]</span> <span style="color:var(--brand-brown);">[맞춤형 제언]</span>
+                </div>
+            </div>
+            <div class="report-meta" id="report-meta-box"></div>
+        </div>
 
-        <div class="section-title"><i class="fa-solid fa-chart-line"></i> 데이터 심층 분석</div>
-        
-        <div class="grid-2-col">
-            <div class="chart-card">
-                <div class="card-title">성향-행동 괴리율 지수</div>
-                <div class="chart-wrapper" style="height: 210px;"><canvas id="radarChart"></canvas></div>
-                <div class="desc-box">
-                    <strong>설명:</strong> 기획력(이상)과 실행력(현실), 그리고 기기 통제 및 스트레스 대처 능력을 다각도로 분석한 오각형 지표입니다. <b>(참고: 한국 20대 평균 화면 깨우기는 일일 50~80회, 알람은 1~2개입니다.)</b>
-                </div>
-                <div class="example-box" id="example-radar"></div>
-            </div>
+        <div class="section-title"><i class="fa-solid fa-chart-line"></i> 데이터 심층 분석</div>
+        
+        <div class="grid-2-col">
+            <div class="chart-card">
+                <div class="card-title">성향-행동 괴리율 지수</div>
+                <div class="chart-wrapper" style="height: 210px;"><canvas id="radarChart"></canvas></div>
+                <div class="desc-box">
+                    <strong>설명:</strong> 기획력(이상)과 실행력(현실), 그리고 기기 통제 및 스트레스 대처 능력을 다각도로 분석한 오각형 지표입니다. <b>(참고: 한국 20대 평균 화면 깨우기는 일일 50~80회, 알람은 1~2개입니다.)</b>
+                </div>
+                <div class="example-box" id="example-radar"></div>
+            </div>
 
-            <div style="display: flex; flex-direction: column; gap: 15px;">
-                <div class="chart-card">
-                    <div class="card-title">디지털 도파민 체류 지수 (몰입 vs 도피)</div>
-                    <div class="chart-wrapper" style="height: 80px;"><canvas id="focusChart"></canvas></div>
-                    <div class="desc-box">
-                        <strong>설명:</strong> 폰을 한 번 켰을 때 연속으로 머무는 시간입니다. <b>(수치가 극단적으로 짧으면 '숏폼 중독', 지나치게 길면 '알고리즘 늪에 빠진 현실 로그아웃' 상태를 의미합니다.)</b>
-                    </div>
-                    <div class="example-box" id="example-focus"></div>
-                </div>
+            <div style="display: flex; flex-direction: column; gap: 15px;">
+                <div class="chart-card">
+                    <div class="card-title">디지털 도파민 체류 지수 (몰입 vs 도피)</div>
+                    <div class="chart-wrapper" style="height: 80px;"><canvas id="focusChart"></canvas></div>
+                    <div class="desc-box">
+                        <strong>설명:</strong> 폰을 한 번 켰을 때 연속으로 머무는 시간입니다. <b>(수치가 극단적으로 짧으면 '숏폼 중독', 지나치게 길면 '알고리즘 늪에 빠진 현실 로그아웃' 상태를 의미합니다.)</b>
+                    </div>
+                    <div class="example-box" id="example-focus"></div>
+                </div>
 
-                <div class="chart-card">
-                    <div class="card-title">에너지 밸런스 (입력 vs 출력)</div>
-                    <div class="chart-wrapper" style="height: 80px;"><canvas id="imbalanceChart"></canvas></div>
-                    <div class="desc-box">
-                        <strong>설명:</strong> 시각적으로 흡수한 정보량 대비 물리적으로 발산한 에너지(걸음 수)의 비율입니다. <b>(20대 평균은 1시간 사용당 약 800보입니다.)</b>
-                    </div>
-                    <div class="example-box" id="example-imbalance"></div>
-                </div>
-            </div>
-        </div>
+                <div class="chart-card">
+                    <div class="card-title">에너지 밸런스 (입력 vs 출력)</div>
+                    <div class="chart-wrapper" style="height: 80px;"><canvas id="imbalanceChart"></canvas></div>
+                    <div class="desc-box">
+                        <strong>설명:</strong> 시각적으로 흡수한 정보량 대비 물리적으로 발산한 에너지(걸음 수)의 비율입니다. <b>(20대 평균은 1시간 사용당 약 800보입니다.)</b>
+                    </div>
+                    <div class="example-box" id="example-imbalance"></div>
+                </div>
+            </div>
+        </div>
 
-        <div class="master-box">
-            <div class="master-box-title">프로파일러 종합 소견</div>
-            
-            <div class="white-card">
-                <div class="card-heading">📌 (1) 데이터 요약</div>
-                <div class="card-content" id="report-summary"></div>
-            </div>
+        <div class="master-box">
+            <div class="master-box-title">프로파일러 종합 소견</div>
+            
+            <div class="white-card">
+                <div class="card-heading">📌 (1) 데이터 요약</div>
+                <div class="card-content" id="report-summary"></div>
+            </div>
 
-            <div class="white-card">
-                <div class="card-heading">🔍 (2) 데이터 분석</div>
-                <div class="card-content" id="report-analysis"></div>
-            </div>
+            <div class="white-card">
+                <div class="card-heading">🔍 (2) 데이터 분석</div>
+                <div class="card-content" id="report-analysis"></div>
+            </div>
 
-            <div class="white-card" style="border-left: 4px solid var(--brand-brown);">
-                <div class="card-heading">💡 (3) 성향 맞춤 발전 전략</div>
-                <div class="card-content" id="report-solution"></div>
-            </div>
-        </div>
-        
-        <div class="barcode"></div>
-        <div style="text-align:center; font-family:'Pretendard'; font-size:0.65rem; color:#888; margin-top:15px; line-height:1.5;">
-            본 리포트는 행동 데이터 기반 알고리즘과 인지 심리학 모델을 통합하여 작성되었습니다.<br>
-            © 2026 CRIME BOOK PROFILING SYSTEM
-        </div>
-        <button class="btn btn-next" onclick="location.reload()" style="margin-top:25px;">NEW SCAN (다시하기)</button>
-    </div>
+            <div class="white-card" style="border-left: 4px solid var(--brand-brown);">
+                <div class="card-heading">💡 (3) 성향 맞춤 발전 전략</div>
+                <div class="card-content" id="report-solution"></div>
+            </div>
+        </div>
+        
+        <div class="barcode"></div>
+        <div style="text-align:center; font-family:'Pretendard'; font-size:0.65rem; color:#888; margin-top:15px; line-height:1.5;">
+            본 리포트는 행동 데이터 기반 알고리즘과 인지 심리학 모델을 통합하여 작성되었습니다.<br>
+            © 2026 CRIME BOOK PROFILING SYSTEM
+        </div>
+        <button class="btn btn-next" onclick="location.reload()" style="margin-top:25px;">NEW SCAN (다시하기)</button>
+    </div>
 </div>
 
 <div id="pickup-guide" class="modal">
-    <div class="modal-content">
-        <span class="close-btn" onclick="closeModal('pickup-guide')">&times;</span>
-        <h3 style="margin-top:0; border-bottom:2px solid var(--brand-brown); padding-bottom:10px;">📱 화면 깨우기 확인 방법</h3>
-        <p><b>[아이폰 (iOS)]</b><br>설정 > 스크린 타임 > '모든 활동 보기' > 화면 맨 아래로 스크롤 > <b>'화면 깨우기'</b> 숫자 확인</p>
-        <p><b>[갤럭시 (Android)]</b><br>설정 > 디지털 웰빙 및 자녀 보호 > 대시보드 아이콘(또는 그래프) > 옵션에서 <b>'화면 켠 횟수'</b> 선택</p>
-    </div>
+    <div class="modal-content">
+        <span class="close-btn" onclick="closeModal('pickup-guide')">&times;</span>
+        <h3 style="margin-top:0; border-bottom:2px solid var(--brand-brown); padding-bottom:10px;">📱 화면 깨우기 확인 방법</h3>
+        <p><b>[아이폰 (iOS)]</b><br>설정 > 스크린 타임 > '모든 활동 보기' > 화면 맨 아래로 스크롤 > <b>'화면 깨우기'</b> 숫자 확인</p>
+        <p><b>[갤럭시 (Android)]</b><br>설정 > 디지털 웰빙 및 자녀 보호 > 대시보드 아이콘(또는 그래프) > 옵션에서 <b>'화면 켠 횟수'</b> 선택</p>
+    </div>
 </div>
 <div id="screen-guide" class="modal">
-    <div class="modal-content">
-        <span class="close-btn" onclick="closeModal('screen-guide')">&times;</span>
-        <h3 style="margin-top:0; border-bottom:2px solid var(--brand-brown); padding-bottom:10px;">🕒 스크린타임 확인 방법</h3>
-        <p><b>[아이폰 (iOS)]</b><br>설정 > 스크린 타임 > 상단의 '일일 평균' 시간 확인</p>
-        <p><b>[갤럭시 (Android)]</b><br>설정 > 디지털 웰빙 및 자녀 보호 > 상단 원형 그래프 안의 시간 확인</p>
-    </div>
+    <div class="modal-content">
+        <span class="close-btn" onclick="closeModal('screen-guide')">&times;</span>
+        <h3 style="margin-top:0; border-bottom:2px solid var(--brand-brown); padding-bottom:10px;">🕒 스크린타임 확인 방법</h3>
+        <p><b>[아이폰 (iOS)]</b><br>설정 > 스크린 타임 > 상단의 '일일 평균' 시간 확인</p>
+        <p><b>[갤럭시 (Android)]</b><br>설정 > 디지털 웰빙 및 자녀 보호 > 상단 원형 그래프 안의 시간 확인</p>
+    </div>
 </div>
 
 <div id="step-guide" class="modal">
-    <div class="modal-content">
-        <span class="close-btn" onclick="closeModal('step-guide')">&times;</span>
-        <h3 style="margin-top:0; border-bottom:2px solid var(--brand-brown); padding-bottom:10px;">👟 걸음 수 확인 방법</h3>
-        <p><b>[아이폰 (iOS)]</b><br>'건강' 앱 실행 > 요약 탭 > '걸음' 항목의 일일 평균 수치 확인</p>
-        <p><b>[갤럭시 (Android)]</b><br>'Samsung Health(삼성 헬스)' 앱 실행 > 홈 화면 상단 '걸음 수' 확인</p>
-    </div>
+    <div class="modal-content">
+        <span class="close-btn" onclick="closeModal('step-guide')">&times;</span>
+        <h3 style="margin-top:0; border-bottom:2px solid var(--brand-brown); padding-bottom:10px;">👟 걸음 수 확인 방법</h3>
+        <p><b>[아이폰 (iOS)]</b><br>'건강' 앱 실행 > 요약 탭 > '걸음' 항목의 일일 평균 수치 확인</p>
+        <p><b>[갤럭시 (Android)]</b><br>'Samsung Health(삼성 헬스)' 앱 실행 > 홈 화면 상단 '걸음 수' 확인</p>
+    </div>
 </div>
-
 <script>
-    // --- 에니어그램 핵심 로직 및 히스토리 관리 ---
-    let userData = {};
-    let currentStep = 0; 
-    let centerScores = { gut: 0, heart: 0, head: 0 }; 
-    let typeScores = { 1:0, 2:0, 3:0, 4:0, 5:0, 6:0, 7:0, 8:0, 9:0 };
-    let identifiedCenter = ''; 
-    let answerHistory = [];
+    let userData = {};
+    let currentStep = 0; 
+    let centerScores = { gut: 0, heart: 0, head: 0 }; 
+    let typeScores = { 1:0, 2:0, 3:0, 4:0, 5:0, 6:0, 7:0, 8:0, 9:0 };
+    let identifiedCenter = ''; 
+    let answerHistory = [];
 
-const initialQuestions = [
-        {
-            question: "당신은 눈을 떴습니다. 사방이 꽉 막힌 낯선 밀실입니다. 가장 먼저 나오는 무의식적인 행동은?",
-            options: [
-                { text: "일단 문고리부터 세게 당겨본다. 내 몸을 움직여 공간의 물리적 한계를 확인한다.", center: 'gut' }, // 장형 (행동/통제)
-                { text: "같이 갇힌 사람들의 표정부터 살핀다. 패닉에 빠지지 않게 분위기를 파악한다.", center: 'heart' }, // 가슴형 (관계/눈치)
-                { text: "제자리에 서서 방의 전체 구조와 규칙을 눈으로 스캔하며 상황을 분석한다.", center: 'head' } // 머리형 (관찰/이해)
-            ]
-        },
-        {
-            question: "제한 시간이 줄어드는데, 누군가 실수로 핵심 단서를 훼손했습니다. 이때 속에서 끓어오르는 진짜 감정은?",
-            options: [
-                { text: "“아, 장난하나 진짜!” 답답하고 통제되지 않는 상황에 대한 '짜증과 분노'.", center: 'gut' }, 
-                { text: "“이 분위기 어쩔 거야…” 팀워크가 박살 나고 서로 원망할까 봐 드는 '불편함과 피로감'.", center: 'heart' }, 
-                { text: "“망했다, 다음 플랜은 뭐지?” 예측이 빗나가고 계획이 어그러진 것에 대한 '불안과 혼란'.", center: 'head' } 
-            ]
-        },
-        {
-            question: "만약 이 밀실을 끝내 탈출하지 못한다면, 가장 상상하기 싫은 '나의 마지막 모습'은?",
-            options: [
-                { text: "아무런 저항도, 반격도 하지 못한 채 억압에 짓눌려 굴복해버린 모습", center: 'gut' }, 
-                { text: "누구에게도 기억되지 않고, 철저히 고립되어 혼자 남겨진 초라한 모습", center: 'heart' }, 
-                { text: "정답을 코앞에 두고도 변수를 계산하지 못해 스스로 함정에 빠진 어리석은 모습", center: 'head' } 
-            ]
-        }
-    ];
+    const initialQuestions = [
+        {
+            question: "당신은 눈을 떴습니다. 사방이 꽉 막힌 낯선 밀실입니다. 가장 먼저 나오는 무의식적인 행동은?",
+            options: [
+                { text: "일단 문고리부터 세게 당겨본다. 내 몸을 움직여 공간의 물리적 한계를 확인한다.", center: 'gut' },
+                { text: "같이 갇힌 사람들의 표정부터 살핀다. 패닉에 빠지지 않게 분위기를 파악한다.", center: 'heart' },
+                { text: "제자리에 서서 방의 전체 구조와 규칙을 눈으로 스캔하며 상황을 분석한다.", center: 'head' }
+            ]
+        },
+        {
+            question: "제한 시간이 줄어드는데, 누군가 실수로 핵심 단서를 훼손했습니다. 이때 속에서 끓어오르는 진짜 감정은?",
+            options: [
+                { text: "“아, 장난하나 진짜!” 답답하고 통제되지 않는 상황에 대한 '짜증과 분노'.", center: 'gut' }, 
+                { text: "“이 분위기 어쩔 거야…” 팀워크가 박살 나고 서로 원망할까 봐 드는 '불편함과 피로감'.", center: 'heart' }, 
+                { text: "“망했다, 다음 플랜은 뭐지?” 예측이 빗나가고 계획이 어그러진 것에 대한 '불안과 혼란'.", center: 'head' } 
+            ]
+        },
+        {
+            question: "만약 이 밀실을 끝내 탈출하지 못한다면, 가장 상상하기 싫은 '나의 마지막 모습'은?",
+            options: [
+                { text: "아무런 저항도, 반격도 하지 못한 채 억압에 짓눌려 굴복해버린 모습", center: 'gut' }, 
+                { text: "누구에게도 기억되지 않고, 철저히 고립되어 혼자 남겨진 초라한 모습", center: 'heart' }, 
+                { text: "정답을 코앞에 두고도 변수를 계산하지 못해 스스로 함정에 빠진 어리석은 모습", center: 'head' } 
+            ]
+        }
+    ];
 
-    // [2단계] 세부 유형 파악 (밀실 서바이벌 디테일 - 각 8문항)
-const branchQuestions = {
-        // [장형: 8번(주도), 9번(평화), 1번(완벽)] -> 테마: 통제권, 영역, 분노의 표출
-        gut: [
-            { q: "조원들이 멘탈이 나가서 헛발질하며 싸우기 시작했습니다. 당신의 행동은?", opts: [{t:"“다 비켜봐, 내가 할게.” 답답함을 못 참고 내가 총대를 메고 직접 지시한다.", v:8}, {t:"“얘들아 진정해~” 갈등이 커지는 게 싫어서 일단 싸움부터 말리며 둥글게 넘어간다.", v:9}, {t:"“지금 룰 안 읽어봤어?” 기준을 다시 짚어주며 누가, 무엇을 잘못했는지 팩트를 꽂는다.", v:1}] },
-            { q: "복잡한 자물쇠를 풀어야 합니다. 당신의 스타일은?", opts: [{t:"“일단 돌려봐!” 직관을 믿고 행동부터 먼저 나선다.", v:8}, {t:"남들이 하는 걸 조용히 지켜보다가, 내게 지시가 오면 움직인다.", v:9}, {t:"힌트의 연관성을 완벽하게 증명해낸 뒤에야 번호를 맞춘다.", v:1}] },
-            { q: "누군가 내 탈출 방식에 대해 “그거 아닌 것 같은데?”라며 태클을 걸어온다면?", opts: [{t:"“일단 내 말대로 해봐.” 타인의 태클에 흔들리지 않고, 내 판단에 대한 강한 확신으로 밀어붙인다.", v:8}, {t:"“아, 그래?” 겉으론 웃어넘기고 원래 내가 하던 대로 조용히 마이웨이 한다.", v:9}, {t:"‘내가 틀렸나?’ 스트레스받으면서 속으로 내 방식을 계속 검토한다.", v:1}] },
-            { q: "함정이 발동해 천장이 서서히 무너져 내리고 있습니다!", opts: [{t:"무너지는 천장을 맨몸으로라도 받치며 끝까지 상황을 통제하려 든다.", v:8}, {t:"‘어떻게든 되겠지...’ 현실 감각을 끄고 체념하거나 누군가 구해주길 기다린다.", v:9}, {t:"죽는 순간까지 “그러게 아까 내 말대로 했어야지!”라며 룰을 안 지킨 걸 탓한다.", v:1}] },
-            { q: "방탈출 게임 마스터(주최자)를 향한 당신의 속마음은?", opts: [{t:"“너 내가 나가면 가만 안 둔다.” 날 억압한 상대에게 복수하고 이기고 싶다.", v:8}, {t:"“제발 별일 없이 무사히 끝나게 해주세요.” 그냥 평온하게 이 상황이 지나가길 바란다.", v:9}, {t:"“문제 퀄리티가 왜 이래?” 개연성 없고 허술한 게임 세팅 자체에 화가 난다.", v:1}] },
-            { q: "밀실 안에서 가장 극혐하는 '빌런' 팀원 유형은?", opts: [{t:"앞에선 쫄아서 아무 말 못 하다가 뒤에서 징징거리는 비겁한 팀원", v:8}, {t:"별것도 아닌 일에 예민하게 소리 지르면서 분위기 망치는 피곤한 팀원", v:9}, {t:"하지 말라는 짓 골라서 하고 규칙 다 무시하는 무책임한 팀원", v:1}] },
-            { q: "게임을 진행하며 스스로가 가장 한심하게 느껴지는 순간은?", opts: [{t:"내 맘대로 상황을 풀어가지도 못 하고, 남한테 끌려가며 의존하고 있을 때", v:8}, {t:"행동해야 할 타이밍에 귀찮아서 미루다가 멍청하게 기회를 날렸을 때", v:9}, {t:"내가 빡세게 세운 플랜을 나 스스로 어기고 바보 같은 실수를 저질렀을 때", v:1}] },
-            { q: "솔직히 이 빡센 밀실을 기어코 탈출하려는 가장 큰 이유는?", opts: [{t:"“내가 해냄!” 내 힘으로 이 답답한 상황을 뚫고 캐리했다는 짜릿한 '승리감'", v:8}, {t:"“아오 기 빨려.” 빨리 이 피곤한 상황을 끝내고 아무 방해 없는 곳에서 쉬고 싶은 '편안함'", v:9}, {t:"“찝찝한 건 못 참지.” 꼬인 문제들을 내 손으로 깔끔하게 다 풀어냈다는 '완벽함'", v:1}] }
-        ],
-        // [가슴형: 2번(조력), 3번(성취), 4번(자아)] -> 테마: 타인과의 관계, 인정 욕구, 이미지
-        heart: [
-            { q: "밀실에 갇힌 직후, 내가 팀원들 사이에서 무의식적으로 잡는 포지션은?", opts: [{t:"불안해하는 사람을 먼저 챙기며 분위기를 부드럽게 푸는 '서포터'", v:2}, {t:"빠르게 상황을 파악하고 주도적으로 해결책을 제시하는 '능력자'", v:3}, {t:"남들 페이스에 휩쓸리지 않고, 나만의 템포로 상황을 관찰하는 '개인주의자'", v:4}] },
-            { q: "방탈출의 다음 방으로 가는 핵심 단서를 내가 찾아냈습니다! 진짜 속마음은?", opts: [{t:"“이걸로 다 같이 살 수 있어!” 내가 이 상황에 큰 도움이 되었다는 사실에 뿌듯하다.", v:2}, {t:"“봤지? 내가 캐리했어.” 결정적인 역할을 해낸 내 능력을 은근히 인정받고 싶다.", v:3}, {t:"“남들이 놓친 걸 나만 봤네.” 나만의 남다른 디테일과 감각을 확인하며 쾌감을 느낀다.", v:4}] },
-            { q: "게임 도중, 누군가 남아서 궂은일을 해야만 모두가 탈출할 수 있다면?", opts: [{t:"“이왕 이렇게 된 거 내가 할게.” 다른 사람이 힘든 것보다 차라리 내가 양보하는 게 맘 편하다.", v:2}, {t:"“그 역할 내가 맡을게.” 이 위기를 극복하는 과정에서 내 역할이 가장 결정적이길 바란다.", v:3}, {t:"결국 짐을 떠안게 된 이 씁쓸하고 묘한 상황 속, 극적인 주인공이 된 기분에 빠져든다.", v:4}] },
-            { q: "이 잔혹한 게임이 생중계되고 있다면, 시청자들에게 나는 어떻게 보이고 싶나요?", opts: [{t:"위기 속에서도 남을 먼저 배려하고 챙겨주는 따뜻하고 이타적인 사람", v:2}, {t:"어떤 어려운 미션도 완벽하고 스마트하게 해결해내는 유능한 사람", v:3}, {t:"뻔한 반응을 보이지 않는, 남들과는 다른 깊이와 입체적인 매력을 가진 사람", v:4}] },
-            { q: "팀원들에게 진짜 상처를 받고 멘탈이 나가는 지점은?", opts: [{t:"내가 진심으로 쏟은 배려와 호의를 사람들이 당연하게 여기고 무시할 때", v:2}, {t:"내 능력을 제대로 증명하지 못해 남들보다 뒤처지거나 무능한 사람으로 보일 때", v:3}, {t:"내 진짜 감정과 의도를 아무도 이해하지 못해, 사람들 사이에서 겉도는 기분일 때", v:4}] },
-            { q: "가까스로 죽음의 위기를 넘긴 직후, 살아남은 팀원들에게 가장 듣고 싶은 한 마디는?", opts: [{t:"“네가 우릴 살렸어. 너 없었으면 우린 벌써 다 죽었을 거야.”", v:2}, {t:"“와, 방금 판단력 미쳤다. 여기서 네가 완전 하드캐리했네.”", v:3}, {t:"“다들 멘붕일 때 어떻게 그런 생각을 했어? 넌 진짜 기발하고 남달라.”", v:4}] },
-            { q: "누군가 “네 방식 좀 별로다”라고 지적한다면?", opts: [{t:"‘내 방식이 그렇게 이상했나?’ 속상해하며 상대방의 굳은 표정을 계속 신경 쓴다.", v:2}, {t:"‘결과로 보여주면 되지.’ 겉으론 웃어넘기고, 내 방식이 맞다는 걸 결과로 증명하려 든다.", v:3}, {t:"‘넌 내 의도를 1도 모르는구나.’ 쿨한 척하지만, 내심 이해받지 못했다는 사실에 답답해한다.", v:4}] },
-            { q: "나와 끝까지 함께 살아남길 바라는 단 한 명의 파트너는?", opts: [{t:"서로의 진심을 나누며, 어떤 상황에서도 나를 가장 믿고 의지해 줄 사람", v:2}, {t:"감정에 휘둘리지 않고, 나와 함께 확실한 결과를 만들어낼 수 있는 유능한 사람", v:3}, {t:"말하지 않아도 내 복잡한 감정선을 꿰뚫어 보고 완벽히 교감할 수 있는 사람", v:4}] }
-        ],
-        // [머리형: 5번(탐구), 6번(충성/안전), 7번(경험)] -> 테마: 불안 대처, 정보, 시뮬레이션
-        head: [
-            { q: "밀실에 수많은 단서가 널려있습니다. 당신의 첫 번째 전략은?", opts: [{t:"나서기보단 한 발 물러서서, 주어진 단서들을 조용히 수집하고 분석한다.", v:5}, {t:"혹시 모를 함정이 있을까 봐, 섣불리 움직이지 않고 주변을 꼼꼼히 경계한다.", v:6}, {t:"“우와 이건 뭐지?” 일단 눈에 띄는 흥미로운 단서들부터 빠르게 만져보고 시도해본다.", v:7}] },
-            { q: "한 치 앞도 안 보이는 어두컴컴한 암흑 구간을 지나가야 합니다.", opts: [{t:"에너지 소모를 최소화하기 위해, 묵묵히 일행의 뒤를 따르며 상황을 관찰한다.", v:5}, {t:"갑자기 튀어나올 변수에 긴장하며, 주변을 살피고 최대한 조심스럽게 전진한다.", v:6}, {t:"살짝 쫄리긴 하지만 은근한 스릴을 느끼며, 앞장서서 미지의 구간으로 들어간다.", v:7}] },
-            { q: "이 방의 특이한 룰을 처음 알게 되었을 때 당신의 반응은?", opts: [{t:"이 룰이 왜 만들어졌는지, 그 이면에 숨겨진 논리적 패턴부터 파악하려 든다.", v:5}, {t:"일단 룰을 정확히 숙지하고, 내가 실수해서 피해를 보지 않도록 철저히 지킨다.", v:6}, {t:"룰은 룰일 뿐. 이걸 어떻게 응용하면 더 꼼수나 편법으로 재밌게 깰 수 있을지 궁리한다.", v:7}] },
-            { q: "단서를 못 찾고 30분째 한곳에 막혀 있을 때 내 머릿속은?", opts: [{t:"‘다들 너무 산만하네. 조용히 내 머릿속으로 생각할 혼자만의 시간이 필요해.’", v:5}, {t:"‘시간이 없는데 어쩌지? 계속 막히면 다음엔 뭘 해야 하지? 대안이 필요해.’", v:6}, {t:"‘아 지루해. 이 방식이 안 되면 빨리 다른 걸 해봐야지. 가만히 막혀있는 게 제일 싫어.’", v:7}] },
-            { q: "나를 극도로 스트레스 받게 만드는 가장 끔찍한 밀실의 조건은?", opts: [{t:"나에게 억지로 과한 리액션을 강요하거나, 내 개인적인 영역을 예고 없이 침범당할 때", v:5}, {t:"명확한 가이드라인이나 안전장치 없이, 모든 위험을 나 혼자 고스란히 감수해야 할 때", v:6}, {t:"새로운 자극도 벗어날 방법도 없이, 답답하고 지루한 상황을 가만히 견뎌야만 할 때", v:7}] },
-            { q: "극한의 공포로 멘탈이 나갔을 때 나오는 나의 방어적인 행동은?", opts: [{t:"대화의 문을 닫고 내면으로 숨어버리며, 주변 상황을 극도로 차갑고 냉소적으로 본다.", v:5}, {t:"평소엔 안 그러던 사소한 것까지 꼬투리 잡고 의심하며, 예민하고 방어적으로 군다.", v:6}, {t:"불안함을 회피하기 위해 억지로 분위기를 띄우려 하거나 충동적인 행동을 저지른다.", v:7}] },
-            { q: "이 지옥 같은 밀실에서 내가 끝까지 믿고 쓰는 '나만의 생존 무기'는?", opts: [{t:"감정에 휩쓸리지 않고 상황의 본질을 꿰뚫어 보는 차분한 '객관성과 통찰력'", v:5}, {t:"어떤 변수에도 흔들리지 않고 묵묵히 버텨내며 리스크를 대비하는 '신중함'", v:6}, {t:"답답한 상황에서도 순발력을 발휘해 새로운 돌파구를 찾는 '유연성과 기획력'", v:7}] },
-            { q: "게임을 대하는 나의 가장 근본적인 태도는?", opts: [{t:"불필요한 감정 소모를 줄이고, 한 발 떨어져 전체 시스템을 분석하려는 '관찰자'", v:5}, {t:"돌다리도 두드려보고, 불확실한 미래의 위험을 안전하게 대비하려는 '방어자'", v:6}, {t:"어차피 갇힌 거, 다양한 가능성을 열어두고 긍정적으로 임하는 '도파민 탐험가'", v:7}] }
-        ]
-    };
+    const branchQuestions = {
+        gut: [
+            { q: "조원들이 멘탈이 나가서 헛발질하며 싸우기 시작했습니다. 당신의 행동은?", opts: [{t:"“다 비켜봐, 내가 할게.” 답답함을 못 참고 내가 총대를 메고 직접 지시한다.", v:8}, {t:"“얘들아 진정해~” 갈등이 커지는 게 싫어서 일단 싸움부터 말리며 둥글게 넘어간다.", v:9}, {t:"“지금 룰 안 읽어봤어?” 기준을 다시 짚어주며 누가, 무엇을 잘못했는지 팩트를 꽂는다.", v:1}] },
+            { q: "복잡한 자물쇠를 풀어야 합니다. 당신의 스타일은?", opts: [{t:"“일단 돌려봐!” 직관을 믿고 행동부터 먼저 나선다.", v:8}, {t:"남들이 하는 걸 조용히 지켜보다가, 내게 지시가 오면 움직인다.", v:9}, {t:"힌트의 연관성을 완벽하게 증명해낸 뒤에야 번호를 맞춘다.", v:1}] },
+            { q: "누군가 내 탈출 방식에 대해 “그거 아닌 것 같은데?”라며 태클을 걸어온다면?", opts: [{t:"“일단 내 말대로 해봐.” 타인의 태클에 흔들리지 않고, 내 판단에 대한 강한 확신으로 밀어붙인다.", v:8}, {t:"“아, 그래?” 겉으론 웃어넘기고 원래 내가 하던 대로 조용히 마이웨이 한다.", v:9}, {t:"‘내가 틀렸나?’ 스트레스받으면서 속으로 내 방식을 계속 검토한다.", v:1}] },
+            { q: "함정이 발동해 천장이 서서히 무너져 내리고 있습니다!", opts: [{t:"무너지는 천장을 맨몸으로라도 받치며 끝까지 상황을 통제하려 든다.", v:8}, {t:"‘어떻게든 되겠지...’ 현실 감각을 끄고 체념하거나 누군가 구해주길 기다린다.", v:9}, {t:"죽는 순간까지 “그러게 아까 내 말대로 했어야지!”라며 룰을 안 지킨 걸 탓한다.", v:1}] },
+            { q: "방탈출 게임 마스터(주최자)를 향한 당신의 속마음은?", opts: [{t:"“너 내가 나가면 가만 안 둔다.” 날 억압한 상대에게 복수하고 이기고 싶다.", v:8}, {t:"“제발 별일 없이 무사히 끝나게 해주세요.” 그냥 평온하게 이 상황이 지나가길 바란다.", v:9}, {t:"“문제 퀄리티가 왜 이래?” 개연성 없고 허술한 게임 세팅 자체에 화가 난다.", v:1}] },
+            { q: "밀실 안에서 가장 극혐하는 '빌런' 팀원 유형은?", opts: [{t:"앞에선 쫄아서 아무 말 못 하다가 뒤에서 징징거리는 비겁한 팀원", v:8}, {t:"별것도 아닌 일에 예민하게 소리 지르면서 분위기 망치는 피곤한 팀원", v:9}, {t:"하지 말라는 짓 골라서 하고 규칙 다 무시하는 무책임한 팀원", v:1}] },
+            { q: "게임을 진행하며 스스로가 가장 한심하게 느껴지는 순간은?", opts: [{t:"내 맘대로 상황을 풀어가지도 못 하고, 남한테 끌려가며 의존하고 있을 때", v:8}, {t:"행동해야 할 타이밍에 귀찮아서 미루다가 멍청하게 기회를 날렸을 때", v:9}, {t:"내가 빡세게 세운 플랜을 나 스스로 어기고 바보 같은 실수를 저질렀을 때", v:1}] },
+            { q: "솔직히 이 빡센 밀실을 기어코 탈출하려는 가장 큰 이유는?", opts: [{t:"“내가 해냄!” 내 힘으로 이 답답한 상황을 뚫고 캐리했다는 짜릿한 '승리감'", v:8}, {t:"“아오 기 빨려.” 빨리 이 피곤한 상황을 끝내고 아무 방해 없는 곳에서 쉬고 싶은 '편안함'", v:9}, {t:"“찝찝한 건 못 참지.” 꼬인 문제들을 내 손으로 깔끔하게 다 풀어냈다는 '완벽함'", v:1}] }
+        ],
+        heart: [
+            { q: "밀실에 갇힌 직후, 내가 팀원들 사이에서 무의식적으로 잡는 포지션은?", opts: [{t:"불안해하는 사람을 먼저 챙기며 분위기를 부드럽게 푸는 '서포터'", v:2}, {t:"빠르게 상황을 파악하고 주도적으로 해결책을 제시하는 '능력자'", v:3}, {t:"남들 페이스에 휩쓸리지 않고, 나만의 템포로 상황을 관찰하는 '개인주의자'", v:4}] },
+            { q: "방탈출의 다음 방으로 가는 핵심 단서를 내가 찾아냈습니다! 진짜 속마음은?", opts: [{t:"“이걸로 다 같이 살 수 있어!” 내가 이 상황에 큰 도움이 되었다는 사실에 뿌듯하다.", v:2}, {t:"“봤지? 내가 캐리했어.” 결정적인 역할을 해낸 내 능력을 은근히 인정받고 싶다.", v:3}, {t:"“남들이 놓친 걸 나만 봤네.” 나만의 남다른 디테일과 감각을 확인하며 쾌감을 느낀다.", v:4}] },
+            { q: "게임 도중, 누군가 남아서 궂은일을 해야만 모두가 탈출할 수 있다면?", opts: [{t:"“이왕 이렇게 된 거 내가 할게.” 다른 사람이 힘든 것보다 차라리 내가 양보하는 게 맘 편하다.", v:2}, {t:"“그 역할 내가 맡을게.” 이 위기를 극복하는 과정에서 내 역할이 가장 결정적이길 바란다.", v:3}, {t:"결국 짐을 떠안게 된 이 씁쓸하고 묘한 상황 속, 극적인 주인공이 된 기분에 빠져든다.", v:4}] },
+            { q: "이 잔혹한 게임이 생중계되고 있다면, 시청자들에게 나는 어떻게 보이고 싶나요?", opts: [{t:"위기 속에서도 남을 먼저 배려하고 챙겨주는 따뜻하고 이타적인 사람", v:2}, {t:"어떤 어려운 미션도 완벽하고 스마트하게 해결해내는 유능한 사람", v:3}, {t:"뻔한 반응을 보이지 않는, 남들과는 다른 깊이와 입체적인 매력을 가진 사람", v:4}] },
+            { q: "팀원들에게 진짜 상처를 받고 멘탈이 나가는 지점은?", opts: [{t:"내가 진심으로 쏟은 배려와 호의를 사람들이 당연하게 여기고 무시할 때", v:2}, {t:"내 능력을 제대로 증명하지 못해 남들보다 뒤처지거나 무능한 사람으로 보일 때", v:3}, {t:"내 진짜 감정과 의도를 아무도 이해하지 못해, 사람들 사이에서 겉도는 기분일 때", v:4}] },
+            { q: "가까스로 죽음의 위기를 넘긴 직후, 살아남은 팀원들에게 가장 듣고 싶은 한 마디는?", opts: [{t:"“네가 우릴 살렸어. 너 없었으면 우린 벌써 다 죽었을 거야.”", v:2}, {t:"“와, 방금 판단력 미쳤다. 여기서 네가 완전 하드캐리했네.”", v:3}, {t:"“다들 멘붕일 때 어떻게 그런 생각을 했어? 넌 진짜 기발하고 남달라.”", v:4}] },
+            { q: "누군가 “네 방식 좀 별로다”라고 지적한다면?", opts: [{t:"‘내 방식이 그렇게 이상했나?’ 속상해하며 상대방의 굳은 표정을 계속 신경 쓴다.", v:2}, {t:"‘결과로 보여주면 되지.’ 겉으론 웃어넘기고, 내 방식이 맞다는 걸 결과로 증명하려 든다.", v:3}, {t:"‘넌 내 의도를 1도 모르는구나.’ 쿨한 척하지만, 내심 이해받지 못했다는 사실에 답답해한다.", v:4}] },
+            { q: "나와 끝까지 함께 살아남길 바라는 단 한 명의 파트너는?", opts: [{t:"서로의 진심을 나누며, 어떤 상황에서도 나를 가장 믿고 의지해 줄 사람", v:2}, {t:"감정에 휘둘리지 않고, 나와 함께 확실한 결과를 만들어낼 수 있는 유능한 사람", v:3}, {t:"말하지 않아도 내 복잡한 감정선을 꿰뚫어 보고 완벽히 교감할 수 있는 사람", v:4}] }
+        ],
+        head: [
+            { q: "밀실에 수많은 단서가 널려있습니다. 당신의 첫 번째 전략은?", opts: [{t:"나서기보단 한 발 물러서서, 주어진 단서들을 조용히 수집하고 분석한다.", v:5}, {t:"혹시 모를 함정이 있을까 봐, 섣불리 움직이지 않고 주변을 꼼꼼히 경계한다.", v:6}, {t:"“우와 이건 뭐지?” 일단 눈에 띄는 흥미로운 단서들부터 빠르게 만져보고 시도해본다.", v:7}] },
+            { q: "한 치 앞도 안 보이는 어두컴컴한 암흑 구간을 지나가야 합니다.", opts: [{t:"에너지 소모를 최소화하기 위해, 묵묵히 일행의 뒤를 따르며 상황을 관찰한다.", v:5}, {t:"갑자기 튀어나올 변수에 긴장하며, 주변을 살피고 최대한 조심스럽게 전진한다.", v:6}, {t:"살짝 쫄리긴 하지만 은근한 스릴을 느끼며, 앞장서서 미지의 구간으로 들어간다.", v:7}] },
+            { q: "이 방의 특이한 룰을 처음 알게 되었을 때 당신의 반응은?", opts: [{t:"이 룰이 왜 만들어졌는지, 그 이면에 숨겨진 논리적 패턴부터 파악하려 든다.", v:5}, {t:"일단 룰을 정확히 숙지하고, 내가 실수해서 피해를 보지 않도록 철저히 지킨다.", v:6}, {t:"룰은 룰일 뿐. 이걸 어떻게 응용하면 더 꼼수나 편법으로 재밌게 깰 수 있을지 궁리한다.", v:7}] },
+            { q: "단서를 못 찾고 30분째 한곳에 막혀 있을 때 내 머릿속은?", opts: [{t:"‘다들 너무 산만하네. 조용히 내 머릿속으로 생각할 혼자만의 시간이 필요해.’", v:5}, {t:"‘시간이 없는데 어쩌지? 계속 막히면 다음엔 뭘 해야 하지? 대안이 필요해.’", v:6}, {t:"‘아 지루해. 이 방식이 안 되면 빨리 다른 걸 해봐야지. 가만히 막혀있는 게 제일 싫어.’", v:7}] },
+            { q: "나를 극도로 스트레스 받게 만드는 가장 끔찍한 밀실의 조건은?", opts: [{t:"나에게 억지로 과한 리액션을 강요하거나, 내 개인적인 영역을 예고 없이 침범당할 때", v:5}, {t:"명확한 가이드라인이나 안전장치 없이, 모든 위험을 나 혼자 고스란히 감수해야 할 때", v:6}, {t:"새로운 자극도 벗어날 방법도 없이, 답답하고 지루한 상황을 가만히 견뎌야만 할 때", v:7}] },
+            { q: "극한의 공포로 멘탈이 나갔을 때 나오는 나의 방어적인 행동은?", opts: [{t:"대화의 문을 닫고 내면으로 숨어버리며, 주변 상황을 극도로 차갑고 냉소적으로 본다.", v:5}, {t:"평소엔 안 그러던 사소한 것까지 꼬투리 잡고 의심하며, 예민하고 방어적으로 군다.", v:6}, {t:"불안함을 회피하기 위해 억지로 분위기를 띄우려 하거나 충동적인 행동을 저지른다.", v:7}] },
+            { q: "이 지옥 같은 밀실에서 내가 끝까지 믿고 쓰는 '나만의 생존 무기'는?", opts: [{t:"감정에 휩쓸리지 않고 상황의 본질을 꿰뚫어 보는 차분한 '객관성과 통찰력'", v:5}, {t:"어떤 변수에도 흔들리지 않고 묵묵히 버텨내며 리스크를 대비하는 '신중함'", v:6}, {t:"답답한 상황에서도 순발력을 발휘해 새로운 돌파구를 찾는 '유연성과 기획력'", v:7}] },
+            { q: "게임을 대하는 나의 가장 근본적인 태도는?", opts: [{t:"불필요한 감정 소모를 줄이고, 한 발 떨어져 전체 시스템을 분석하려는 '관찰자'", v:5}, {t:"돌다리도 두드려보고, 불확실한 미래의 위험을 안전하게 대비하려는 '방어자'", v:6}, {t:"어차피 갇힌 거, 다양한 가능성을 열어두고 긍정적으로 임하는 '도파민 탐험가'", v:7}] }
+        ]
+    };
 
-    const typeDetails = {
-        1: { title: "완벽주의 원칙가", keyword: "완벽/통제 지향 동기" },
-        2: { title: "이타적 공감러", keyword: "관계/애정 지향 동기" },
-        3: { title: "목표지향 성취가", keyword: "성취/효율 지향 동기" },
-        4: { title: "독창적 자아탐구자", keyword: "특별함/자아 지향 동기" },
-        5: { title: "객관적 탐구자", keyword: "지식/에너지보존 동기" },
-        6: { title: "신중한 방어자", keyword: "안전/대비 지향 동기" },
-        7: { title: "경험 탐험가", keyword: "재미/자극 지향 동기" },
-        8: { title: "주도적 개척자", keyword: "주도/권력 지향 동기" },
-        9: { title: "평화 중재자", keyword: "평온/회피 지향 동기" }
-    };
+    const typeDetails = {
+        1: { title: "완벽주의 원칙가", keyword: "완벽/통제 지향 동기" },
+        2: { title: "이타적 공감러", keyword: "관계/애정 지향 동기" },
+        3: { title: "목표지향 성취가", keyword: "성취/효율 지향 동기" },
+        4: { title: "독창적 자아탐구자", keyword: "특별함/자아 지향 동기" },
+        5: { title: "객관적 탐구자", keyword: "지식/에너지보존 동기" },
+        6: { title: "신중한 방어자", keyword: "안전/대비 지향 동기" },
+        7: { title: "경험 탐험가", keyword: "재미/자극 지향 동기" },
+        8: { title: "주도적 개척자", keyword: "주도/권력 지향 동기" },
+        9: { title: "평화 중재자", keyword: "평온/회피 지향 동기" }
+    };
 
-    function openModal(id) { document.getElementById(id).style.display = 'flex'; }
-    function closeModal(id) { document.getElementById(id).style.display = 'none'; }
+    function openModal(id) { document.getElementById(id).style.display = 'flex'; }
+    function closeModal(id) { document.getElementById(id).style.display = 'none'; }
 
-    function goToPage(pageNum) {
-        if(pageNum === 2) {
-            var userName = document.getElementById('userName').value.trim();
-            var ageInput = document.getElementById('age').value;
-            var mbtiInput = document.getElementById('mbti').value;
-            var q1 = document.querySelector('input[name="q1"]:checked');
-            var q2 = document.querySelector('input[name="q2"]:checked');
-            var q3 = document.querySelector('input[name="q3"]:checked');
-            
-            if(!userName || !ageInput || !mbtiInput) {
-                alert("이름, 나이, MBTI를 정확히 입력해주세요!");
-                return;
-            }
-            if(!q1 || !q2 || !q3) {
-                alert("세 가지 사전 질문(Q1~Q3)에 모두 체크해주세요!");
-                return;
-            }
-        }
-        
-        if(pageNum === 3) {
+    function goToPage(pageNum) {
+        if(pageNum === 2) {
+            var userName = document.getElementById('userName').value.trim();
+            var ageInput = document.getElementById('age').value;
+            var mbtiInput = document.getElementById('mbti').value;
+            var q1 = document.querySelector('input[name="q1"]:checked');
+            var q2 = document.querySelector('input[name="q2"]:checked');
+            var q3 = document.querySelector('input[name="q3"]:checked');
+            
+            if(!userName || !ageInput || !mbtiInput) {
+                alert("이름, 나이, MBTI를 정확히 입력해주세요!");
+                return;
+            }
+            if(!q1 || !q2 || !q3) {
+                alert("세 가지 사전 질문(Q1~Q3)에 모두 체크해주세요!");
+                return;
+            }
+        }
+        
+        if(pageNum === 3) {
             var h = document.getElementById('screenHours').value;
             var m = document.getElementById('screenMins').value;
             var p = document.getElementById('pickups').value;
             var s = document.getElementById('steps').value;
-            var a = document.getElementById('alarms').value; // [추가] 알람 값 가져오기
+            var a = document.getElementById('alarms').value;
 
             var isTimeValid = (h !== "" || m !== ""); 
             
-            // [수정] 알람(a)이 빈칸인지도 함께 검사
             if(!isTimeValid || p === "" || s === "" || a === "") {
-                alert("단서 1~4의 숫자를 빠짐없이 입력해주세요. (해당 없으면 0 입력)"); // [수정] 1~3 -> 1~4로 문구 변경
+                alert("단서 1~4의 숫자를 빠짐없이 입력해주세요. (해당 없으면 0 입력)");
                 return;
             }
             renderQuestion();
         }
-        
-        var pages = document.querySelectorAll('.page');
-        for(var i = 0; i < pages.length; i++) {
-            pages[i].classList.remove('active');
-        }
-        document.getElementById('page' + pageNum).classList.add('active');
-        window.scrollTo(0, 0);
-    }
+        
+        var pages = document.querySelectorAll('.page');
+        for(var i = 0; i < pages.length; i++) {
+            pages[i].classList.remove('active');
+        }
+        document.getElementById('page' + pageNum).classList.add('active');
+        window.scrollTo(0, 0);
+    }
 
-function renderQuestion() {
-        const container = document.getElementById('dnaQuestions');
-        let currentQObj;
-        
-        // 사전 질문은 인덱스 0, 1, 2 (총 3개)
-        if (currentStep < 3) currentQObj = initialQuestions[currentStep];
-        // 세부 질문은 currentStep이 3 이상일 때 작동
-        else currentQObj = branchQuestions[identifiedCenter][currentStep - 3];
-        
-        let html = `<div style="font-weight:bold; margin-bottom:20px; color:var(--brand-black); font-size:1.1rem; line-height:1.5;">Q${currentStep + 1}. ${currentQObj.question || currentQObj.q}</div>`;
-        const opts = currentQObj.options || currentQObj.opts;
-        html += opts.map(opt => {
-            const val = (currentStep < 3) ? `'${opt.center}'` : opt.v; 
-            return `<button class="dna-btn" onclick="handleAnswer(${val})">${opt.text || opt.t}</button>`;
-        }).join('');
-        
-        html += `<div style="margin-top:15px; text-align:right;">
-                    <button onclick="prevQuestion()" style="background:none; border:none; color:#999; font-size:0.85rem; cursor:pointer; text-decoration:underline;"> 이 질문 취소 (이전으로)</button>
-                 </div>`;
-                 
-        container.innerHTML = html;
-    }
+    function renderQuestion() {
+        const container = document.getElementById('dnaQuestions');
+        let currentQObj;
+        
+        if (currentStep < 3) currentQObj = initialQuestions[currentStep];
+        else currentQObj = branchQuestions[identifiedCenter][currentStep - 3];
+        
+        let html = `<div style="font-weight:bold; margin-bottom:20px; color:var(--brand-black); font-size:1.1rem; line-height:1.5;">Q${currentStep + 1}. ${currentQObj.question || currentQObj.q}</div>`;
+        const opts = currentQObj.options || currentQObj.opts;
+        html += opts.map(opt => {
+            const val = (currentStep < 3) ? `'${opt.center}'` : opt.v; 
+            return `<button class="dna-btn" onclick="handleAnswer(${val})">${opt.text || opt.t}</button>`;
+        }).join('');
+        
+        html += `<div style="margin-top:15px; text-align:right;">
+                    <button onclick="prevQuestion()" style="background:none; border:none; color:#999; font-size:0.85rem; cursor:pointer; text-decoration:underline;"> 이 질문 취소 (이전으로)</button>
+                 </div>`;
+                 
+        container.innerHTML = html;
+    }
 
-    function handleAnswer(value) {
-        answerHistory.push({ step: currentStep, val: value, center: identifiedCenter });
+    function handleAnswer(value) {
+        answerHistory.push({ step: currentStep, val: value, center: identifiedCenter });
 
-        if (currentStep < 3) centerScores[value]++;
-        else typeScores[value]++;
-        
-        currentStep++;
-        
-        if (currentStep === 3) {
-            if (centerScores.gut >= centerScores.heart && centerScores.gut >= centerScores.head) identifiedCenter = 'gut';
-            else if (centerScores.heart >= centerScores.gut && centerScores.heart >= centerScores.head) identifiedCenter = 'heart';
-            else identifiedCenter = 'head';
-        }
-        
-        // 총 11문항 (3 + 8) 완료 시 결과 도출
-        if (currentStep >= 11) calculateAndShowResult();
-        else renderQuestion();
-    }
+        if (currentStep < 3) centerScores[value]++;
+        else typeScores[value]++;
+        
+        currentStep++;
+        
+        if (currentStep === 3) {
+            if (centerScores.gut >= centerScores.heart && centerScores.gut >= centerScores.head) identifiedCenter = 'gut';
+            else if (centerScores.heart >= centerScores.gut && centerScores.heart >= centerScores.head) identifiedCenter = 'heart';
+            else identifiedCenter = 'head';
+        }
+        
+        if (currentStep >= 11) calculateAndShowResult();
+        else renderQuestion();
+    }
 
-    function prevQuestion() {
-        if (currentStep === 0) {
-            goToPage(2);
-            return;
-        }
-        const lastAction = answerHistory.pop();
-        currentStep = lastAction.step;
-        identifiedCenter = lastAction.center;
+    function prevQuestion() {
+        if (currentStep === 0) {
+            goToPage(2);
+            return;
+        }
+        const lastAction = answerHistory.pop();
+        currentStep = lastAction.step;
+        identifiedCenter = lastAction.center;
 
-        if (currentStep < 3) centerScores[lastAction.val]--;
-        else typeScores[lastAction.val]--;
+        if (currentStep < 3) centerScores[lastAction.val]--;
+        else typeScores[lastAction.val]--;
 
-        renderQuestion();
-    }
+        renderQuestion();
+    }
 
-    function calculateAndShowResult() {
-        let maxScore = -1;
-        let finalType = 9; 
-        for (const [type, score] of Object.entries(typeScores)) {
-            if (score > maxScore) { maxScore = score; finalType = parseInt(type); }
-        }
-        
-        document.getElementById('loading').style.display = 'flex';
-        
-        // [수사 연출 추가: 긴장감 있는 로딩 텍스트 변화]
-        const loadingText = document.querySelector('#loading div:nth-child(3)');
-        loadingText.innerText = "Extracting Behavioral Data..."; 
-        setTimeout(() => { loadingText.innerText = "Cross-referencing MBTI & Enneagram..."; }, 1000);
-        setTimeout(() => { loadingText.innerText = "Detecting Cognitive Dissonance..."; }, 2000);
+    function calculateAndShowResult() {
+        let maxScore = -1;
+        let finalType = 9; 
+        for (const [type, score] of Object.entries(typeScores)) {
+            if (score > maxScore) { maxScore = score; finalType = parseInt(type); }
+        }
+        
+        document.getElementById('loading').style.display = 'flex';
+        
+        const loadingText = document.querySelector('#loading div:nth-child(3)');
+        loadingText.innerText = "Extracting Behavioral Data..."; 
+        setTimeout(() => { loadingText.innerText = "Cross-referencing MBTI & Enneagram..."; }, 1000);
+        setTimeout(() => { loadingText.innerText = "Detecting Cognitive Dissonance..."; }, 2000);
 
-        setTimeout(() => {
-            document.getElementById('loading').style.display = 'none';
-            generateExpertReport(finalType);
-        }, 3000);
-    }
+        setTimeout(() => {
+            document.getElementById('loading').style.display = 'none';
+            generateExpertReport(finalType);
+        }, 3000);
+    }
 
-    function generateExpertReport(typeNum) {
-        var userName = document.getElementById('userName').value.trim() || '대상자';
-        var age = document.getElementById('age').value || '비공개';
-        var gender = document.getElementById('gender').value;
-        var mbti = document.getElementById('mbti').value.toUpperCase();
+    function generateExpertReport(typeNum) {
+        var userName = document.getElementById('userName').value.trim() || '대상자';
+        var age = document.getElementById('age').value || '비공개';
+        var gender = document.getElementById('gender').value;
+        var mbti = document.getElementById('mbti').value.toUpperCase();
 
-        var sHours = parseInt(document.getElementById('screenHours').value) || 0;
-        var sMins = parseInt(document.getElementById('screenMins').value) || 0;
-        var totalMins = (sHours * 60) + sMins;
-        if (totalMins === 0) totalMins = 1; 
-        var totalHoursForMath = totalMins / 60;
-        
-        // [수학적 오류 수정: 입력값이 0이어도 최소 1로 계산하여 Infinity 에러 방지]
-        var rawPickups = parseInt(document.getElementById('pickups').value);
-        var pickups = (isNaN(rawPickups) || rawPickups <= 0) ? 1 : rawPickups; 
-        
-        var steps = parseInt(document.getElementById('steps').value) || 0;
-        var alarms = parseInt(document.getElementById('alarms').value) || 0;
+        var sHours = parseInt(document.getElementById('screenHours').value) || 0;
+        var sMins = parseInt(document.getElementById('screenMins').value) || 0;
+        var totalMins = (sHours * 60) + sMins;
+        if (totalMins === 0) totalMins = 1; 
+        var totalHoursForMath = totalMins / 60;
+        
+        var rawPickups = parseInt(document.getElementById('pickups').value);
+        var pickups = (isNaN(rawPickups) || rawPickups <= 0) ? 1 : rawPickups; 
+        
+        var steps = parseInt(document.getElementById('steps').value) || 0;
+        var alarms = parseInt(document.getElementById('alarms').value) || 0;
 
-        var focusSpan = parseFloat((totalMins / pickups).toFixed(1)); 
-        var actionRatio = Math.round(steps / totalHoursForMath); 
-        actionRatio = Math.min(actionRatio, 5000); 
+        var focusSpan = parseFloat((totalMins / pickups).toFixed(1)); 
+        var actionRatio = Math.round(steps / totalHoursForMath); 
+        actionRatio = Math.min(actionRatio, 5000); 
 
-        var isE = mbti.includes('E'), isI = mbti.includes('I');
-        var isN = mbti.includes('N'), isS = mbti.includes('S');
-        var isT = mbti.includes('T'), isF = mbti.includes('F');
-        var isJ = mbti.includes('J'), isP = mbti.includes('P');
+        var isE = mbti.includes('E'), isI = mbti.includes('I');
+        var isN = mbti.includes('N'), isS = mbti.includes('S');
+        var isT = mbti.includes('T'), isF = mbti.includes('F');
+        var isJ = mbti.includes('J'), isP = mbti.includes('P');
 
-        var scoreFocus = (isN || isI) ? 40 : 20;
-        if (focusSpan > 15) scoreFocus += 60;
-        else if (focusSpan > 5) scoreFocus += 40;
-        else scoreFocus += (focusSpan * 5);
+        var scoreFocus = (isN || isI) ? 40 : 20;
+        if (focusSpan > 15) scoreFocus += 60;
+        else if (focusSpan > 5) scoreFocus += 40;
+        else scoreFocus += (focusSpan * 5);
 
-        var scoreAction = (isE || isS) ? 30 : 10;
-        scoreAction += Math.min(70, (steps / 8000) * 70); 
+        var scoreAction = (isE || isS) ? 30 : 10;
+        scoreAction += Math.min(70, (steps / 8000) * 70); 
 
-        var scoreWill = isJ ? 50 : 20;
-        if (alarms === 1 || alarms === 2) scoreWill += 50;
-        else if (alarms === 0) scoreWill += 30; 
-        else scoreWill += Math.max(0, 50 - (alarms * 15)); 
+        var scoreWill = isJ ? 50 : 20;
+        if (alarms === 1 || alarms === 2) scoreWill += 50;
+        else if (alarms === 0) scoreWill += 30; 
+        else scoreWill += Math.max(0, 50 - (alarms * 15)); 
 
-        var scoreControl = (isT || isJ) ? 40 : 20;
-        var pickupPenalty = pickups > 30 ? (pickups - 30) * 0.8 : 0;
-        scoreControl += Math.max(0, 60 - pickupPenalty);
+        var scoreControl = (isT || isJ) ? 40 : 20;
+        var pickupPenalty = pickups > 30 ? (pickups - 30) * 0.8 : 0;
+        scoreControl += Math.max(0, 60 - pickupPenalty);
 
-        var scoreStress = 60; 
-        if (actionRatio < 400 && focusSpan < 3) scoreStress = 15; 
-        else if (actionRatio > 800) scoreStress += 30; 
-        if (pickups > 80) scoreStress -= 20;
+        var scoreStress = 60; 
+        if (actionRatio < 400 && focusSpan < 3) scoreStress = 15; 
+        else if (actionRatio > 800) scoreStress += 30; 
+        if (pickups > 80) scoreStress -= 20;
 
-        scoreFocus = Math.max(10, Math.min(100, scoreFocus));
-        scoreAction = Math.max(10, Math.min(100, scoreAction));
-        scoreWill = Math.max(10, Math.min(100, scoreWill));
-        scoreControl = Math.max(10, Math.min(100, scoreControl));
-        scoreStress = Math.max(10, Math.min(100, scoreStress));
+        scoreFocus = Math.max(10, Math.min(100, scoreFocus));
+        scoreAction = Math.max(10, Math.min(100, scoreAction));
+        scoreWill = Math.max(10, Math.min(100, scoreWill));
+        scoreControl = Math.max(10, Math.min(100, scoreControl));
+        scoreStress = Math.max(10, Math.min(100, scoreStress));
 
-        var randomId = Math.random().toString(36).substr(2,5).toUpperCase();
-        
-        document.getElementById('report-meta-box').innerHTML = `
-            [코드명: #2026${randomId}]<br>
-            <i class="fa-solid fa-fingerprint" style="color:var(--brand-brown);"></i> [분석 대상: ${userName}]<br>
-            [성별/연령: ${gender}/${age}세]<br>
-            [주 발현 성향: ${mbti}]
-        `;
-        
-var exRadar = `<strong>프로파일러 진단:</strong> `;
-        var typeInt = parseInt(typeNum);
+        var randomId = Math.random().toString(36).substr(2,5).toUpperCase();
+        
+        document.getElementById('report-meta-box').innerHTML = `
+            [코드명: #2026${randomId}]<br>
+            <i class="fa-solid fa-fingerprint" style="color:var(--brand-brown);"></i> [분석 대상: ${userName}]<br>
+            [성별/연령: ${gender}/${age}세]<br>
+            [주 발현 성향: ${mbti}]
+        `;
+        
+        var exRadar = `<strong>프로파일러 진단:</strong> `;
+        var typeInt = parseInt(typeNum);
 
-        switch(typeInt) {
-            case 1: 
-                if(alarms >= 4) exRadar += `내일의 완벽한 시작을 위해 다수의 알람을 설정한 점은 높은 의지를 보여줍니다. 다만, '완벽하게 해낼 자신이 없으면 시작조차 망설여지는' 심리적 압박감이 실행력을 역으로 억누르고 있을 가능성을 점검해야 합니다.`;
-                else exRadar += `자신만의 엄격한 기준을 현실의 행동으로 옮기려는 일관성이 관찰됩니다. 다만, 높은 통제력이 자칫 과도한 긴장 상태를 유발하고 있지는 않은지, '정답이 아닌 길'을 허용하는 유연함이 필요합니다.`;
-                break;
-            case 2: 
-                if(pickups >= 80) exRadar += `잦은 화면 확인 지표는 타인과의 사회적 연결망을 놓치지 않으려는 무의식적 배려에서 기인할 수 있습니다. 주변을 챙기려는 따뜻한 기질이 역설적으로 본인의 온전한 몰입 시간을 분산시키고 있을 수 있습니다.`;
-                else exRadar += `이타적인 연결을 지향하면서도 현재는 에너지를 내면으로 안정적으로 응집하고 있습니다. 만약 이것이 관계적 피로감 때문이라면, 외부 시선에서 벗어나 오롯이 본인만을 위한 회복의 시간을 가지시길 제언합니다.`;
-                break;
-            case 3: 
-                if(focusSpan < 4) exRadar += `목표를 향한 의지는 높으나 스마트폰 체류 시간이 지나치게 짧다면, '진짜 성취'보다 '바쁘게 움직이는 상태' 자체에서 심리적 위안을 찾고 계신 것은 아닌지 돌아볼 필요가 있습니다.`;
-                else exRadar += `효율을 중시하는 성향이 몰입 지표에 긍정적으로 투영되어 있습니다. 다만, '가시적인 성과'에만 집중하느라 본인이 현재 느끼는 감정이나 휴식을 '비효율'로 치부하여 소홀히 대하고 계신 것은 아닌지 점검을 권유합니다.`;
-                break;
-            case 4: 
-                if(actionRatio < 500) exRadar += `내면의 감수성은 깊으나 신체적 활동 밸런스가 낮다면, 깊은 사유와 감정의 파도 속에 머무느라 현실과의 연결 고리가 약해져 있을 수 있습니다. 머릿속의 의미들을 현실의 물리적 활동으로 끌어올리는 연습이 요구됩니다.`;
-                else exRadar += `본인만의 고유성을 유지하려는 에너지가 역동적으로 발산되고 있습니다. 다만, 특별함에 집중하느라 평범한 일상이 주는 안정감을 '지루함'으로 오해하고 있지는 않은지 현재의 만족감을 재정의해 보시길 권합니다.`;
-                break;
-            case 5: 
-                if(focusSpan > 10 && actionRatio < 500) exRadar += `정보를 탐색하는 집중력은 훌륭하나, 낮은 활동 지표는 '완벽히 이해해야만 안전하게 움직일 수 있다'는 방어적 신중함일 수 있습니다. 관찰자의 위치에서 벗어나 현실에 물리적으로 개입할 때 통찰이 비로소 완성됩니다.`;
-                else exRadar += `독립적이고 분석적인 기질이 일상의 밸런스를 잘 유지하고 있습니다. 나아가 수집된 지식과 정보들이 외부(타인)와 상호작용할 때 에너지가 더욱 건강하게 순환될 수 있음을 제언합니다.`;
-                break;
-            case 6: 
-                if(pickups >= 100) exRadar += `불확실한 상황에 대비하려는 기질이 빈번한 기기 확인 습관으로 발현되고 있습니다. '안전을 지속적으로 확인받고 싶다'는 불안감이 도리어 현재의 집중력과 에너지를 파편화시키고 있는 것은 아닌지 점검이 필요합니다.`;
-                else exRadar += `신중하고 책임감 있는 태도가 일상의 안정을 탄탄하게 지탱하고 있습니다. 세상은 생각보다 안전하며, 본인에게는 예기치 못한 변수도 충분히 통제할 내면의 힘이 갖춰져 있음을 신뢰하셔도 좋습니다.`;
-                break;
-            case 7: 
-                if(focusSpan < 3) exRadar += `새로운 자극을 향한 호기심이 높으나, 극단적으로 짧은 체류 시간은 지루함이나 심리적 불편감을 회피하기 위한 도파민(자극)을 찾는 행동일 수 있습니다. 여러 가지를 얕게 경험하는 것을 넘어 하나를 끝까지 마치는 경험이 요구됩니다.`;
-                else exRadar += `밝고 역동적인 에너지가 일상에 긍정적인 활력을 줍니다. 다만, 끊임없이 다음 자극과 계획을 구상하느라 '아무것도 하지 않는 현재'의 고요함이 주는 가치를 놓치고 계신 것은 아닌지 점검을 권유합니다.`;
-                break;
-            case 8: 
-                if(scoreControl < 50) exRadar += `상황을 주도하려는 강한 에너지가 현실의 적절한 분출구를 찾지 못해, 디지털 매체 안에서의 즉각적인 소모로 나타나고 있을 가능성이 있습니다. 모든 것을 통제해야 한다는 강박이 역으로 내적 에너지를 고갈시키고 있는지 확인이 필요합니다.`;
-                else exRadar += `솔직하고 당당한 추진력이 본인의 가장 큰 자산으로 작용하고 있습니다. 다만 강해져야 한다는 압박을 일부 내려놓고 내면의 취약성을 있는 그대로 수용할 때, 주변과 더욱 깊은 신뢰를 구축할 수 있습니다.`;
-                break;
-            case 9: 
-                if(focusSpan > 15 && actionRatio < 500) exRadar += `갈등 없는 평온함을 유지하려는 노력이, 혹시 스마트폰이라는 자극 속으로의 장기적인 도피로 이어지고 있는 것은 아닌지 우려됩니다. 문제를 회피하는 편안함 이면에 삶의 주도권마저 방관하고 있는 것은 아닌지 성찰이 요구됩니다.`;
-                else exRadar += `누구와도 유연하게 융화되는 안정적인 에너지를 보유하고 있습니다. 그러나 유지되는 평화가 스스로의 욕구를 억누른 결과는 아닌지 돌아보며, 때로는 본인의 목소리를 내는 능동적인 불편함을 감수해 보시길 제언합니다.`;
-                break;
-        }
-        document.getElementById('example-radar').innerHTML = exRadar;
+        switch(typeInt) {
+            case 1: 
+                if(alarms >= 4) exRadar += `내일의 완벽한 시작을 위해 알람을 여러 개 맞춘 점은 의지가 높다는 증거입니다. 다만, '완벽하게 해낼 자신이 없으면 시작조차 망설여지는' 심리적 압박감이 오히려 실행을 가로막고 있는 건 아닌지 돌아봐야 합니다.`;
+                else exRadar += `자신만의 엄격한 기준을 현실의 행동으로 옮기려는 뚝심이 보입니다. 다만, 스스로를 너무 통제하려다 팽팽하게 긴장하고 있지는 않은지, 가끔은 '정답이 아닌 길'을 허용하는 여유가 필요합니다.`;
+                break;
+            case 2: 
+                if(pickups >= 80) exRadar += `폰을 자주 확인하는 이유는 사람들의 연락이나 반응을 놓치지 않으려는 무의식적인 배려일 수 있습니다. 주변을 챙기려는 따뜻한 마음이 역설적으로 나만의 온전한 집중 시간을 뺏고 있을 수 있습니다.`;
+                else exRadar += `주변 사람들을 챙기면서도 현재는 내면의 에너지를 안정적으로 잘 지키고 있습니다. 만약 인간관계에서 피로감을 느끼고 있다면, 남들의 시선에서 벗어나 오롯이 나만을 위한 충전의 시간을 가져보세요.`;
+                break;
+            case 3: 
+                if(focusSpan < 4) exRadar += `목표를 향한 의지는 높으나 스마트폰을 짧게 자주 본다면, '진짜 성취'보다는 '바쁘게 움직이고 있다는 사실' 자체에서 마음의 위안을 찾으려 하는 건 아닌지 돌아볼 필요가 있습니다.`;
+                else exRadar += `효율을 중시하는 성향이 집중력 데이터에 긍정적으로 나타납니다. 다만, 눈에 보이는 '성과'에만 집중하느라 정작 내가 느끼는 진짜 감정이나 여유로운 휴식을 '시간 낭비'로 치부하고 있지는 않은지 짚어보시길 권합니다.`;
+                break;
+            case 4: 
+                if(actionRatio < 500) exRadar += `내면의 감수성은 깊으나 몸을 움직이는 활동량이 적다면, 깊은 생각과 감정의 파도 속에 갇혀 현실의 발판을 잃어버렸을 수 있습니다. 머릿속의 의미들을 몸을 움직이는 행동으로 끌어올리는 연습이 필요합니다.`;
+                else exRadar += `나만의 특별함을 지키려는 에너지가 활기차게 나타납니다. 다만, 특별한 것만 찾느라 평범한 일상이 주는 편안함을 '지루하다'고 오해하고 있지는 않은지 나의 만족도를 다시 한번 점검해 보시길 권합니다.`;
+                break;
+            case 5: 
+                if(focusSpan > 10 && actionRatio < 500) exRadar += `정보를 파고드는 집중력은 훌륭하지만 움직임이 적은 것은, '완벽히 이해하기 전까진 움직이지 않겠다'는 방어적인 태도일 수 있습니다. 관찰자 자리에서 한 걸음 나와 현실에 직접 부딪힐 때 깨달음이 완성됩니다.`;
+                else exRadar += `혼자서 상황을 분석하고 통찰하는 기질이 일상의 중심을 잘 잡아주고 있습니다. 나아가 내가 모은 지식과 정보들을 다른 사람들과 나눌 때 에너지가 훨씬 건강하게 순환될 수 있습니다.`;
+                break;
+            case 6: 
+                if(pickups >= 100) exRadar += `혹시 모를 상황에 대비하려는 꼼꼼함이 수시로 폰을 확인하는 습관으로 나타나고 있습니다. '안전하다는 걸 계속 확인받고 싶은' 불안감이 오히려 현재의 집중력을 깨뜨리고 있는 것은 아닌지 살펴봐야 합니다.`;
+                else exRadar += `신중하고 책임감 있는 태도가 일상의 안정을 든든하게 받쳐주고 있습니다. 세상은 생각보다 안전하고, 당신에게는 예상치 못한 일도 충분히 헤쳐 나갈 단단한 힘이 있다는 걸 믿어보셔도 좋습니다.`;
+                break;
+            case 7: 
+                if(focusSpan < 3) exRadar += `새로운 자극을 찾는 호기심은 좋지만, 폰을 켜고 머무는 시간이 너무 짧은 건 지루함이나 불편한 감정을 피하려고 도파민(자극)만 쫓는 행동일 수 있습니다. 얕고 많은 경험을 넘어 하나를 끝까지 마치는 연습이 필요합니다.`;
+                else exRadar += `밝고 통통 튀는 에너지가 일상에 활력을 줍니다. 다만, 끊임없이 다음 약속과 재밌는 일을 찾느라 정작 '아무것도 하지 않는 지금 이 순간'의 고요함이 주는 가치를 놓치고 있는 건 아닌지 돌아보시길 권합니다.`;
+                break;
+            case 8: 
+                if(scoreControl < 50) exRadar += `상황을 내 맘대로 이끌고 싶은 강한 에너지가 현실에서 풀리지 않아, 스마트폰 안에서 홧김에 자극을 소비하는 쪽으로 튀고 있을 수 있습니다. 모든 걸 통제해야 한다는 책임감이 오히려 내 에너지를 갉아먹고 있는 건 아닌지 살펴봐야 합니다.`;
+                else exRadar += `눈치 보지 않는 솔직하고 당당한 추진력이 당신의 가장 큰 무기입니다. 다만 언제나 강해야 한다는 압박을 살짝 내려놓고 내면의 약한 모습도 있는 그대로 인정할 때, 사람들로부터 더 깊은 신뢰를 얻을 수 있습니다.`;
+                break;
+            case 9: 
+                if(focusSpan > 15 && actionRatio < 500) exRadar += `갈등 없는 평온함을 지키고 싶은 마음에, 혹시 스마트폰이라는 동굴 속으로 숨어버린 것은 아닌지 우려됩니다. 당장 귀찮은 일을 피하는 건 편하겠지만, 내 삶의 주도권마저 남에게 넘기고 방관하고 있는 건 아닌지 돌아봐야 합니다.`;
+                else exRadar += `누구와도 둥글둥글하게 잘 어울리는 평화로운 에너지를 가졌습니다. 하지만 이 평화가 혹시 내 진짜 속마음을 꾹 참고 눌러서 만들어낸 것은 아닌지, 가끔은 내 목소리를 내는 '불편함'을 용기 있게 선택해 보시길 권합니다.`;
+                break;
+        }
+        document.getElementById('example-radar').innerHTML = exRadar;
 
-        var exFocus = `<strong>행동 지표 분석:</strong> 1회 화면 켜짐 당 평균 체류 시간은 <b>${focusSpan}분</b>으로 산출되었습니다. (20대 표본 평균 5~6분) <br>`;
-        if (focusSpan < 3) {
-            if ([1, 3, 6].includes(typeInt) || (isT && isJ)) {
-                exFocus += `체류 시간이 평균 대비 매우 짧습니다. 당면한 일(과제, 업무 등)에 대한 부담감과 회피 심리가 충돌할 때 나타나는 '지연 행동(미루기)' 패턴일 수 있습니다. 본격적인 휴식을 취하기엔 죄책감이 들어, 접근성이 높은 숏폼이나 메신저만 1분씩 확인하며 뇌의 피로도만 높이고 있는 상태입니다.`;
-            } else if ([2, 4, 9].includes(typeInt) || isF) {
-                exFocus += `체류 시간이 평균 대비 매우 짧습니다. 뚜렷한 목적 없이 기기를 빈번하게 활성화하는 것은 타인과의 연결을 확인하려는 무의식적 습관일 수 있습니다. 메신저 알림이나 SNS 반응을 수시로 살피며, 내면의 불안이나 허전함을 짧고 얕은 자극으로 덮으려는 패턴인지 점검해 보십시오.`;
-            } else {
-                exFocus += `체류 시간이 평균 대비 매우 짧습니다. 하나의 콘텐츠에 집중하지 못하고 즉각적인 보상(도파민)을 주는 자극을 끊임없이 찾는 양상입니다. 화면을 기계적으로 넘기며 주의력이 흩어지고 있는 상태이므로, 의도적으로 시각 자극을 차단하는 환경 조성이 필요합니다.`;
-            }
-        } else if (focusSpan >= 3 && focusSpan <= 10) {
-            exFocus += `디지털 환경에서 목적에 부합하는 적절한 체류 시간을 유지하고 있습니다. 자극에 맹목적으로 끌려다니지 않고 기기 사용의 통제력을 양호하게 확보하고 있는 상태로 분석됩니다.`;
-        } else {
-            if ([5, 6, 7].includes(typeInt) || (isN && isT)) {
-                exFocus += `체류 시간이 평균을 크게 상회합니다. 특정 지식이나 정보 탐색에 장시간 몰입하는 특성을 보입니다. 이는 높은 집중력을 의미하기도 하나, 처리해야 할 복잡한 현실(취업, 관계 등)을 유예하기 위해 의도적으로 다른 정보로 뇌를 채우는 방어적 수단일 가능성이 존재합니다.`;
-            } else if ([4, 9].includes(typeInt) || isI) {
-                exFocus += `체류 시간이 평균을 크게 상회합니다. 외부의 스트레스나 피로도를 차단하기 위해 알고리즘 영상에 수동적으로 의존하는 '현실 유예' 상태일 확률이 높습니다. 이는 에너지를 회복하는 휴식이라기보다, 시각 자극 속에 머무르며 외부 에너지를 차단하려는 대처에 가깝습니다.`;
-            } else {
-                exFocus += `체류 시간이 평균을 크게 상회합니다. 한 번 기기를 잡으면 목적(쇼핑 결제, 콘텐츠 시청 등)을 달성할 때까지 장시간 파고드는 특성이 관찰됩니다. 다만 이러한 과몰입이 수면 등 필수적인 오프라인 일정을 밀어내고 있지는 않은지 균형 점검이 필요합니다.`;
-            }
-        }
-        document.getElementById('example-focus').innerHTML = exFocus;
+        var exFocus = `<strong>행동 지표 분석:</strong> 한 번 화면을 켰을 때 평균 <b>${focusSpan}분</b> 정도 머무르고 계십니다. (20대 평균 5~6분) <br>`;
+        if (focusSpan < 3) {
+            if ([1, 3, 6].includes(typeInt) || (isT && isJ)) {
+                exFocus += `머무는 시간이 평균보다 매우 짧습니다. 해야 할 일에 대한 부담감 때문에 나타나는 전형적인 '지연 행동(미루기)'일 수 있습니다. 푹 쉬기엔 마음이 찔리고 일을 시작하기엔 막막해서, 손쉬운 숏폼이나 카톡만 1분씩 껐다 켜며 뇌를 피곤하게 만들고 있는 상태입니다.`;
+            } else if ([2, 4, 9].includes(typeInt) || isF) {
+                exFocus += `머무는 시간이 평균보다 매우 짧습니다. 뚜렷한 이유 없이 폰을 자꾸 켜는 건 누군가의 연락을 기다리는 무의식적인 습관일 수 있습니다. 단톡방 알림이나 SNS 반응을 수시로 살피며, 내면의 허전함이나 불안을 짧은 자극으로 덮으려는 패턴인지 짚어보세요.`;
+            } else {
+                exFocus += `머무는 시간이 평균보다 매우 짧습니다. 한 가지에 5분 이상 푹 빠지지 못하고 계속 새로운 자극(도파민)만 찾고 있는 모습입니다. 화면을 기계적으로 넘기며 집중력이 흩어지고 있으니, 폰을 엎어두고 시선을 차단하는 환경을 만들어주세요.`;
+            }
+        } else if (focusSpan >= 3 && focusSpan <= 10) {
+            exFocus += `디지털 세상에서 목적에 맞게 적당한 시간을 머무르고 있습니다. 자극에 맹목적으로 끌려다니지 않고 스스로 스마트폰 사용을 건강하게 잘 조절하고 있는 상태입니다.`;
+        } else {
+            if ([5, 6, 7].includes(typeInt) || (isN && isT)) {
+                exFocus += `머무는 시간이 평균보다 꽤 깁니다. 나무위키, 유튜브 등 특정 정보나 지식을 찾아보는 데 깊게 빠지는 특성이 보입니다. 집중력이 좋다는 뜻이기도 하지만, 골치 아픈 현실의 고민을 피하려고 다른 정보로 머리를 꽉 채워버리는 방어막일 수도 있습니다.`;
+            } else if ([4, 9].includes(typeInt) || isI) {
+                exFocus += `머무는 시간이 평균보다 꽤 깁니다. 밖에서 받는 스트레스나 피로를 피하기 위해, 알고리즘이 틀어주는 영상에 몸을 맡긴 채 '현실 로그아웃'을 시전 중일 확률이 높습니다. 에너지를 채우는 진짜 휴식이라기보다, 외부 자극을 끊어버리는 도피에 가깝습니다.`;
+            } else {
+                exFocus += `머무는 시간이 평균보다 꽤 깁니다. 한 번 폰을 잡으면 결제를 끝내거나 영상을 다 볼 때까지 끈질기게 파고드는 특성이 있습니다. 다만 이렇게 깊이 빠져드는 습관 때문에 수면 시간이나 현실의 중요한 일정들이 밀려나고 있지는 않은지 점검해 보세요.`;
+            }
+        }
+        document.getElementById('example-focus').innerHTML = exFocus;
 
-        var exImbalance = `<strong>에너지 대사 분석:</strong> 1시간 시청 대비 물리적 신체 활동량은 <b>${actionRatio}보</b>로 산출되었습니다. (20대 표본 평균 800보) <br>`;
-        if (actionRatio < 500) {
-            exImbalance += `시각적으로 쏟아지는 정보량에 비해 물리적으로 소모하는 에너지가 현저히 부족한 불균형 상태입니다. 기기 사용 시간이 길어지면 정보는 뇌에 누적되나 발산이 이루어지지 않아 과부하가 발생합니다. 주말 내내 누워서 쉬었는데도 오히려 머리가 무겁고 찌뿌둥한 '인지적 소화불량' 현상이 대표적인 예입니다.`;
-        } else {
-            exImbalance += `머리로 받아들인 정보량과 몸을 움직여 쓴 신체 활동량의 밸런스가 적절합니다. 머릿속에 유입된 에너지가 고립되지 않고, 활동을 통해 건강하게 순환되고 있는 안정적인 대사 상태입니다.`;
-        }
-        document.getElementById('example-imbalance').innerHTML = exImbalance;
+        var exImbalance = `<strong>에너지 대사 분석:</strong> 화면을 1시간 볼 때마다 몸을 움직여 <b>${actionRatio}보</b>를 걷고 있습니다. (20대 평균 800보) <br>`;
+        if (actionRatio < 500) {
+            exImbalance += `눈으로 쏟아져 들어오는 정보량에 비해, 몸을 움직여 쓰는 에너지가 턱없이 부족합니다. 폰 사용 시간이 길어지면 정보는 뇌에 쌓이는데 몸으로 발산되지 않아 과부하가 걸립니다. 주말 내내 누워서 쉬었는데도 오히려 머리가 멍하고 찌뿌둥한 '정신적 소화불량' 현상이 대표적입니다.`;
+        } else {
+            exImbalance += `머리로 받아들이는 정보만큼 몸도 충분히 활발하게 움직이고 있습니다. 머릿속의 복잡한 생각들이 꽉 막혀있지 않고, 신체 활동을 통해 아주 건강하게 순환되고 있는 훌륭한 밸런스입니다.`;
+        }
+        document.getElementById('example-imbalance').innerHTML = exImbalance;
 
-        let healthPoints = 0;
-        if (focusSpan >= 3 && focusSpan <= 15) healthPoints++; 
-        if (actionRatio >= 500) healthPoints++;                
-        if (alarms <= 2) healthPoints++;                       
-        if (pickups < 80) healthPoints++;                      
+        let healthPoints = 0;
+        if (focusSpan >= 3 && focusSpan <= 15) healthPoints++; 
+        if (actionRatio >= 500) healthPoints++;                
+        if (alarms <= 2) healthPoints++;                       
+        if (pickups < 80) healthPoints++;                      
 
-        var isHealthy = (healthPoints >= 3);
+        var isHealthy = (healthPoints >= 3);
 
-        var defenseMechanism = "";
-        if ([5, 6, 7].includes(typeInt) || (isN && isT)) {
-            defenseMechanism = "당면한 현실의 문제를 직접 대면하기보다, 관련 정보나 리뷰를 끝없이 검색하며 뇌내 시뮬레이션으로 불안을 덮으려는 [지식 수집형 회피]";
-        } else if ([2, 3, 4].includes(typeInt) || (isN && isF) || (isS && isF)) {
-            defenseMechanism = "내면의 허전함을 채우기 위해 SNS 속 타인과 비교하거나, 피드백(메시지, 좋아요 등)에 강박적으로 얽매이는 [관계 지향적 감정 소모]";
-        } else { 
-            defenseMechanism = "복잡한 생각이나 당장의 스트레스를 차단하기 위해, 숏폼이나 배달 음식 등 즉각적이고 빠르고 자극적인 콘텐츠에 시간을 소비하는 [현실 억압 및 즉각적 도피]";
-        }
+        var defenseMechanism = "";
+        if ([5, 6, 7].includes(typeInt) || (isN && isT)) {
+            defenseMechanism = "당면한 현실의 문제를 직접 부딪혀 풀기보다, 관련 리뷰나 정보를 끝없이 검색하며 생각만으로 불안을 덮으려는 [지식 수집형 회피]";
+        } else if ([2, 3, 4].includes(typeInt) || (isN && isF) || (isS && isF)) {
+            defenseMechanism = "내면의 허전함을 채우기 위해 SNS 속 남들의 일상과 비교하거나, 좋아요와 메시지 반응에 얽매이는 [관계 지향적 감정 소모]";
+        } else { 
+            defenseMechanism = "복잡한 생각이나 스트레스를 피하기 위해, 숏폼이나 배달 음식 등 생각 없이 빠져드는 빠르고 자극적인 콘텐츠에 시간을 태우는 [현실 억압 및 즉각적 도피]";
+        }
 
-        // [프롤로그 1번 문항 데이터를 가져와서 서두에 결합]
-        var q1Answer = document.querySelector('input[name="q1"]:checked') ? document.querySelector('input[name="q1"]:checked').value : 'curious';
-        var introHook = "";
-        if(q1Answer === 'curious') introHook = "가벼운 호기심으로 입장하셨겠지만, 분석 결과는 꽤 예리한 지표들을 가리키고 있습니다. ";
-        else if(q1Answer === 'reader') introHook = "텍스트의 맥락을 읽어내는 분답게, 본인의 무의식적 행동 데이터에서도 흥미로운 단서들이 도출되었습니다. ";
-        else introHook = "새로운 자극을 찾아오신 매니아답게, 본인의 행동 데이터와 심리 상태 사이에서도 역동적인 충돌이 발견되었습니다. ";
+        var q1Answer = document.querySelector('input[name="q1"]:checked') ? document.querySelector('input[name="q1"]:checked').value : 'curious';
+        var introHook = "";
+        if(q1Answer === 'curious') introHook = "가벼운 호기심으로 입장하셨겠지만, 분석 결과는 꽤 예리한 단서들을 가리키고 있습니다. ";
+        else if(q1Answer === 'reader') introHook = "텍스트의 맥락을 깊이 읽어내는 분답게, 당신의 무의식적 행동 데이터에서도 흥미로운 이야기들이 도출되었습니다. ";
+        else introHook = "새로운 자극을 찾아오신 방탈출 매니아답게, 당신의 행동 데이터와 속마음 사이에서 역동적인 충돌이 발견되었습니다. ";
 
-        var summaryText = `${introHook}밀실(데스 게임)에서의 생존 본능은 현실에서 스트레스를 받을 때 나타나는 무의식적 방어기제와 동일한 궤를 그립니다.<br><br>분석 대상의 기질은 <b>'${mbti}'와 '에니어그램 ${typeInt}번'</b>의 특성이 혼합되어 있습니다. `;
-        
-        if (isHealthy) {
-            summaryText += `현재는 이 본연의 에너지를 안정적으로 운용하고 있는 것으로 보이나, 감당하기 힘든 스트레스에 노출될 경우 무의식적으로 <b>${defenseMechanism}</b> 패턴이 발현될 수 있으므로 사전에 인지해 둘 것을 권고합니다.`;
-        } else {
-            summaryText += `현재 본연의 에너지가 <b>${defenseMechanism}</b> 패턴으로 소진되고 있을 가능성이 관찰됩니다. 단순한 피로 해소를 넘어, 당면한 심리적 과제를 회피하는 수단으로 디지털 기기를 활용하고 있지 않은지 객관적인 점검이 요구됩니다.`;
-        }
-        document.getElementById('report-summary').innerHTML = summaryText;
+        var summaryText = `${introHook}밀실(데스 게임) 안에서 튀어나오는 생존 본능은, 당신이 팍팍한 현실에서 스트레스를 받을 때 나타나는 무의식적인 심리 방어선과 똑같습니다.<br><br>분석 대상의 기질은 <b>'${mbti}'와 '에니어그램 ${typeInt}번'</b>의 특성이 섞여 있습니다. `;
+        
+        if (isHealthy) {
+            summaryText += `현재는 이 본연의 에너지를 흔들림 없이 잘 쓰고 있는 것으로 보입니다. 다만, 감당하기 힘든 스트레스를 받으면 나도 모르게 <b>${defenseMechanism}</b> 패턴이 튀어나올 수 있으니 내 마음의 약점을 미리 알아두는 것이 좋습니다.`;
+        } else {
+            summaryText += `현재 나의 귀중한 에너지가 <b>${defenseMechanism}</b> 패턴으로 줄줄 새고 있을 가능성이 큽니다. 단순히 피곤해서 쉬는 걸 넘어, 직면해야 할 현실의 고민들을 회피하기 위한 도피처로 스마트폰을 쓰고 있는 건 아닌지 솔직하게 돌아볼 필요가 있습니다.`;
+        }
+        document.getElementById('report-summary').innerHTML = summaryText;
 
-        var analysisText = `<b>[행동-인지 부조화 분석]</b><br>일과를 통제하려는 기제(알람 세팅 수)와 실제 물리적 실행력(시간당 활동량)을 교차 분석하여 도출한 행동 심리 가설입니다.<br><br>`;
-        var dissonance = "";
-        if (alarms >= 3 && actionRatio < 600) {
-            dissonance = "<b>[가설 1. 완벽주의적 통제 강박과 실행 유예]</b><br>알람을 다수 설정할 만큼 의지는 강하나, 실제 활동 지표는 이에 미치지 못합니다. 완벽하게 해내야 한다는 내적 압박감이 도리어 실행의 허들을 높이고 있습니다. '일단 이것만 보고 시작하자'며 착수를 미루고 디지털 매체로 도피하는 전형적인 지연 행동을 유발하고 있을 가능성을 시사합니다.";
-        } else if (alarms >= 3 && actionRatio >= 600) {
-            dissonance = "<b>[가설 2. 높은 텐션과 과각성(Over-arousal) 상태]</b><br>강제적인 알람으로 일상을 통제하고, 현실에서도 쉴 틈 없이 신체를 가동하고 있습니다. 표면적인 실행력은 매우 우수하나, 심리적 기저에는 '긴장을 풀면 통제력을 잃고 무너질 것 같다'는 벼랑 끝 불안이 숨어있을 수 있습니다. 엔진이 상시 과열되어 있는 번아웃(Burnout) 고위험군입니다.";
-        } else if (actionRatio < 600) {
-            dissonance = "<b>[가설 3. 에너지 보존 및 무기력한 방관 모드]</b><br>스스로를 강제하는 수단도 최소화되어 있고, 신체 활동량도 잔잔합니다. 외부 스트레스를 피하기 위한 편안한 상태일 수 있습니다. 그러나 이 상태가 장기화되면, 에너지 소모 자체를 기피하게 되어 새로운 도전이나 인간관계마저 방관해버리는 '수동적 무기력'으로 고착화될 위험이 존재합니다.";
-        } else {
-            dissonance = "<b>[가설 4. 안정적 실행력, 단 맹점 점검]</b><br>강박적인 통제 수단 없이도 적절한 활동량을 유지하는 건강한 밸런스입니다. 다만, 이렇게 일관되게 통제된 루틴 속에서, '아무 목적 없이 온전히 멍때리는 휴식'마저 시간 낭비로 치부하며, 쉬는 것마저 생산성의 잣대로 엄격하게 평가하고 있지는 않은지 점검해 볼 필요가 있습니다.";
-        }
-        analysisText += dissonance;
-        document.getElementById('report-analysis').innerHTML = analysisText;
+        var analysisText = `<b>[행동-인지 부조화 분석]</b><br>내일의 시작을 억지로 끌고 가려는 마음(알람 세팅 수)과 실제 몸을 움직인 양(시간당 걸음 수)을 겹쳐서 도출한 행동 심리 가설입니다.<br><br>`;
+        var dissonance = "";
+        if (alarms >= 3 && actionRatio < 600) {
+            dissonance = "<b>[가설 1. 완벽주의 강박과 미루기]</b><br>알람을 여러 개 맞출 만큼 '내일은 제대로 살아보겠다'는 의지는 강하지만, 막상 몸은 따라주지 못합니다. 완벽하게 잘해내야 한다는 압박감이 오히려 시작을 두렵게 만들고 있습니다. '일단 5분만 더 누워있자'며 폰을 켜고 현실을 피하는 전형적인 지연 행동(미루기)일 가능성이 있습니다.";
+        } else if (alarms >= 3 && actionRatio >= 600) {
+            dissonance = "<b>[가설 2. 쉼 없는 엔진 과열(과각성) 상태]</b><br>억지로 알람을 여러 개 맞춰 일어나고, 쉴 틈 없이 하루를 바쁘게 굴리고 있습니다. 겉보기엔 정말 '갓생'을 사는 것 같지만, 속마음은 '여기서 한 번 긴장을 풀면 와르르 무너질 것 같다'는 벼랑 끝 불안에 시달리고 있을 수 있습니다. 늘 엔진이 뜨겁게 달아올라 있는 번아웃 고위험군입니다.";
+        } else if (actionRatio < 600) {
+            dissonance = "<b>[가설 3. 에너지 절전 및 무기력한 방관 모드]</b><br>알람으로 스스로를 닦달하지도 않고, 일상에서 몸을 움직이는 활동도 잔잔합니다. 외부의 피곤한 일들을 피해 가장 편안한 상태를 유지 중일 수 있습니다. 하지만 이 상태가 너무 길어지면 에너지를 쓰는 것 자체가 귀찮아져서, 새로운 도전이나 인간관계마저 피하고 구경만 하는 '학습된 무기력'으로 굳어질 위험이 있습니다.";
+        } else {
+            dissonance = "<b>[가설 4. 안정적인 밸런스 속 숨은 함정 점검]</b><br>강박적인 알람 없이도 활동량을 건강하게 유지하는 이상적인 밸런스입니다. 다만 짚어볼 점이 하나 있습니다. 이렇게 계획적으로 굴러가는 하루 속에서, 가끔은 '아무 목적 없이 온전히 멍때리는 휴식'마저 쓸데없는 짓으로 여기며 스스로를 너무 빡빡하게 채찍질하고 있지는 않은가요?";
+        }
+        analysisText += dissonance;
+        document.getElementById('report-analysis').innerHTML = analysisText;
 
-        var rxText = `행동 데이터는 주관적 감정을 배제한 객관적 지표입니다. 본인의 현재 패턴을 있는 그대로 수용하는 과정이 요구됩니다.<br><br>`;
-        
-        var enneagramAdvice = "";
-        var bookRecommendation = ""; 
-        var bookInsight = ""; 
+        var rxText = `데이터는 거짓말을 하지 않습니다. 나의 현재 패턴을 있는 그대로 인정하는 데서부터 진짜 변화가 시작됩니다.<br><br>`;
+        
+        var enneagramAdvice = "";
+        var bookRecommendation = ""; 
+        var bookInsight = ""; 
 
-        switch(parseInt(typeNum)) {
-            case 1: 
-                enneagramAdvice = "<b>[완벽주의 지향에 대한 마인드셋]</b><br>오류를 허용하지 않는 엄격한 기준이 역으로 실행을 미루게 만듭니다. 완성도보다 '실행' 자체에 의의를 두는 연습이 필요합니다.<br><br>" +
-                "<b>🎯 이미 잘 하고 있는 당신을 위한, 더 잘해지는 실천 가이드</b><br>" +
-                "▫️ 타이머를 10분만 설정하고 오타나 문맥을 절대 수정하지 않은 채 무작정 끝까지 써보는 훈련을 해보세요. 계획대로 되지 않은 돌발 상황을 '실패'가 아닌 '일상의 자연스러운 오차 범위'로 받아들이는 연습이 더 큰 자유를 줄 것입니다."; 
-                bookRecommendation = "<b>『그리스인 조르바』 - 니코스 카잔차키스</b><br><br>\"나는 아무것도 바라지 않는다. 나는 아무것도 두려워하지 않는다. 나는 자유다.\"";
-                bookInsight = "완벽해야 한다는 강박을 부수고 진정한 '자유'로";
-                break;
-            case 2: 
-                enneagramAdvice = "<b>[자기중심적 경계 설정 훈련]</b><br>타인의 요구나 감정을 우선시하는 패턴은 궁극적으로 본인의 정서적 고갈을 야기합니다. 타인과 나 사이에 명확한 경계를 설정해야 합니다.<br><br>" +
-                "<b>🎯 이미 잘 하고 있는 당신을 위한, 더 잘해지는 실천 가이드</b><br>" +
-                "▫️ 주 1회는 휴대폰 알림을 끄고 누구의 연락도 받지 않는 온전한 혼자만의 시간을 가져보세요. 타인이 선호할 만한 선택지를 배제하고, 오직 '내가 당장 먹고 싶은 것, 하고 싶은 것' 3가지를 스스로에게 선물해 보시길 권합니다."; 
-                bookRecommendation = "<b>『자기만의 방』 - 버지니아 울프</b><br><br>\"가장 중요한 일은 남들이 뭐라 하든 나 자신으로 사는 것이다.\"";
-                bookInsight = "타인의 시선에서 벗어나 오롯이 '나 자신'으로";
-                break;
-            case 3: 
-                enneagramAdvice = "<b>[성취 지향적 강박의 이완]</b><br>결과와 효율로 자신의 가치를 증명하려는 강박이 내재되어 있습니다. 가시적인 성과로 산출되지 않는 시간의 가치를 수용하는 훈련이 필요합니다.<br><br>" +
-                "<b>🎯 이미 잘 하고 있는 당신을 위한, 더 잘해지는 실천 가이드</b><br>" +
-                "▫️ 산책이나 블록 조립 등 이력서에 한 줄도 적을 수 없는 '무목적적인 활동'에 의도적으로 시간을 내어보세요. 직함이나 스펙을 모두 내려놓았을 때, 당신이 가진 고유한 매력과 장점 3가지가 무엇인지 스스로 적어보는 시간을 권장합니다."; 
-                bookRecommendation = "<b>『어린 왕자』 - 앙투안 드 생텍쥐페리</b><br><br>\"가장 중요한 것은 눈에 보이지 않아. 마음으로 보아야만 제대로 볼 수 있어.\"";
-                bookInsight = "보여주기식 성과를 넘어 내면의 '진짜 가치'로";
-                break;
-            case 4: 
-                enneagramAdvice = "<b>[주관적 감정의 객관화 및 규격화]</b><br>특정 우울감이나 감정선에 깊이 매몰되어 현실 감각을 상실할 위험이 존재합니다. 감정과 팩트를 분리하고 일상에 규격화된 루틴을 도입해야 합니다.<br><br>" +
-                "<b>🎯 이미 잘 하고 있는 당신을 위한, 더 잘해지는 실천 가이드</b><br>" +
-                "▫️ 그날의 기분과 무관하게 기상 직후 스트레칭을 하는 등 나만의 '기계적인 루틴'을 하나 만들어보세요. 일기를 쓸 때도 주관적인 감정 표현을 배제하고 '몇 시에 무엇을 했다'는 건조한 사실(Fact) 위주로 기록하며 감정과 현실을 분리해 보시길 권합니다."; 
-                bookRecommendation = "<b>『노르웨이의 숲』 - 무라카미 하루키</b><br><br>\"자신을 동정하지 마. 자신을 동정하는 건 비열한 인간들이나 하는 짓이야.\"";
-                bookInsight = "자기 연민의 늪에서 벗어나 단단한 '현실'로";
-                break;
-            case 5: 
-                enneagramAdvice = "<b>[사고의 물리적 확장 및 외부 개입]</b><br>정보 수집과 내적 분석에만 머무르는 것은 현실의 불확실성에 대한 방어기제일 수 있습니다. 내부 데이터를 물리적인 현실로 출력하는 과정이 필요합니다.<br><br>" +
-                "<b>🎯 이미 잘 하고 있는 당신을 위한, 더 잘해지는 실천 가이드</b><br>" +
-                "▫️ 새롭게 습득한 지식을 내면에만 쌓아두지 말고, 주변에 가볍게 설명하거나 글로 요약해 밖으로 꺼내어(Output) 보세요. 생각이 꼬리를 물 땐 검색을 멈추고, 5분간 시각을 차단한 채 호흡 등 단순한 신체 감각에 집중해 보시길 권장합니다."; 
-                bookRecommendation = "<b>『파우스트』 - 요한 볼프강 폰 괴테</b><br><br>\"모든 이론은 회색빛이요, 영원한 것은 오직 생명의 푸른 나무뿐이다.\"";
-                bookInsight = "안전한 동굴을 벗어나 생생하게 살아 숨 쉬는 '세상'으로";
-                break;
-            case 6: 
-                enneagramAdvice = "<b>[불확실성 수용 및 통제 범위의 축소]</b><br>아직 발생하지 않은 미래의 리스크를 과도하게 예측하느라 현재의 에너지를 낭비하고 있습니다. 통제할 수 없는 변수를 수용하는 인지적 연습이 요구됩니다.<br><br>" +
-                "<b>🎯 이미 잘 하고 있는 당신을 위한, 더 잘해지는 실천 가이드</b><br>" +
-                "▫️ 장소를 고르거나 물건을 살 때 리뷰 검색을 의도적으로 차단하고, 눈앞에 보이는 직관적인 선택을 따르는 작은 모험을 해보세요. 미래의 불안이 엄습할 땐 '지금 당장 5분 내에 내 힘으로 확실하게 바꿀 수 있는 일 1가지'에만 집중해 보시길 권합니다."; 
-                bookRecommendation = "<b>『노인과 바다』 - 어니스트 헤밍웨이</b><br><br>\"인간은 파괴당할 수는 있어도, 결코 패배할 수는 없다.\"";
-                bookInsight = "일어나지 않은 불안을 떨치고 꺾이지 않는 '용기'로";
-                break;
-            case 7: 
-                enneagramAdvice = "<b>[부정적 자극에 대한 내성 강화]</b><br>지루함이나 심리적 고통을 회피하기 위해 지속적으로 숏폼 등 새로운 자극(도파민)을 탐색하는 양상입니다. 자극이 차단된 상태를 견디는 훈련이 필요합니다.<br><br>" +
-                "<b>🎯 이미 잘 하고 있는 당신을 위한, 더 잘해지는 실천 가이드</b><br>" +
-                "▫️ 하루 30분은 전자기기를 치우고, 자극이 결핍된 '지루함'의 상태를 회피 없이 그대로 마주해 보세요. 짜증이나 우울 등 불편한 감정이 올라올 때 폰을 켜서 시선을 돌리기보다, 그 감정이 왜 생겼는지 가만히 관찰해 보시길 권장합니다."; 
-                bookRecommendation = "<b>『참을 수 없는 존재의 가벼움』 - 밀란 쿤데라</b><br><br>\"우리가 선택한 이 가벼움은 곧 참을 수 없는 것이 되어버렸다.\"";
-                bookInsight = "가벼운 도피를 멈추고 내 삶이 가진 온전한 '무게'로";
-                break;
-            case 8: 
-                enneagramAdvice = "<b>[통제력 분산 및 취약성 인정]</b><br>환경과 타인을 완벽히 통제하려는 성향은 궁극적으로 본인의 에너지를 과도하게 소진시킵니다. 상황의 주도권을 일부 내려놓고 취약성을 인정하는 연습이 필요합니다.<br><br>" +
-                "<b>🎯 이미 잘 하고 있는 당신을 위한, 더 잘해지는 실천 가이드</b><br>" +
-                "▫️ 남들과 대화할 때 잘잘못을 따지거나 해결책을 던져주고 싶은 입을 꾹 닫고, 오직 고개만 끄덕이며 100% 들어주기만 하는 연습을 해보세요. 남들에게 약점 잡힐까 봐 꽁꽁 숨겨뒀던 상처나 실패의 두려움이 있다면, 혼자만의 일기장에 시원하게 털어놓아 보시길 권합니다."; 
-                bookRecommendation = "<b>『미움받을 용기』 - 기시미 이치로</b><br><br>\"상처받지 않고 타인과 관계를 맺을 수 있는 방법은 존재하지 않는다.\"";
-                bookInsight = "무거운 통제의 갑옷을 벗고 타인과 연결되는 '부드러움'으로";
-                break;
-            case 9: 
-                enneagramAdvice = "<b>[능동적 갈등 직면 및 의사 표출]</b><br>표면적인 평화를 유지하기 위해 본인의 주관적 욕구를 억압하고 방관자로 물러서는 패턴을 보입니다. 작은 갈등을 회피하지 않고 의사를 표출하는 훈련이 요구됩니다.<br><br>" +
-                "<b>🎯 이미 잘 하고 있는 당신을 위한, 더 잘해지는 실천 가이드</b><br>" +
-                "▫️ 메뉴를 고르는 등 일상적인 선택 상황에서 '아무거나'라며 동조하기보다, 하루 한 번은 나의 명확한 선호도를 겉으로 표현해 보세요. 갈등을 피하려다 암묵적으로 양보하고 손해 봐야 했던 일들을 리스트로 적어보며 나의 진짜 권리를 되찾으시길 권장합니다."; 
-                bookRecommendation = "<b>『데미안』 - 헤르만 헤세</b><br><br>\"새는 알에서 나오려고 투쟁한다. 태어나려는 자는 하나의 세계를 깨뜨려야 한다.\"";
-                bookInsight = "거짓된 평화를 깨부수고 나만의 온전한 '세계'로";
-                break;
-        }
+        switch(parseInt(typeNum)) {
+            case 1: 
+                enneagramAdvice = "<b>[완벽주의 지향에 대한 마인드셋]</b><br>실수 없이 해내려는 엄격한 기준이 오히려 실행을 자꾸 미루게 만듭니다. 완벽함보다 '일단 시작하는 것' 자체에 의미를 두는 연습이 필요합니다.<br><br>" +
+                "<b>🎯 이미 잘 하고 있는 당신을 위한, 더 잘해지는 실천 가이드</b><br>" +
+                "▫️ 타이머를 10분만 설정하고 오타나 문맥을 절대 수정하지 않은 채 무작정 끝까지 써보는 훈련을 해보세요. 계획대로 되지 않은 돌발 상황을 '실패'가 아닌 '일상의 자연스러운 오차 범위'로 부드럽게 넘겨버리는 연습이 더 큰 자유를 줄 것입니다."; 
+                bookRecommendation = "<b>『그리스인 조르바』 - 니코스 카잔차키스</b><br><br>\"나는 아무것도 바라지 않는다. 나는 아무것도 두려워하지 않는다. 나는 자유다.\"";
+                bookInsight = "완벽해야 한다는 강박을 부수고 진정한 '자유'로";
+                break;
+            case 2: 
+                enneagramAdvice = "<b>[자기중심적 경계 설정 훈련]</b><br>타인의 기분이나 요구를 먼저 살피는 습관은 결국 내 마음의 배터리를 방전시킵니다. 타인과 나 사이에 명확한 선을 긋고 나를 지켜야 합니다.<br><br>" +
+                "<b>🎯 이미 잘 하고 있는 당신을 위한, 더 잘해지는 실천 가이드</b><br>" +
+                "▫️ 주 1회는 휴대폰 알림을 끄고 누구의 연락도 받지 않는 온전한 혼자만의 시간을 가져보세요. 남들이 좋아할 만한 것을 빼고, 오직 '내가 당장 먹고 싶은 것, 내가 하고 싶은 것' 3가지를 고민해 스스로에게 선물해 보시길 권합니다."; 
+                bookRecommendation = "<b>『자기만의 방』 - 버지니아 울프</b><br><br>\"가장 중요한 일은 남들이 뭐라 하든 나 자신으로 사는 것이다.\"";
+                bookInsight = "타인의 시선에서 벗어나 오롯이 '나 자신'으로";
+                break;
+            case 3: 
+                enneagramAdvice = "<b>[성취 지향적 강박의 이완]</b><br>눈에 보이는 결과나 효율로 내 가치를 증명하려는 강박이 뼛속에 자리 잡고 있습니다. 뚜렷한 성과가 없어도 그 시간 자체로 가치 있다는 걸 인정해야 합니다.<br><br>" +
+                "<b>🎯 이미 잘 하고 있는 당신을 위한, 더 잘해지는 실천 가이드</b><br>" +
+                "▫️ 동네 산책이나 블록 조립처럼 이력서에 한 줄도 쓸 수 없는 '쓸데없는 활동'에 의도적으로 시간을 내어보세요. 직함이나 스펙을 모두 떼고 났을 때, 당신이라는 사람 자체가 가진 진짜 매력 3가지가 무엇인지 글로 적어보시길 권합니다."; 
+                bookRecommendation = "<b>『어린 왕자』 - 앙투안 드 생텍쥐페리</b><br><br>\"가장 중요한 것은 눈에 보이지 않아. 마음으로 보아야만 제대로 볼 수 있어.\"";
+                bookInsight = "보여주기식 성과를 넘어 내면의 '진짜 가치'로";
+                break;
+            case 4: 
+                enneagramAdvice = "<b>[주관적 감정의 객관화 및 규격화]</b><br>특정 우울감이나 감정선에 너무 깊이 빠지면 현실 감각을 잃어버릴 위험이 있습니다. 찰나의 기분과 현실의 팩트를 분리하고, 일상에 단단한 루틴을 심어야 합니다.<br><br>" +
+                "<b>🎯 이미 잘 하고 있는 당신을 위한, 더 잘해지는 실천 가이드</b><br>" +
+                "▫️ 그날의 꿀꿀한 기분과 상관없이 기상 직후 스트레칭을 하는 등 기계적으로 움직이는 '나만의 루틴'을 하나 만들어보세요. 일기를 쓸 때도 내 슬픈 감정을 빼고 '몇 시에 밥을 먹었다'처럼 건조한 사실(팩트) 위주로만 담담하게 써보시길 권합니다."; 
+                bookRecommendation = "<b>『노르웨이의 숲』 - 무라카미 하루키</b><br><br>\"자신을 동정하지 마. 자신을 동정하는 건 비열한 인간들이나 하는 짓이야.\"";
+                bookInsight = "자기 연민의 늪에서 벗어나 단단한 '현실'로";
+                break;
+            case 5: 
+                enneagramAdvice = "<b>[생각의 물리적 확장 및 외부 개입]</b><br>정보를 수집하고 머릿속으로만 상황을 분석하는 건 현실의 두려움을 피하려는 방어막일 수 있습니다. 머릿속 생각들을 세상 밖으로 끄집어내는 과정이 필요합니다.<br><br>" +
+                "<b>🎯 이미 잘 하고 있는 당신을 위한, 더 잘해지는 실천 가이드</b><br>" +
+                "▫️ 새로 알게 된 흥미로운 지식을 나 혼자만 알지 말고, 주변에 가볍게 수다로 풀거나 짧은 글로 요약해 세상 밖으로 내보내(Output) 보세요. 꼬리에 꼬리를 무는 검색을 멈추고, 5분간 눈을 감은 채 숨 쉬는 감각에만 집중해 보시길 권장합니다."; 
+                bookRecommendation = "<b>『파우스트』 - 요한 볼프강 폰 괴테</b><br><br>\"모든 이론은 회색빛이요, 영원한 것은 오직 생명의 푸른 나무뿐이다.\"";
+                bookInsight = "안전한 동굴을 벗어나 생생하게 살아 숨 쉬는 '세상'으로";
+                break;
+            case 6: 
+                enneagramAdvice = "<b>[불확실성 수용 및 통제 범위의 축소]</b><br>아직 일어나지도 않은 내일의 사고를 미리 걱정하느라 오늘의 에너지를 다 갉아먹고 있습니다. 내 맘대로 되지 않는 변수들도 그냥 받아들이는 맷집을 키워야 합니다.<br><br>" +
+                "<b>🎯 이미 잘 하고 있는 당신을 위한, 더 잘해지는 실천 가이드</b><br>" +
+                "▫️ 장소를 고르거나 밥을 먹을 때 리뷰 검색을 아예 차단하고, 눈앞에 보이는 직감을 믿고 무작정 골라보는 작은 모험을 해보세요. 미래가 너무 불안해질 땐 '지금 당장 5분 내에 내 손으로 확실하게 바꿀 수 있는 눈앞의 일 1가지'에만 묵묵히 집중해 보시길 권합니다."; 
+                bookRecommendation = "<b>『노인과 바다』 - 어니스트 헤밍웨이</b><br><br>\"인간은 파괴당할 수는 있어도, 결코 패배할 수는 없다.\"";
+                bookInsight = "일어나지 않은 불안을 떨치고 꺾이지 않는 '용기'로";
+                break;
+            case 7: 
+                enneagramAdvice = "<b>[불편한 자극에 대한 내성 강화]</b><br>가만히 있는 지루함이나 스트레스를 못 견디고 자꾸만 숏폼 같은 빠르고 새로운 자극(도파민)만 찾고 있습니다. 자극이 뚝 끊긴 심심한 상태를 피하지 않고 견디는 훈련이 필요합니다.<br><br>" +
+                "<b>🎯 이미 잘 하고 있는 당신을 위한, 더 잘해지는 실천 가이드</b><br>" +
+                "▫️ 하루 30분은 스마트폰을 방 밖으로 치우고, 자극이 하나도 없는 미칠 듯한 '지루함'을 도망치지 말고 그대로 마주해 보세요. 짜증이나 우울감이 올라올 때 폰을 켜서 회피하기보다, 왜 내 기분이 상했는지 가만히 관찰하고 달래보시길 권장합니다."; 
+                bookRecommendation = "<b>『참을 수 없는 존재의 가벼움』 - 밀란 쿤데라</b><br><br>\"우리가 선택한 이 가벼움은 곧 참을 수 없는 것이 되어버렸다.\"";
+                bookInsight = "가벼운 도피를 멈추고 내 삶이 가진 온전한 '무게'로";
+                break;
+            case 8: 
+                enneagramAdvice = "<b>[통제력 분산 및 취약성 인정]</b><br>모든 상황을 내가 쥐고 통제하려는 성향은 결국 내 안의 에너지를 억세게 갉아먹습니다. 남들에게 주도권을 조금 넘겨주고 내 약한 모습도 인정하는 연습이 필요합니다.<br><br>" +
+                "<b>🎯 이미 잘 하고 있는 당신을 위한, 더 잘해지는 실천 가이드</b><br>" +
+                "▫️ 남들과 대화할 때 잘잘못을 따지거나 해결책을 던져주고 싶은 입을 꾹 닫고, 오직 고개만 끄덕이며 100% 들어주기만 하는 연습을 해보세요. 남들에게 약점 잡힐까 봐 꽁꽁 숨겨뒀던 상처나 실패의 두려움이 있다면, 혼자만의 일기장에 시원하게 털어놓아 보시길 권합니다."; 
+                bookRecommendation = "<b>『미움받을 용기』 - 기시미 이치로</b><br><br>\"상처받지 않고 타인과 관계를 맺을 수 있는 방법은 존재하지 않는다.\"";
+                bookInsight = "무거운 통제의 갑옷을 벗고 타인과 연결되는 '부드러움'으로";
+                break;
+            case 9: 
+                enneagramAdvice = "<b>[능동적 갈등 직면 및 의사 표출]</b><br>겉으로 보이는 평화를 지키려고 내 진짜 속마음은 꾹 누른 채 주변의 결정을 따라가기만 합니다. 작은 트러블을 피하지 않고 내 목소리를 내는 연습이 꼭 필요합니다.<br><br>" +
+                "<b>🎯 이미 잘 하고 있는 당신을 위한, 더 잘해지는 실천 가이드</b><br>" +
+                "▫️ 밥 메뉴를 고를 때 '난 아무거나 다 좋아'라며 묻어가기보다, 하루 한 번은 용기 내어 '난 이거 먹고 싶어!'라고 내 주장을 관철시켜 보세요. 좋은 게 좋은 거라며 억지로 양보하고 손해 봐야 했던 억울한 일들을 노트에 적어보며 내 진짜 권리를 되찾으시길 권장합니다."; 
+                bookRecommendation = "<b>『데미안』 - 헤르만 헤세</b><br><br>\"새는 알에서 나오려고 투쟁한다. 태어나려는 자는 하나의 세계를 깨뜨려야 한다.\"";
+                bookInsight = "거짓된 평화를 깨부수고 나만의 온전한 '세계'로";
+                break;
+        }
 
+        var bookmarkHTML = `
+        <div style="background: #fdf8f3; border-left: 4px solid var(--brand-brown); padding: 18px; margin-top: 20px; border-radius: 0 6px 6px 0; box-shadow: 2px 2px 8px rgba(0,0,0,0.04);">
+            <div style="font-size: 0.85rem; font-weight: 800; color: var(--brand-brown); margin-bottom: 10px; letter-spacing: -0.5px;">
+                <i class="fa-solid fa-bookmark"></i> 추천 참고 문헌
+            </div>
+            <div style="font-family: 'Gowun Batang', serif; font-size: 0.95rem; color: var(--brand-black); line-height: 1.6; word-break: keep-all;">
+                ${bookRecommendation}
+            </div>
+        </div>`;
 
+        rxText += `${enneagramAdvice}${bookmarkHTML}
+        <br><br>
+        <div style="text-align: center; margin-top: 15px; padding: 20px 0; border-top: 1px dashed #ccc;">
+            <b style="color: var(--brand-brown); font-size: 1.05rem;">📌 최종 권고</b><br><br>
+            <span style="font-size: 0.95rem; line-height: 1.6;">
+            위 문장이 안내하듯, 이제는 <b>${bookInsight}</b> 나아갈 때입니다.<br>
+            이 순간이 단순한 끝이 아니라,<br>
+            그동안 나를 가두었던 낡은 세계의 알을 깨고<br>
+            더 나은 날로 도약하는 위대한 첫걸음이 되기를 응원합니다.
+            </span>
+        </div>`;
 
-        var bookmarkHTML = `
+        document.getElementById('report-solution').innerHTML = rxText;
 
-        <div style="background: #fdf8f3; border-left: 4px solid var(--brand-brown); padding: 18px; margin-top: 20px; border-radius: 0 6px 6px 0; box-shadow: 2px 2px 8px rgba(0,0,0,0.04);">
+        document.getElementById('receipt-input').style.opacity = '0';
+        setTimeout(() => {
+            document.getElementById('receipt-input').style.display = 'none';
+            document.getElementById('report-view').style.display = 'block';
+            setTimeout(() => { document.getElementById('report-view').style.opacity = '1'; }, 50);
+            window.scrollTo(0, 0);
+            drawCharts(scoreFocus, scoreAction, scoreWill, scoreControl, scoreStress, focusSpan, actionRatio);
+        }, 500);
+    }
 
-            <div style="font-size: 0.85rem; font-weight: 800; color: var(--brand-brown); margin-bottom: 10px; letter-spacing: -0.5px;">
+    function drawCharts(sFocus, sAction, sWill, sControl, sStress, focusSpan, actionRatio) {
+        const brandBrown = '#5c3a21';
+        const brandGold = '#c2a373';
 
-                <i class="fa-solid fa-bookmark"></i> 추천 참고 문헌
+        new Chart(document.getElementById('radarChart'), {
+            type: 'radar',
+            data: {
+                labels: [['이상', '(기획력)'], ['현실', '(실행력)'], '시작 의지력', '충동 통제력', ['스트레스', '내성']],
+                datasets: [{
+                    data: [sFocus, sAction, sWill, sControl, sStress],
+                    backgroundColor: 'rgba(194, 163, 115, 0.3)',
+                    borderColor: brandGold,
+                    pointBackgroundColor: brandBrown,
+                    borderWidth: 2
+                }]
+            },
+            options: {
+                responsive: true, 
+                maintainAspectRatio: false,
+                layout: { padding: { left: 25, right: 25, top: 10, bottom: 10 } },
+                plugins: { legend: { display: false } },
+                scales: {
+                    r: {
+                        min: 0, max: 100,
+                        ticks: { display: false, stepSize: 20 },
+                        pointLabels: { font: { family: 'Pretendard', size: 10, weight: 'bold' }, color: '#333' }
+                    }
+                }
+            }
+        });
 
-            </div>
+        new Chart(document.getElementById('focusChart'), {
+            type: 'bar',
+            data: {
+                labels: ['평균 권장량', '대상자'],
+                datasets: [{
+                    data: [15, focusSpan], 
+                    backgroundColor: ['#e2e8f0', brandGold],
+                    borderRadius: 4
+                }]
+            },
+            options: {
+                indexAxis: 'y', responsive: true, maintainAspectRatio: false,
+                plugins: { legend: { display: false } },
+                scales: { x: { beginAtZero: true } }
+            }
+        });
 
-            <div style="font-family: 'Gowun Batang', serif; font-size: 0.95rem; color: var(--brand-black); line-height: 1.6; word-break: keep-all;">
-
-                ${bookRecommendation}
-
-            </div>
-
-        </div>`;
-
-        // [수정: 책의 인사이트를 반영한 짧고 굵은 여운 엔딩]
-
-        rxText += `${enneagramAdvice}${bookmarkHTML}
-
-        <br><br>
-
-        <div style="text-align: center; margin-top: 15px; padding: 20px 0; border-top: 1px dashed #ccc;">
-
-            <b style="color: var(--brand-brown); font-size: 1.05rem;">📌 최종 권고</b><br><br>
-
-            <span style="font-size: 0.95rem; line-height: 1.6;">
-
-            위 문장이 안내하듯, 이제는 <b>${bookInsight}</b> 나아갈 때입니다.<br>
-
-            이 순간이 단순한 끝이 아니라,<br>
-
-            그동안 나를 가두었던 낡은 세계의 알을 깨고<br>
-
-            더 나은 날로 도약하는 위대한 첫걸음이 되기를 응원합니다.
-
-            </span>
-
-        </div>`;
-
-        document.getElementById('report-solution').innerHTML = rxText;
-
-        document.getElementById('receipt-input').style.opacity = '0';
-        setTimeout(() => {
-            document.getElementById('receipt-input').style.display = 'none';
-            document.getElementById('report-view').style.display = 'block';
-            setTimeout(() => { document.getElementById('report-view').style.opacity = '1'; }, 50);
-            window.scrollTo(0, 0);
-            drawCharts(scoreFocus, scoreAction, scoreWill, scoreControl, scoreStress, focusSpan, actionRatio);
-        }, 500);
-    }
-
-    function drawCharts(sFocus, sAction, sWill, sControl, sStress, focusSpan, actionRatio) {
-        const brandBrown = '#5c3a21';
-        const brandGold = '#c2a373';
-
-        new Chart(document.getElementById('radarChart'), {
-            type: 'radar',
-            data: {
-                labels: [['이상', '(기획력)'], ['현실', '(실행력)'], '시작 의지력', '충동 통제력', ['스트레스', '내성']],
-                datasets: [{
-                    data: [sFocus, sAction, sWill, sControl, sStress],
-                    backgroundColor: 'rgba(194, 163, 115, 0.3)',
-                    borderColor: brandGold,
-                    pointBackgroundColor: brandBrown,
-                    borderWidth: 2
-                }]
-            },
-            options: {
-                responsive: true, 
-                maintainAspectRatio: false,
-                layout: { padding: { left: 25, right: 25, top: 10, bottom: 10 } },
-                plugins: { legend: { display: false } },
-                scales: {
-                    r: {
-                        min: 0, max: 100,
-                        ticks: { display: false, stepSize: 20 },
-                        pointLabels: { font: { family: 'Pretendard', size: 10, weight: 'bold' }, color: '#333' }
-                    }
-                }
-            }
-        });
-
-        new Chart(document.getElementById('focusChart'), {
-            type: 'bar',
-            data: {
-                labels: ['평균 권장량', '대상자'],
-                datasets: [{
-                    data: [15, focusSpan], 
-                    backgroundColor: ['#e2e8f0', brandGold],
-                    borderRadius: 4
-                }]
-            },
-            options: {
-                indexAxis: 'y', responsive: true, maintainAspectRatio: false,
-                plugins: { legend: { display: false } },
-                scales: { x: { beginAtZero: true } }
-            }
-        });
-
-        new Chart(document.getElementById('imbalanceChart'), {
-            type: 'bar',
-            data: {
-                labels: ['평균 밸런스', '대상자'],
-                datasets: [{
-                    data: [800, actionRatio], 
-                    backgroundColor: ['#e2e8f0', brandBrown],
-                    borderRadius: 4
-                }]
-            },
-            options: {
-                indexAxis: 'y', responsive: true, maintainAspectRatio: false,
-                plugins: { legend: { display: false } },
-                scales: { x: { beginAtZero: true } }
-            }
-        });
-    }
+        new Chart(document.getElementById('imbalanceChart'), {
+            type: 'bar',
+            data: {
+                labels: ['평균 밸런스', '대상자'],
+                datasets: [{
+                    data: [800, actionRatio], 
+                    backgroundColor: ['#e2e8f0', brandBrown],
+                    borderRadius: 4
+                }]
+            },
+            options: {
+                indexAxis: 'y', responsive: true, maintainAspectRatio: false,
+                plugins: { legend: { display: false } },
+                scales: { x: { beginAtZero: true } }
+            }
+        });
+    }
 </script>
 </body>
 </html>
-
-오류 및 전체적으로 꼼꼼하게 점검
