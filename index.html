@@ -84,29 +84,39 @@
         .report-page-content { display: flex; flex-direction: column; font-family: 'Pretendard', sans-serif; color: var(--brand-black); }
         
         .report-header { 
-    display: flex; 
-    justify-content: space-between; 
-    align-items: flex-start; 
-    padding-bottom: 15px; 
-    margin-bottom: 10px;
-    border-bottom: 1px dashed #ccc; }
-        .report-title-main { font-size: 1.3rem; font-weight: 800; margin: 0 0 5px 0; color: var(--brand-black); letter-spacing: -0.5px; }
+    background: #fff; /* 전체를 깨끗한 흰색 박스로 */
+    border: 1px solid #ccc; 
+    border-top: 5px solid var(--brand-black); /* 상단에 굵은 검정 선으로 권위 부여 */
+    padding: 25px; 
+    margin-bottom: 20px;
+    display: flex;
+    justify-content: space-between;
+    align-items: center; /* 제목과 정보의 높이 밸런스 유지 */
+    gap: 30px;
+    position: relative;
+    overflow: hidden;
+}
+        .report-title-main { 
+    font-size: 1.7rem; /* 크기 확대 */
+    font-weight: 900; 
+    color: var(--brand-black); 
+    letter-spacing: -1px;
+    margin: 0 0 5px 0;
+    position: relative;
+}
         .report-tags { font-size: 0.75rem; font-weight: 600; color: var(--brand-brown); }
         .report-meta { 
-            text-align: left; /* 정렬을 왼쪽으로 맞춰서 서류 느낌 강조 */
-            font-size: 0.75rem; 
-            font-family: 'Courier Prime', monospace; 
-            color: var(--brand-black); 
-            line-height: 1.6; 
-            white-space: nowrap; 
-            background: #ffffff; /* 흰색 배경 박스 */
-            border: 1px solid #ccc; 
-            border-top: 3px solid var(--brand-brown); /* 상단에 브라운 포인트 줄 */
-            padding: 10px 15px; 
-            box-shadow: 2px 2px 6px rgba(0,0,0,0.03); /* 살짝 그림자 */
-            min-width: 140px;
-            z-index: 2;
-        }
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 8px 25px;
+    font-size: 0.75rem; 
+    font-family: 'Courier Prime', monospace; 
+    color: #333; 
+    line-height: 1.4;
+    border-left: 1px solid #eee; /* 제목과 구분하는 얇은 세로선 */
+    padding-left: 25px;
+    min-width: 260px;
+}
         .report-grid { display: grid; grid-template-columns: 1fr; gap: 15px; margin-bottom: 20px; }
         @media (min-width: 500px) { .report-grid { grid-template-columns: 1fr 1fr; } }
         .chart-card { background: #fff; border: 1px solid #ccc; border-radius: 6px; padding: 15px; display: flex; flex-direction: column; min-width: 0; }
@@ -122,17 +132,16 @@
         .card-content b, .desc-box b { background: linear-gradient(180deg, transparent 60%, rgba(194, 163, 115, 0.4) 60%); padding: 0 2px; }
         .stamp-confidential { 
     position: absolute; 
-    top: 15px; 
-    left: 45%; 
-    transform: translateX(-50%) rotate(-10deg); 
+    bottom: -10px;
+    right: 20px;
+    transform: rotate(-15deg);
     font-family: 'Courier Prime', monospace; 
-    font-size: 2.3rem; 
+    font-size: 2.8rem;
     font-weight: 800; 
     color: var(--danger-red); 
-    border: 4px solid var(--danger-red); 
-    padding: 5px 20px; 
-    opacity: 0.12; /* 배경처럼 작동하도록 연하게 조정 */
-    letter-spacing: 5px; 
+    border: 3px solid var(--danger-red); 
+    padding: 2px 15px; 
+    opacity: 0.07; /* 아주 연하게 처리 */
     pointer-events: none; 
     z-index: 1; 
 }
@@ -304,14 +313,16 @@
     <div class="content-area report-page-content" style="position:relative;">
         <div class="stamp-confidential">CONFIDENTIAL</div> 
         <div class="report-header">
-            <div class="header-left">
-                <h1 class="report-title-main">통합 분석 리포트</h1>
-                <div class="report-tags">
-                    <span>[성향분석]</span> <span>[데이터 마이닝]</span> <span style="color:var(--brand-brown);">[맞춤형 제언]</span>
-                </div>
-            </div>
-            <div class="report-meta" id="report-meta-box"></div>
+    <div class="stamp-confidential">CONFIDENTIAL</div>
+    <div class="header-left">
+        <h1 class="report-title-main">통합 분석 리포트</h1>
+        <div style="font-size: 0.75rem; color: var(--brand-brown); font-weight: 700; letter-spacing: 1px;">
+            [성향분석] [데이터 마이닝] [맞춤형 제언]
         </div>
+    </div>
+    <div class="report-meta" id="report-meta-box">
+        </div>
+</div>
 
         <div class="section-title"><i class="fa-solid fa-chart-line"></i> 데이터 심층 분석</div>
         
@@ -658,11 +669,11 @@
         var randomId = Math.random().toString(36).substr(2,5).toUpperCase();
         
         document.getElementById('report-meta-box').innerHTML = `
-            <div style="font-size:0.65rem; color:#999; margin-bottom:3px; border-bottom:1px dashed #ddd; padding-bottom:3px;">FILE DATA //</div>
-            <b>ID:</b> #2026${randomId}<br>
-            <b>SUBJ:</b> ${userName} <i class="fa-solid fa-user-check" style="color:var(--brand-brown); margin-left:2px;"></i><br>
-            <b>DEMO:</b> ${gender} / ${age}세<br>
-            <b>TYPE:</b> ${mbti}
+            <div style="grid-column: span 2; font-size: 0.6rem; color: #aaa; margin-bottom: 5px;">FILE DATA ACCESS // OK</div>
+            <div><span style="color:#888;">ID:</span> #2026${randomId}</div>
+            <div><span style="color:#888;">DEMO:</span> ${gender} / ${age}세</div>
+            <div><span style="color:#888;">SUBJ:</span> ${userName}</div>
+            <div><span style="color:#888;">TYPE:</span> ${mbti}</div>
         `;
         
         var exRadar = `<strong>프로파일러 진단:</strong> `;
@@ -957,6 +968,7 @@
 </script>
 </body>
 </html>
+
 
 
 
