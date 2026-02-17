@@ -83,7 +83,13 @@
 
         .report-page-content { display: flex; flex-direction: column; font-family: 'Pretendard', sans-serif; color: var(--brand-black); }
         
-        .report-header { display: flex; justify-content: space-between; align-items: flex-start; border-bottom: 3px solid var(--brand-black); padding-bottom: 15px; margin-bottom: 20px; }
+        .report-header { 
+    display: flex; 
+    justify-content: space-between; 
+    align-items: flex-start; 
+    padding-bottom: 20px; /* 아래 섹션과의 간격 */
+    margin-bottom: 10px;
+    border-bottom: 1px dashed #ccc; /* 굵은 실선 대신 연한 점선으로 변경 */
         .report-title-main { font-size: 1.3rem; font-weight: 800; margin: 0 0 5px 0; color: var(--brand-black); letter-spacing: -0.5px; }
         .report-tags { font-size: 0.75rem; font-weight: 600; color: var(--brand-brown); }
         .report-meta { 
@@ -120,21 +126,21 @@
         .card-content b, .desc-box b { background: linear-gradient(180deg, transparent 60%, rgba(194, 163, 115, 0.4) 60%); padding: 0 2px; }
         
         .stamp-confidential { 
-            position: absolute; 
-            top: 5px; 
-            left: 45%; /* 제목과 라벨 사이의 휑한 가운데 공간으로 이동 */
-            transform: translateX(-50%) rotate(-8deg); /* 살짝 비스듬하게 */
-            font-family: 'Courier Prime', monospace; 
-            font-size: 2.2rem; /* 크기를 확 키움 */
-            font-weight: 800; 
-            color: var(--danger-red); 
-            border: 4px solid var(--danger-red); 
-            padding: 5px 20px; 
-            opacity: 0.15; /* 투명도를 낮춰서 글씨를 방해하지 않는 배경처럼 씀 */
-            letter-spacing: 5px; 
-            pointer-events: none; 
-            z-index: 1; 
-        }
+    position: absolute; 
+    top: 25px; 
+    left: 48%; 
+    transform: translateX(-50%) rotate(-12deg); 
+    font-family: 'Courier Prime', monospace; 
+    font-size: 2.5rem; 
+    font-weight: 800; 
+    color: var(--danger-red); 
+    border: 4px solid var(--danger-red); 
+    padding: 5px 25px; 
+    opacity: 0.08; /* 훨씬 더 연하게 하여 배경처럼 작동 */
+    letter-spacing: 8px; 
+    pointer-events: none; 
+    z-index: 0; /* 글씨 뒤로 보냄 */
+}
 
         .barcode { height: 45px; margin-top: 30px; opacity: 0.8; background: repeating-linear-gradient(90deg, #111, #111 2px, transparent 2px, transparent 5px, #111 5px, #111 6px, transparent 6px, transparent 8px); }
         
@@ -146,7 +152,16 @@
         .modal-content { background: var(--paper-bg); padding: 25px; border-radius: 6px; max-width: 400px; width: 100%; font-family: 'Pretendard'; font-size: 0.9rem; line-height: 1.6; position: relative; }
         .close-btn { position: absolute; top: 15px; right: 20px; font-size: 1.5rem; cursor: pointer; color: #555; }
         
-        .section-title { font-size: 1.15rem; font-weight: 800; color: var(--brand-black); margin: 30px 0 15px 0; border-bottom: 2px solid var(--brand-brown); padding-bottom: 8px; letter-spacing: -0.5px; }
+        .section-title { 
+    font-size: 1.1rem; 
+    font-weight: 800; 
+    color: var(--brand-brown); 
+    margin: 20px 0 15px 0; 
+    display: flex;
+    align-items: center;
+    gap: 8px;
+    /* 선 대신 텍스트 자체에 포인트를 줌 */
+}
         .grid-2-col { display: grid; grid-template-columns: 1fr 1fr; gap: 15px; margin-bottom: 20px; }
         @media (max-width: 600px) { .grid-2-col { grid-template-columns: 1fr; } }
     </style>
@@ -215,6 +230,14 @@
                     <label><input type="radio" name="q3" value="novel">새로운 세계로의 초대, 판타지 / SF 소설</label>
                 </div>
             </div>
+            <div class="interview-box">
+    <span class="q-label">Q4. 긴 글이나 복잡한 설명문을 마주했을 때 나의 태도는?</span>
+    <div class="radio-group">
+        <label><input type="radio" name="q4" value="deep">첫 문장부터 끝까지 꼼꼼히 정독하며 논리를 따라간다</label>
+        <label><input type="radio" name="q4" value="skim">중간중간 핵심 키워드 위주로 빠르게 훑어보며 파악한다</label>
+        <label><input type="radio" name="q4" value="summary">세 줄 요약이 없으면 읽기 힘들고, 금방 집중력이 흐트러진다</label>
+    </div>
+</div>
             <button class="btn btn-next" onclick="goToPage(2)">NEXT: 증거 수집 (디지털 데이터) →</button>
         </div>
 
@@ -268,7 +291,7 @@
 
         <div id="page3" class="page">
             <h2 style="font-family: 'Cinzel', serif; color: var(--brand-black); text-align:center; margin-bottom:20px; letter-spacing: 2px;">MIND SCANNING...</h2>
-            <p style="text-align:center; font-size:0.85rem; color:#666; margin-bottom:30px; font-family:'Pretendard';">마지막으로 마인드 클루를 분석합니다.</p>
+            <p style="text-align:center; font-size:0.85rem; color:#666; margin-bottom:30px; font-family:'Pretendard';">마인드 클루를 분석합니다.</p>
             <div id="dnaQuestions"></div>
             <div style="margin-top:20px; text-align:center;">
                  <button class="btn btn-prev" onclick="goToPage(2)" style="background:transparent; color:#999; border:none; box-shadow:none; width:auto; padding:10px;">뒤로 가기</button>
@@ -472,13 +495,14 @@
             var q1 = document.querySelector('input[name="q1"]:checked');
             var q2 = document.querySelector('input[name="q2"]:checked');
             var q3 = document.querySelector('input[name="q3"]:checked');
+            var q4 = document.querySelector('input[name="q4"]:checked');
             
             if(!userName || !ageInput || !mbtiInput) {
                 alert("이름, 나이, MBTI를 정확히 입력해주세요!");
                 return;
             }
-            if(!q1 || !q2 || !q3) {
-                alert("세 가지 사전 질문(Q1~Q3)에 모두 체크해주세요!");
+            if(!q1 || !q2 || !q3 || !q4) {
+                alert("네 가지 질문(Q1~Q4)에 모두 체크해주세요!");
                 return;
             }
         }
@@ -850,7 +874,7 @@
         <div style="text-align: center; margin-top: 15px; padding: 20px 0; border-top: 1px dashed #ccc;">
             <b style="color: var(--brand-brown); font-size: 1.05rem;">📌 최종 권고</b><br><br>
             <span style="font-size: 0.95rem; line-height: 1.6;">
-            참고 도서 속 문장 안내하듯,<br>
+            참고 도서 속 문장이 안내하듯,<br>
             이제는 <b>${bookInsight}</b> 나아갈 때입니다.<br>
             이 순간이 단순한 끝이 아니라,<br>
             그동안 나를 가두었던 낡은 세계의 알을 깨고<br>
@@ -938,4 +962,5 @@
 </script>
 </body>
 </html>
+
 
