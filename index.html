@@ -781,6 +781,8 @@
         }
         document.getElementById('report-summary').innerHTML = summaryText;
 
+        var analysisText = "";
+        
         var dissonance = "";
         if (alarms >= 3 && actionRatio < 600) {
             dissonance = "<b>[행동-인지 부조화 분석 결과: 완벽주의 강박과 미루기]</b><br>알람을 여러 개 맞출 만큼 '내일은 제대로 살아보겠다'는 의지는 강하지만, 막상 몸은 따라주지 못합니다. 완벽하게 잘해내야 한다는 압박감이 오히려 시작을 두렵게 만들고 있습니다. '일단 5분만 더 누워있자'며 폰을 켜고 현실을 피하는 전형적인 지연 행동(미루기)일 가능성이 있습니다.";
@@ -967,6 +969,7 @@
 </script>
 </body>
 </html>
+
 
 
 
