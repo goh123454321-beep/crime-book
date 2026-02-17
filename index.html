@@ -619,14 +619,19 @@
         for (const [type, score] of Object.entries(typeScores)) {
             if (score > maxScore) { maxScore = score; finalType = parseInt(type); }
         }
-        
         document.getElementById('loading').style.display = 'flex';
-        
         const loadingText = document.querySelector('#loading div:nth-child(3)');
-        loadingText.innerText = "Extracting Behavioral Data..."; 
-        setTimeout(() => { loadingText.innerText = "Cross-referencing MBTI & Enneagram..."; }, 1000);
-        setTimeout(() => { loadingText.innerText = "Detecting Cognitive Dissonance..."; }, 2000);
-
+        // [1단계] 즉시 실행: 긴장감 조성
+        loadingText.innerText = "대상자의 무의식적 방어 기제 해체 중..."; 
+        // [2단계] 1초 후: 데이터 심층 대조
+        setTimeout(() => { 
+            loadingText.innerText = "숨겨진 행동 패턴 및 변수 추출 중..."; 
+        }, 1000); 
+        // [3단계] 2초 후: 수사 결론 도출
+        setTimeout(() => { 
+            loadingText.innerText = "결정적 단서 포착, 리포트 생성 중..."; 
+        }, 2000);
+        // [최종 전환] 3초 후: 수사 결과(리포트) 발표
         setTimeout(() => {
             document.getElementById('loading').style.display = 'none';
             generateExpertReport(finalType);
@@ -1017,6 +1022,7 @@
 </script>
 </body>
 </html>
+
 
 
 
