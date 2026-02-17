@@ -88,8 +88,8 @@
     justify-content: space-between; 
     align-items: flex-start; 
     padding-bottom: 15px; 
-    margin-bottom: 5px;
-}
+    margin-bottom: 10px;
+    border-bottom: 1px dashed #ccc; }
         .report-title-main { font-size: 1.3rem; font-weight: 800; margin: 0 0 5px 0; color: var(--brand-black); letter-spacing: -0.5px; }
         .report-tags { font-size: 0.75rem; font-weight: 600; color: var(--brand-brown); }
         .report-meta { 
@@ -853,7 +853,7 @@
                 bookInsight = "거짓된 평화를 깨부수고 나만의 온전한 '세계'로";
                 break;
         }
-
+        var rxText = `데이터는 거짓말을 하지 않습니다.<br>나의 현재 패턴을 있는 그대로 인정하는 데서부터 진짜 변화가 시작됩니다.<br><br>`;
         var bookmarkHTML = `
         <div style="background: #fdf8f3; border-left: 4px solid var(--brand-brown); padding: 18px; margin-top: 20px; border-radius: 0 6px 6px 0; box-shadow: 2px 2px 8px rgba(0,0,0,0.04);">
             <div style="font-size: 0.85rem; font-weight: 800; color: var(--brand-brown); margin-bottom: 10px; letter-spacing: -0.5px;">
@@ -957,6 +957,7 @@
 </script>
 </body>
 </html>
+
 
 
 
