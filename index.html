@@ -87,9 +87,9 @@
     display: flex; 
     justify-content: space-between; 
     align-items: flex-start; 
-    padding-bottom: 20px; /* 아래 섹션과의 간격 */
-    margin-bottom: 10px;
-    border-bottom: 1px dashed #ccc; /* 굵은 실선 대신 연한 점선으로 변경 */
+    padding-bottom: 15px; 
+    margin-bottom: 5px;
+}
         .report-title-main { font-size: 1.3rem; font-weight: 800; margin: 0 0 5px 0; color: var(--brand-black); letter-spacing: -0.5px; }
         .report-tags { font-size: 0.75rem; font-weight: 600; color: var(--brand-brown); }
         .report-meta { 
@@ -107,41 +107,35 @@
             min-width: 140px;
             z-index: 2;
         }
-
         .report-grid { display: grid; grid-template-columns: 1fr; gap: 15px; margin-bottom: 20px; }
         @media (min-width: 500px) { .report-grid { grid-template-columns: 1fr 1fr; } }
         .chart-card { background: #fff; border: 1px solid #ccc; border-radius: 6px; padding: 15px; display: flex; flex-direction: column; min-width: 0; }
         .card-title { font-size: 0.9rem; font-weight: 800; margin-bottom: 10px; border-left: 3px solid var(--brand-brown); padding-left: 8px; }
         .chart-wrapper { width: 100%; height: 160px; position: relative; margin-bottom: 12px; }
-        
         .desc-box { background: #f1f5f9; padding: 10px; border-radius: 4px; font-size: 0.75rem; line-height: 1.5; margin-bottom: 8px; color: #334155; word-break: keep-all; border: 1px solid #e2e8f0; }
         .example-box { background: #fdf8f3; border-left: 3px solid var(--brand-brown); padding: 12px; border-radius: 0 4px 4px 0; font-size: 0.75rem; line-height: 1.5; color: #431407; word-break: keep-all; }
-
         .master-box { background: #e8dfd5; padding: 20px 15px; border-radius: 6px; display: flex; flex-direction: column; gap: 15px; border: 1px solid #ccc; margin-bottom: 20px; }
         .master-box-title { text-align: center; font-family: 'Cinzel', 'Gowun Batang', serif; font-size: 1.2rem; font-weight: bold; color: var(--brand-black); margin-bottom: 5px; border-bottom: 1px dashed #aaa; padding-bottom: 10px; }
         .white-card { background: #ffffff; padding: 18px; border-radius: 6px; box-shadow: 0 2px 5px rgba(0,0,0,0.05); flex-shrink: 0; margin-bottom: 0; }
         .card-heading { font-size: 0.95rem; font-weight: 800; color: var(--brand-black); margin-bottom: 10px; display: flex; align-items: center; gap: 5px; border-bottom: 1px dashed #eee; padding-bottom: 8px; }
         .card-content { font-size: 0.85rem; line-height: 1.6; color: #333; word-break: keep-all; }
-        
         .card-content b, .desc-box b { background: linear-gradient(180deg, transparent 60%, rgba(194, 163, 115, 0.4) 60%); padding: 0 2px; }
-        
         .stamp-confidential { 
     position: absolute; 
-    top: 25px; 
-    left: 48%; 
-    transform: translateX(-50%) rotate(-12deg); 
+    top: 15px; 
+    left: 45%; 
+    transform: translateX(-50%) rotate(-10deg); 
     font-family: 'Courier Prime', monospace; 
-    font-size: 2.5rem; 
+    font-size: 2.3rem; 
     font-weight: 800; 
     color: var(--danger-red); 
     border: 4px solid var(--danger-red); 
-    padding: 5px 25px; 
-    opacity: 0.08; /* 훨씬 더 연하게 하여 배경처럼 작동 */
-    letter-spacing: 8px; 
+    padding: 5px 20px; 
+    opacity: 0.12; /* 배경처럼 작동하도록 연하게 조정 */
+    letter-spacing: 5px; 
     pointer-events: none; 
-    z-index: 0; /* 글씨 뒤로 보냄 */
+    z-index: 1; 
 }
-
         .barcode { height: 45px; margin-top: 30px; opacity: 0.8; background: repeating-linear-gradient(90deg, #111, #111 2px, transparent 2px, transparent 5px, #111 5px, #111 6px, transparent 6px, transparent 8px); }
         
         .loading-overlay { position: fixed; top:0; left:0; width:100%; height:100%; background:rgba(17,17,17,0.95); z-index:999; display:none; justify-content:center; align-items:center; flex-direction:column; color: var(--paper-bg); }
@@ -156,11 +150,12 @@
     font-size: 1.1rem; 
     font-weight: 800; 
     color: var(--brand-brown); 
-    margin: 20px 0 15px 0; 
+    margin: 15px 0 15px 0;
     display: flex;
     align-items: center;
     gap: 8px;
-    /* 선 대신 텍스트 자체에 포인트를 줌 */
+    border-bottom: 1px dashed #ccc;
+    padding-bottom: 10px;
 }
         .grid-2-col { display: grid; grid-template-columns: 1fr 1fr; gap: 15px; margin-bottom: 20px; }
         @media (max-width: 600px) { .grid-2-col { grid-template-columns: 1fr; } }
@@ -962,5 +957,6 @@
 </script>
 </body>
 </html>
+
 
 
