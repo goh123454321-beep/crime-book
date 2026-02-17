@@ -168,6 +168,19 @@
 }
         .grid-2-col { display: grid; grid-template-columns: 1fr 1fr; gap: 15px; margin-bottom: 20px; }
         @media (max-width: 600px) { .grid-2-col { grid-template-columns: 1fr; } }
+        .avg-btn {
+    background: #eee; 
+    border: 1px solid #ccc; 
+    padding: 5px 10px; 
+    font-size: 0.75rem; 
+    border-radius: 4px; 
+    cursor: pointer; 
+    color: #555; 
+    margin-left: 8px;
+    font-family: 'Pretendard', sans-serif;
+    transition: 0.2s;
+}
+.avg-btn:hover { background: var(--brand-brown); color: #fff; border-color: var(--brand-brown); }
     </style>
 </head>
 <body>
@@ -250,53 +263,55 @@
                 <h2 style="font-family:'Cinzel', serif; color:var(--brand-black); margin-bottom:5px; letter-spacing:1px;">DIGITAL FORENSICS</h2>
                 <p style="margin:0; font-size:0.85rem; color:#666; font-family:'Pretendard'; word-break: keep-all;">텍스트의 바다에서 길을 잃게 만든 원인을 찾기 위해,<br>당신의 스마트폰 속 <b>'객관적인 단서'</b>를 수집합니다.</p>
             </div>
-
+            <div style="background: rgba(92, 58, 33, 0.05); border: 1px solid var(--brand-brown); padding: 12px; border-radius: 4px; margin-bottom: 25px; font-size: 0.8rem; line-height: 1.5; color: var(--brand-brown);">
+    <i class="fa-solid fa-circle-info"></i> <b>수사 원칙:</b> 정확한 프로파일링을 위해 실제 데이터를 입력하는 것을 권장합니다. 수치가 확인되지 않는 경우에만 <b>[평균값]</b>을 사용하십시오.
+</div>
             <div class="clue-box">
-                <div class="clue-title"><i class="fa-regular fa-clock"></i> 단서 1. 일일 평균 스크린타임</div>
-                <div class="clue-desc">하루 평균 스마트폰 화면을 켜두는 시간은?</div>
-                <div class="clue-input-group">
-                    <input type="number" id="screenHours" class="number-input" placeholder="0" min="0" max="24"> 시간
-                    <input type="number" id="screenMins" class="number-input" placeholder="0" min="0" max="59"> 분
-                </div>
-                <button class="tooltip-btn" onclick="openModal('screen-guide')">어디서 확인하나요? (3초 컷)</button>
-            </div>
+    <div class="clue-title"><i class="fa-regular fa-clock"></i> 단서 1. 일일 평균 스크린타임</div>
+    <div class="clue-input-group">
+        <input type="number" id="screenHours" class="number-input" placeholder="0"> 시간 
+        <input type="number" id="screenMins" class="number-input" placeholder="0"> 분
+        <button onclick="fillAverage(1)" class="avg-btn">⚡ 20대 평균값</button>
+    </div>
+    <button class="tooltip-btn" onclick="openModal('screen-guide')">어디서 확인하나요?</button>
+</div>
 
-            <div class="clue-box">
-                <div class="clue-title"><i class="fa-solid fa-mobile-screen-button"></i> 단서 2. 하루 평균 '화면 깨우기' 횟수</div>
-                <div class="clue-desc">알림이 오지 않아도 습관적으로 폰을 켠 횟수 (Pick-ups)</div>
-                <div class="clue-input-group">
-                    <input type="number" id="pickups" class="number-input" placeholder="0" style="width:100px;"> 회
-                </div>
-                <button class="tooltip-btn" onclick="openModal('pickup-guide')">어디서 확인하나요? (3초 컷)</button>
-            </div>
+<div class="clue-box">
+    <div class="clue-title"><i class="fa-solid fa-mobile-screen-button"></i> 단서 2. 하루 평균 '화면 깨우기'</div>
+    <div class="clue-input-group">
+        <input type="number" id="pickups" class="number-input" placeholder="0"> 회
+        <button onclick="fillAverage(2)" class="avg-btn">⚡ 20대 평균값</button>
+    </div>
+    <button class="tooltip-btn" onclick="openModal('pickup-guide')">어디서 확인하나요?</button>
+</div>
 
-            <div class="clue-box">
-                <div class="clue-title"><i class="fa-solid fa-shoe-prints"></i> 단서 3. 일일 평균 걸음 수</div>
-                <div class="clue-desc">건강 앱 기준, 최근 일주일 평균 걸음 수는?</div>
-                <div class="clue-input-group">
-                    <input type="number" id="steps" class="number-input" placeholder="0" style="width:120px;"> 보
-                </div>
-                <button class="tooltip-btn" onclick="openModal('step-guide')">어디서 확인하나요? (3초 컷)</button>
-            </div>
+<div class="clue-box">
+    <div class="clue-title"><i class="fa-solid fa-shoe-prints"></i> 단서 3. 일일 평균 걸음 수</div>
+    <div class="clue-input-group">
+        <input type="number" id="steps" class="number-input" placeholder="0"> 보
+        <button onclick="fillAverage(3)" class="avg-btn">⚡ 20대 평균값</button>
+    </div>
+    <button class="tooltip-btn" onclick="openModal('step-guide')">어디서 확인하나요?</button>
+</div>
 
-            <div class="clue-box">
-                <div class="clue-title"><i class="fa-regular fa-bell"></i> 단서 4. 아침 기상 알람 세팅</div>
-                <div class="clue-desc">내일 아침을 위해 맞춰둔 알람은 총 몇 개인가요?</div>
-                <div class="clue-input-group">
-                    <input type="number" id="alarms" class="number-input" placeholder="0" min="0" max="50"> 개
-                </div>
-            </div>
+<div class="clue-box">
+    <div class="clue-title"><i class="fa-regular fa-bell"></i> 단서 4. 아침 기상 알람 세팅</div>
+    <div class="clue-input-group">
+        <input type="number" id="alarms" class="number-input" placeholder="0"> 개
+        <button onclick="fillAverage(4)" class="avg-btn">⚡ 20대 평균값</button>
+    </div>
+</div>
 
-            <div style="display:flex; gap:10px;">
-                <button class="btn btn-prev" onclick="goToPage(1)">← PREV</button>
-                <button class="btn btn-next" onclick="goToPage(3)">DEEP SCAN →</button>
-            </div>
+            <div style="display: flex; gap: 10px; margin-top: 20px;">
+    <button class="btn btn-prev" onclick="goToPage(1)" style="flex: 1; margin: 0;">← PREV</button>
+    <button class="btn btn-next" onclick="goToPage(3)" style="flex: 1; margin: 0;">DEEP SCAN →</button>
+</div>
         </div>
 
         <div id="page3" class="page">
-            <h2 style="font-family: 'Cinzel', serif; color: var(--brand-black); text-align:center; margin-bottom:20px; letter-spacing: 2px;">MIND SCANNING...</h2>
-            <p style="text-align:center; font-size:0.85rem; color:#666; margin-bottom:30px; font-family:'Pretendard';">마지막으로 마인드 클루를 분석합니다.</p>
-            <div id="dnaQuestions"></div>
+    <h2 style="font-family: 'Cinzel', serif; color: var(--brand-black); text-align:center; margin-bottom:15px; letter-spacing: 2px;">CORE INSTINCT SCAN</h2>
+    <p style="text-align:center; font-size:0.85rem; color:#666; margin-bottom:35px; font-family:'Pretendard'; word-break: keep-all;">밀실에서의 탈출 상황에서 당신의 선택을 분석합니다.</p>
+    <div id="dnaQuestions"></div>
             <div style="margin-top:20px; text-align:center;">
                  <button class="btn btn-prev" onclick="goToPage(2)" style="background:transparent; color:#999; border:none; box-shadow:none; width:auto; padding:10px;">뒤로 가기</button>
             </div>
@@ -772,7 +787,7 @@
         else if(q1Answer === 'reader') introHook = "텍스트의 맥락을 깊이 읽어내는 분답게, 당신의 무의식적 행동 데이터에서도 흥미로운 이야기들이 도출되었습니다. ";
         else introHook = "새로운 자극을 찾아오신 방탈출 매니아답게, 당신의 행동 데이터와 속마음 사이에서 역동적인 충돌이 발견되었습니다. ";
 
-       var summaryText = `${introHook}밀실(데스 게임) 안에서 튀어나오는 생존 본능은, 당신이 팍팍한 현실에서 스트레스를 받을 때 나타나는 무의식적인 심리 방어선과 똑같습니다.<br><br>분석 대상의 기질은 <b>'${mbti}' 성향과 ${typeDetails[typeInt].title}적인 특성</b>이 섞여 있습니다. `;
+       var summaryText = `${introHook}밀실 안에서 튀어나오는 생존 본능은, 당신이 팍팍한 현실에서 스트레스를 받을 때 나타나는 무의식적인 심리 방어선과 똑같습니다.<br><br>분석 대상의 기질은 <b>'${mbti}' 성향과 ${typeDetails[typeInt].title}적인 특성</b>이 섞여 있습니다. `;
         
         if (isHealthy) {
             summaryText += `현재는 이 본연의 에너지를 흔들림 없이 잘 쓰고 있는 것으로 보입니다. 다만, 감당하기 힘든 스트레스를 받으면 나도 모르게 <b>${defenseMechanism}</b> 패턴이 튀어나올 수 있으니 내 마음의 약점을 미리 알아두는 것이 좋습니다.`;
@@ -900,7 +915,33 @@
             drawCharts(scoreFocus, scoreAction, scoreWill, scoreControl, scoreStress, focusSpan, actionRatio);
         }, 500);
     }
+    function fillAverage(type) {
+    let targets = [];
+    if(type === 1) { 
+        document.getElementById('screenHours').value = 5; 
+        document.getElementById('screenMins').value = 30;
+        targets = [document.getElementById('screenHours'), document.getElementById('screenMins')];
+    }
+    else if(type === 2) { 
+        document.getElementById('pickups').value = 70; 
+        targets = [document.getElementById('pickups')]; 
+    }
+    else if(type === 3) { 
+        document.getElementById('steps').value = 6000; 
+        targets = [document.getElementById('steps')]; 
+    }
+    else if(type === 4) { 
+        document.getElementById('alarms').value = 2; 
+        targets = [document.getElementById('alarms')]; 
+    }
 
+    // 시각적 피드백 효과
+    targets.forEach(el => {
+        el.style.transition = '0.3s';
+        el.style.backgroundColor = '#fff9c4'; // 연한 노란색
+        setTimeout(() => { el.style.backgroundColor = '#fff'; }, 500);
+    });
+}
     function drawCharts(sFocus, sAction, sWill, sControl, sStress, focusSpan, actionRatio) {
         const brandBrown = '#5c3a21';
         const brandGold = '#c2a373';
@@ -969,6 +1010,7 @@
 </script>
 </body>
 </html>
+
 
 
 
