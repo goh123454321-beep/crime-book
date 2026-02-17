@@ -86,7 +86,21 @@
         .report-header { display: flex; justify-content: space-between; align-items: flex-start; border-bottom: 3px solid var(--brand-black); padding-bottom: 15px; margin-bottom: 20px; }
         .report-title-main { font-size: 1.3rem; font-weight: 800; margin: 0 0 5px 0; color: var(--brand-black); letter-spacing: -0.5px; }
         .report-tags { font-size: 0.75rem; font-weight: 600; color: var(--brand-brown); }
-        .report-meta { text-align: right; font-size: 0.7rem; font-family: 'Courier Prime', monospace; color: #666; line-height: 1.4; white-space: nowrap; }
+        .report-meta { 
+            text-align: left; /* 정렬을 왼쪽으로 맞춰서 서류 느낌 강조 */
+            font-size: 0.75rem; 
+            font-family: 'Courier Prime', monospace; 
+            color: var(--brand-black); 
+            line-height: 1.6; 
+            white-space: nowrap; 
+            background: #ffffff; /* 흰색 배경 박스 */
+            border: 1px solid #ccc; 
+            border-top: 3px solid var(--brand-brown); /* 상단에 브라운 포인트 줄 */
+            padding: 10px 15px; 
+            box-shadow: 2px 2px 6px rgba(0,0,0,0.03); /* 살짝 그림자 */
+            min-width: 140px;
+            z-index: 2;
+        }
 
         .report-grid { display: grid; grid-template-columns: 1fr; gap: 15px; margin-bottom: 20px; }
         @media (min-width: 500px) { .report-grid { grid-template-columns: 1fr 1fr; } }
@@ -105,7 +119,22 @@
         
         .card-content b, .desc-box b { background: linear-gradient(180deg, transparent 60%, rgba(194, 163, 115, 0.4) 60%); padding: 0 2px; }
         
-        .stamp-confidential { position: absolute; top: 20px; right: 15px; font-family: 'Courier Prime', monospace; font-size: 1.4rem; font-weight: 800; color: var(--danger-red); border: 3px solid var(--danger-red); padding: 5px 10px; transform: rotate(15deg); opacity: 0.7; letter-spacing: 2px; pointer-events: none; z-index: 10; }
+        .stamp-confidential { 
+            position: absolute; 
+            top: 5px; 
+            left: 45%; /* 제목과 라벨 사이의 휑한 가운데 공간으로 이동 */
+            transform: translateX(-50%) rotate(-8deg); /* 살짝 비스듬하게 */
+            font-family: 'Courier Prime', monospace; 
+            font-size: 2.2rem; /* 크기를 확 키움 */
+            font-weight: 800; 
+            color: var(--danger-red); 
+            border: 4px solid var(--danger-red); 
+            padding: 5px 20px; 
+            opacity: 0.15; /* 투명도를 낮춰서 글씨를 방해하지 않는 배경처럼 씀 */
+            letter-spacing: 5px; 
+            pointer-events: none; 
+            z-index: 1; 
+        }
 
         .barcode { height: 45px; margin-top: 30px; opacity: 0.8; background: repeating-linear-gradient(90deg, #111, #111 2px, transparent 2px, transparent 5px, #111 5px, #111 6px, transparent 6px, transparent 8px); }
         
@@ -270,7 +299,7 @@
         
         <div class="grid-2-col">
             <div class="chart-card">
-                <div class="card-title">성향-행동 괴리율 지수</div>
+                <div class="card-title">성향-행동 지수</div>
                 <div class="chart-wrapper" style="height: 210px;"><canvas id="radarChart"></canvas></div>
                 <div class="desc-box">
                     <strong>설명:</strong> 기획력(이상)과 실행력(현실), 그리고 기기 통제 및 스트레스 대처 능력을 다각도로 분석한 오각형 지표입니다. <b>(참고: 한국 20대 평균 화면 깨우기는 일일 50~80회, 알람은 1~2개입니다.)</b>
@@ -610,10 +639,11 @@
         var randomId = Math.random().toString(36).substr(2,5).toUpperCase();
         
         document.getElementById('report-meta-box').innerHTML = `
-            [코드명: #2026${randomId}]<br>
-            <i class="fa-solid fa-fingerprint" style="color:var(--brand-brown);"></i> [분석 대상: ${userName}]<br>
-            [성별/연령: ${gender}/${age}세]<br>
-            [주 발현 성향: ${mbti}]
+            <div style="font-size:0.65rem; color:#999; margin-bottom:3px; border-bottom:1px dashed #ddd; padding-bottom:3px;">FILE DATA //</div>
+            <b>ID:</b> #2026${randomId}<br>
+            <b>SUBJ:</b> ${userName} <i class="fa-solid fa-user-check" style="color:var(--brand-brown); margin-left:2px;"></i><br>
+            <b>DEMO:</b> ${gender} / ${age}세<br>
+            <b>TYPE:</b> ${mbti}
         `;
         
         var exRadar = `<strong>프로파일러 진단:</strong> `;
@@ -712,7 +742,7 @@
         else if(q1Answer === 'reader') introHook = "텍스트의 맥락을 깊이 읽어내는 분답게, 당신의 무의식적 행동 데이터에서도 흥미로운 이야기들이 도출되었습니다. ";
         else introHook = "새로운 자극을 찾아오신 방탈출 매니아답게, 당신의 행동 데이터와 속마음 사이에서 역동적인 충돌이 발견되었습니다. ";
 
-        var summaryText = `${introHook}밀실(데스 게임) 안에서 튀어나오는 생존 본능은, 당신이 팍팍한 현실에서 스트레스를 받을 때 나타나는 무의식적인 심리 방어선과 똑같습니다.<br><br>분석 대상의 기질은 <b>'${mbti}'와 '에니어그램 ${typeInt}번'</b>의 특성이 섞여 있습니다. `;
+       var summaryText = `${introHook}밀실(데스 게임) 안에서 튀어나오는 생존 본능은, 당신이 팍팍한 현실에서 스트레스를 받을 때 나타나는 무의식적인 심리 방어선과 똑같습니다.<br><br>분석 대상의 기질은 <b>'${mbti}' 성향과 ${typeDetails[typeInt].title}적인 특성</b>이 섞여 있습니다. `;
         
         if (isHealthy) {
             summaryText += `현재는 이 본연의 에너지를 흔들림 없이 잘 쓰고 있는 것으로 보입니다. 다만, 감당하기 힘든 스트레스를 받으면 나도 모르게 <b>${defenseMechanism}</b> 패턴이 튀어나올 수 있으니 내 마음의 약점을 미리 알아두는 것이 좋습니다.`;
@@ -721,22 +751,20 @@
         }
         document.getElementById('report-summary').innerHTML = summaryText;
 
-        var analysisText = `<b>[행동-인지 부조화 분석]</b><br>내일의 시작을 억지로 끌고 가려는 마음(알람 세팅 수)과 실제 몸을 움직인 양(시간당 걸음 수)을 겹쳐서 도출한 행동 심리 가설입니다.<br><br>`;
+        var analysisText = `<b>[행동-인지 부조화 분석]</b><br>내일을 준비하는 '이상(알람)'과 오늘을 움직이는 '현실(걸음 수)'을 교차 분석했습니다. 이 두 지표의 간극은 당신이 스스로를 얼마나 무리하게 몰아세우고 있는지, 혹은 얼마나 방치하고 있는지를 보여주는 단서가 됩니다.<br><br>`;
         var dissonance = "";
         if (alarms >= 3 && actionRatio < 600) {
-            dissonance = "<b>[가설 1. 완벽주의 강박과 미루기]</b><br>알람을 여러 개 맞출 만큼 '내일은 제대로 살아보겠다'는 의지는 강하지만, 막상 몸은 따라주지 못합니다. 완벽하게 잘해내야 한다는 압박감이 오히려 시작을 두렵게 만들고 있습니다. '일단 5분만 더 누워있자'며 폰을 켜고 현실을 피하는 전형적인 지연 행동(미루기)일 가능성이 있습니다.";
+            dissonance = "<b>[분석 결과: 완벽주의 강박과 미루기]</b><br>알람을 여러 개 맞출 만큼 '내일은 제대로 살아보겠다'는 의지는 강하지만, 막상 몸은 따라주지 못합니다. 완벽하게 잘해내야 한다는 압박감이 오히려 시작을 두렵게 만들고 있습니다. '일단 5분만 더 누워있자'며 폰을 켜고 현실을 피하는 전형적인 지연 행동(미루기)일 가능성이 있습니다.";
         } else if (alarms >= 3 && actionRatio >= 600) {
-            dissonance = "<b>[가설 2. 쉼 없는 엔진 과열(과각성) 상태]</b><br>억지로 알람을 여러 개 맞춰 일어나고, 쉴 틈 없이 하루를 바쁘게 굴리고 있습니다. 겉보기엔 정말 '갓생'을 사는 것 같지만, 속마음은 '여기서 한 번 긴장을 풀면 와르르 무너질 것 같다'는 벼랑 끝 불안에 시달리고 있을 수 있습니다. 늘 엔진이 뜨겁게 달아올라 있는 번아웃 고위험군입니다.";
+            dissonance = "<b>[분석 결과: 쉼 없는 엔진 과열(과각성) 상태]</b><br>억지로 알람을 여러 개 맞춰 일어나고, 쉴 틈 없이 하루를 바쁘게 굴리고 있습니다. 겉보기엔 정말 '갓생'을 사는 것 같지만, 속마음은 '여기서 한 번 긴장을 풀면 와르르 무너질 것 같다'는 벼랑 끝 불안에 시달리고 있을 수 있습니다. 늘 엔진이 뜨겁게 달아올라 있는 번아웃 고위험군입니다.";
         } else if (actionRatio < 600) {
-            dissonance = "<b>[가설 3. 에너지 절전 및 무기력한 방관 모드]</b><br>알람으로 스스로를 닦달하지도 않고, 일상에서 몸을 움직이는 활동도 잔잔합니다. 외부의 피곤한 일들을 피해 가장 편안한 상태를 유지 중일 수 있습니다. 하지만 이 상태가 너무 길어지면 에너지를 쓰는 것 자체가 귀찮아져서, 새로운 도전이나 인간관계마저 피하고 구경만 하는 '학습된 무기력'으로 굳어질 위험이 있습니다.";
+            dissonance = "<b>[분석 결과: 에너지 절전 및 무기력한 방관 모드]</b><br>알람으로 스스로를 닦달하지도 않고, 일상에서 몸을 움직이는 활동도 잔잔합니다. 외부의 피곤한 일들을 피해 가장 편안한 상태를 유지 중일 수 있습니다. 하지만 이 상태가 너무 길어지면 에너지를 쓰는 것 자체가 귀찮아져서, 새로운 도전이나 인간관계마저 피하고 구경만 하는 '학습된 무기력'으로 굳어질 위험이 있습니다.";
         } else {
-            dissonance = "<b>[가설 4. 안정적인 밸런스 속 숨은 함정 점검]</b><br>강박적인 알람 없이도 활동량을 건강하게 유지하는 이상적인 밸런스입니다. 다만 짚어볼 점이 하나 있습니다. 이렇게 계획적으로 굴러가는 하루 속에서, 가끔은 '아무 목적 없이 온전히 멍때리는 휴식'마저 쓸데없는 짓으로 여기며 스스로를 너무 빡빡하게 채찍질하고 있지는 않은가요?";
+            dissonance = "<b>[분석 결과: 안정적인 밸런스 속 숨은 함정 점검]</b><br>강박적인 알람 없이도 활동량을 건강하게 유지하는 이상적인 밸런스입니다. 다만 짚어볼 점이 하나 있습니다. 이렇게 계획적으로 굴러가는 하루 속에서, 가끔은 '아무 목적 없이 온전히 멍때리는 휴식'마저 쓸데없는 짓으로 여기며 스스로를 너무 빡빡하게 채찍질하고 있지는 않은가요?";
         }
         analysisText += dissonance;
         document.getElementById('report-analysis').innerHTML = analysisText;
 
-        var rxText = `데이터는 거짓말을 하지 않습니다. 나의 현재 패턴을 있는 그대로 인정하는 데서부터 진짜 변화가 시작됩니다.<br><br>`;
-        
         var enneagramAdvice = "";
         var bookRecommendation = ""; 
         var bookInsight = ""; 
@@ -810,7 +838,7 @@
         var bookmarkHTML = `
         <div style="background: #fdf8f3; border-left: 4px solid var(--brand-brown); padding: 18px; margin-top: 20px; border-radius: 0 6px 6px 0; box-shadow: 2px 2px 8px rgba(0,0,0,0.04);">
             <div style="font-size: 0.85rem; font-weight: 800; color: var(--brand-brown); margin-bottom: 10px; letter-spacing: -0.5px;">
-                <i class="fa-solid fa-bookmark"></i> 추천 참고 문헌
+                <i class="fa-solid fa-bookmark"></i> 추천 참고 도서
             </div>
             <div style="font-family: 'Gowun Batang', serif; font-size: 0.95rem; color: var(--brand-black); line-height: 1.6; word-break: keep-all;">
                 ${bookRecommendation}
@@ -822,7 +850,8 @@
         <div style="text-align: center; margin-top: 15px; padding: 20px 0; border-top: 1px dashed #ccc;">
             <b style="color: var(--brand-brown); font-size: 1.05rem;">📌 최종 권고</b><br><br>
             <span style="font-size: 0.95rem; line-height: 1.6;">
-            위 문장이 안내하듯, 이제는 <b>${bookInsight}</b> 나아갈 때입니다.<br>
+            참고 도서 속 문장 안내하듯,<br>
+            이제는 <b>${bookInsight}</b> 나아갈 때입니다.<br>
             이 순간이 단순한 끝이 아니라,<br>
             그동안 나를 가두었던 낡은 세계의 알을 깨고<br>
             더 나은 날로 도약하는 위대한 첫걸음이 되기를 응원합니다.
@@ -909,3 +938,4 @@
 </script>
 </body>
 </html>
+
